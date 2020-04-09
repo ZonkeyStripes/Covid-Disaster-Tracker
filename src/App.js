@@ -7,11 +7,29 @@ import stateNames from "./state-names.json";
 
 function App() {
   const [selectedState, setSelectedState] = useState("Alaska")
-  const [stateDataArr, setStateDataArr] = useState([statesData.filter(st => st.state === "Alaska")]);
+  const [stateDataArr, setStateDataArr] = useState(statesData.filter(st => st.state === "Alaska"));
+  
+  const getUSaverage = () => {
+    let flState = null;
+    let totalCases = 0;
+    let totalDeaths = 0;
+
+    for (let i = 0; i < stateNames.length; i++){
+      flState = statesData.filter(st => st.state === stateNames[i]);
+      totalCases += flState[flState.length-1].cases;
+      totalDeaths += flState[flState.length-1].deaths;
+      flState = null;
+    }
+
+    return {
+      avgCases: Math.round(totalCases / 53),
+      avgDeaths: Math.round(totalDeaths / 53)
+    };
+  }
 
   const handleStateChange = e => {
     setSelectedState(e.target.value);
-    setStateDataArr([statesData.filter(st => st.state === e.target.value)])
+    setStateDataArr(statesData.filter(st => st.state === e.target.value))
     console.log(stateDataArr);
   }
 
@@ -28,8 +46,9 @@ function App() {
             <button type="submit" className="btn btn-primary mt-2">Get state data</button>
         </form>
         <CovidCharts
-          mostRecentData={stateDataArr[0][stateDataArr[0].length-1]}
           stateName={selectedState}
+          mostRecentData={stateDataArr[stateDataArr.length-1]}
+          averages = {getUSaverage()}
         />
       </div>
     </div>

@@ -2,6 +2,7 @@ import React from 'react'
 import {Bar, Line} from "react-chartjs-2"
 
 const CovidCharts = (props) => {
+  console.log(props)
     return (
       <div>
         <Bar
@@ -10,7 +11,7 @@ const CovidCharts = (props) => {
               datasets: [
                 {
                   // label: "Cases",
-                  data: [props.mostRecentData.cases, 500],
+                  data: [props.mostRecentData.cases, props.averages.avgCases],
                   backgroundColor: ["blue", "red"]
                 }
               ]
@@ -42,7 +43,7 @@ const CovidCharts = (props) => {
               datasets: [
                 {
                   // label: "Cases",
-                  data: [props.mostRecentData.deaths, 20],
+                  data: [props.mostRecentData.deaths, props.averages.avgDeaths],
                   backgroundColor: ["blue", "red"]
                 }
               ]
