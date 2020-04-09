@@ -13,19 +13,25 @@ function App() {
     let flState = null;
     let totalCases = 0;
     let totalDeaths = 0;
+    let casesByState =[];
+    let deathsByState =[];
 
     for (let i = 0; i < stateNames.length; i++){
       flState = statesData.filter(st => st.state === stateNames[i]);
       totalCases += flState[flState.length-1].cases;
       totalDeaths += flState[flState.length-1].deaths;
+      casesByState.push(flState[flState.length-1].cases);
+      deathsByState.push(flState[flState.length-1].deaths);
       flState = null;
     }
 
     return {
       avgCases: Math.round(totalCases / 53),
-      avgDeaths: Math.round(totalDeaths / 53)
+      avgDeaths: Math.round(totalDeaths / 53),
+      medianCases: casesByState[26],
+      medianDeaths: deathsByState[26]
     };
-  }
+  };
 
   const handleStateChange = e => {
     setSelectedState(e.target.value);
