@@ -1,0 +1,16 @@
+.header-content{
+  background: url("./us-background_1.jpg");
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 110px;
+  /* background-size: 1200px; */
+  background-size: 100vw;
+}
+
+.map-section{
+  background: red
+}
+
+.bar-section{
+  background: blue;
+}
