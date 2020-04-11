@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import './bootstrap.css';
-// import './style.css';
 import StateCharts from "./components/StateCharts";
 import CountyCharts from "./components/CountyCharts";
 import statesData from "./us-state.json";
@@ -20,8 +19,9 @@ function App() {
     return Array.from(setOfCounties).sort();
   }
   
-  const [selectedState, setSelectedState] = useState("Alabama")
-  const [stateDataObj, setStateDataObj] = useState(statesData.filter(st => st.state === "Alabama"));
+  // const [selectedState, setSelectedState] = useState("Alabama")
+  const [selectedState, setSelectedState] = useState(stateNames.sort()[0])
+  const [stateDataObj, setStateDataObj] = useState(statesData.filter(st => st.state === stateNames.sort()[0]));
   const [countiesToShow, setCountiesToShow] = useState(getCounties(selectedState));
   const [selectedCounty, setSelectedCounty] = useState(countiesToShow[0]);
   const [countyData, setCountyData] = useState(countiesData.filter(i => i.state === selectedState && i.county === selectedCounty));
@@ -94,12 +94,12 @@ function App() {
 
   // Runs whenever there's a change in the state dropdown menu
   const handleStateChange = e => {
-    let countiesToDisplay = getCounties(e.target.value);
+    let counties = getCounties(e.target.value);
     setSelectedState(e.target.value);
     setStateDataObj(statesData.filter(st => st.state === e.target.value))
-    setCountiesToShow(countiesToDisplay);
-    setSelectedCounty(countiesToDisplay[0]);
-    setCountyData(countiesData.filter(i => i.state === e.target.value && i.county === countiesToDisplay[0]));
+    setCountiesToShow(counties);
+    setSelectedCounty(counties[0]);
+    setCountyData(countiesData.filter(i => i.state === e.target.value && i.county === counties[0]));
   }
   
   // Runs whenever there's a change in the county dropdown menu
