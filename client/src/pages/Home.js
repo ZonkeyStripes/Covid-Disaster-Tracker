@@ -4,6 +4,7 @@ import { Icon } from "leaflet";
 import "../App.css";
 import usstates from '../assets/gz_2010_us_040_00_5m.geojson';
 import MapContainer from "../components/MapContainer";
+import ChartContainer from "../components/ChartContainer";
 
 
 const stamenTonerTiles = 'http://stamen-tiles-{s}.a.ssl.fastly.net/toner-background/{z}/{x}/{y}.png';
@@ -19,7 +20,7 @@ class Home extends Component {
       return (
         <div>
             <MapContainer />
-            <h1>Tables and Charts Here</h1>
+            <ChartContainer />
         </div>
       );
     }
