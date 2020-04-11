@@ -1,15 +1,13 @@
 import React, {useState} from 'react';
 import './bootstrap.css';
 import './style.css';
-import CovidCharts from "./components/CovidCharts";
+import StateCharts from "./components/StateCharts";
+import CountyCharts from "./components/CountyCharts";
 import statesData from "./us-state.json";
 import countiesData from "./us-counties.json";
 import stateNames from "./state-names.json";
 
 function App() {
-  const [selectedState, setSelectedState] = useState("Alaska")
-  const [stateDataArr, setStateDataArr] = useState(statesData.filter(st => st.state === "Alaska"));
-  
   const getCounties = (state) => {
     let setOfCounties = new Set();
     for (let i = 0; i < countiesData.length; i++){
@@ -19,25 +17,27 @@ function App() {
     }
     return Array.from(setOfCounties).sort();
   }
-
-  const [countiesToShow, setCountiesToShow] = useState(getCounties(selectedState));
-  const [selectedCounty, setSelectedCounty] = useState();
-  const [countyDataArr, setCountyDataArr] = useState(countiesData.filter(i => i.state === selectedState && i.county === selectedCounty));
   
-  const getUSaverage = () => {
-    let flState = null;
+  const [selectedState, setSelectedState] = useState("Alaska")
+  const [stateDataObj, setStateDataObj] = useState(statesData.filter(st => st.state === "Alaska"));
+  const [countiesToShow, setCountiesToShow] = useState(getCounties(selectedState));
+  const [selectedCounty, setSelectedCounty] = useState(countiesToShow[0]);
+  const [countyData, setCountyData] = useState(countiesData.filter(i => i.state === selectedState && i.county === selectedCounty));
+  
+  const getNationalAvg = () => {
+    let loopState = null;
     let totalCases = 0;
     let totalDeaths = 0;
     let casesByState =[];
     let deathsByState =[];
 
     for (let i = 0; i < stateNames.length; i++){
-      flState = statesData.filter(st => st.state === stateNames[i]);
-      totalCases += flState[flState.length-1].cases;
-      totalDeaths += flState[flState.length-1].deaths;
-      casesByState.push(flState[flState.length-1].cases);
-      deathsByState.push(flState[flState.length-1].deaths);
-      flState = null;
+      loopState = statesData.filter(st => st.state === stateNames[i]);
+      totalCases += loopState[loopState.length-1].cases;
+      totalDeaths += loopState[loopState.length-1].deaths;
+      casesByState.push(loopState[loopState.length-1].cases);
+      deathsByState.push(loopState[loopState.length-1].deaths);
+      loopState = null;
     }
 
     return {
@@ -48,18 +48,59 @@ function App() {
     };
   };
 
+  const getStateAvg = () => {
+    let loopCounty = null;
+    let totalCases = 0;
+    let totalDeaths = 0;
+    let casesByCounty = [];
+    let deathsByCounty = [];
+    let mdnCases;
+    let mdnDeaths;
+
+    for (let i = 0; i < countiesToShow.length; i++){
+      loopCounty = countiesData.filter(item => item.county === countiesToShow[i]);      
+      totalCases += loopCounty[loopCounty.length-1].cases;
+      totalDeaths += loopCounty[loopCounty.length-1].deaths;
+      casesByCounty.push(loopCounty[loopCounty.length-1].cases);
+      deathsByCounty.push(loopCounty[loopCounty.length-1].deaths);
+      loopCounty = null;
+    }
+
+    // Sorting arrays
+    let cbcSorted = casesByCounty.sort(function(a, b){return a-b});
+    let dbcSorted = deathsByCounty.sort(function(a, b){return a-b});
+
+    // Calculating median cases and deaths by county
+    if (countiesToShow.length % 2){
+      mdnCases = cbcSorted[Math.round(cbcSorted.length / 2)-1];
+      mdnDeaths = dbcSorted[Math.round(dbcSorted.length / 2)-1];
+    } else {
+      mdnCases = (cbcSorted[(cbcSorted.length / 2)-1] + cbcSorted[cbcSorted.length / 2]) / 2;
+      mdnDeaths = (dbcSorted[(dbcSorted.length / 2)-1] + dbcSorted[dbcSorted.length / 2]) / 2;
+    }
+
+    return {
+      test: totalCases,
+      avgCases: Math.round(totalCases / countiesToShow.length),
+      avgDeaths: Math.round(totalDeaths / countiesToShow.length),
+      medianCases: mdnCases,
+      medianDeaths: mdnDeaths
+      // medianCases: casesByCounty[26],
+    };
+  };
+
   const handleStateChange = e => {
+    let countiesToDisplay = getCounties(e.target.value);
     setSelectedState(e.target.value);
-    setStateDataArr(statesData.filter(st => st.state === e.target.value))
-    console.log(stateDataArr);
-
-    setCountiesToShow(getCounties(e.target.value));
+    setStateDataObj(statesData.filter(st => st.state === e.target.value))
+    setCountiesToShow(countiesToDisplay);
+    setSelectedCounty(countiesToDisplay[0]);
+    setCountyData(countiesData.filter(i => i.state === e.target.value && i.county === countiesToDisplay[0]));
   }
-
+  
   const handleCountyChange = e => {
     setSelectedCounty(e.target.value);
-    setCountyDataArr(countiesData.filter(i => i.state === selectedState && i.county === selectedCounty));
-    console.log(countyDataArr);
+    setCountyData(countiesData.filter(i => i.state === selectedState && i.county === e.target.value));
   }
 
   return (
@@ -67,22 +108,37 @@ function App() {
       <div className="container">
         <label htmlFor="state">State</label>
         <select onChange={handleStateChange} class="form-control" id="stateSelect">
-          {stateNames.map(name => (
+          {stateNames.sort().map(name => (
             <option>{name}</option>
           ))}
         </select>
-        <CovidCharts
+        {/* <CovidCharts
           stateName={selectedState}
-          mostRecentData={stateDataArr[stateDataArr.length-1]}
-          averages = {getUSaverage()}
+          mostRecentData={stateDataObj[stateDataObj.length-1]}
+          averages = {getNationalAvg()}
           counties = {countiesToShow}
-        />
-        <label htmlFor="state">County</label>
-        <select onChange={handleCountyChange} class="form-control" id="stateSelect">
+          county={selectedCounty}
+          countyData={countyData}
+        /> */}
+        <StateCharts
+          stateName = {selectedState}
+          mostRecentData = {stateDataObj[stateDataObj.length-1]}
+          nationalAvgs = {getNationalAvg()}
+          />
+        <label htmlFor="county">County</label>
+        <select onChange={handleCountyChange} class="form-control" id="countySelect">
           {countiesToShow.map(county => (
             <option>{county}</option>
-          ))}
+            ))}
         </select>
+        <CountyCharts
+          stateName = {selectedState}
+          mostRecentData = {stateDataObj[stateDataObj.length-1]}
+          counties = {countiesToShow}
+          county = {selectedCounty}
+          countyData = {countyData}
+          stateAvgs = {getStateAvg()}
+        />
       </div>
     </div>
   );

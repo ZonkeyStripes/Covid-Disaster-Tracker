@@ -2,20 +2,22 @@ import React from 'react'
 import {Bar, Line} from "react-chartjs-2"
 
 const CovidCharts = (props) => {
-  console.log(props)
+  // console.log(props)
     return (
       <div>
         <div className="row">
           <div className="col-6">
             <Bar
               data={{
-                labels: [`${props.county}`, "State median"],
+                labels: [`${props.county}`, `${props.stateName} median`, `${props.stateName} average`],
                   datasets: [
                     {
                       label: "Cases",
-                      // data: [props.countyData[props.countyData.length-1].cases, props.averages.medianCases],
-                      data: [props.countyData[props.countyData.length-1].cases, 200],
-                      backgroundColor: ["blue", "red"]
+                      data: [
+                        props.countyData[props.countyData.length-1].cases,
+                        props.stateAvgs.medianCases,
+                        Math.round(props.mostRecentData.cases / props.counties.length)],
+                      backgroundColor: ["#016FC4", "#1891C3", "#3AC0DA"]
                     }
                   ]
               }}
@@ -43,12 +45,15 @@ const CovidCharts = (props) => {
           <div className="col-6">
             <Bar
               data={{
-                labels: [`${props.county}`, "State median"],
+                labels: [`${props.county}`, `${props.stateName} median`, `${props.stateName} average`],
                   datasets: [
                     {
-                      // data: [props.countyData[props.countyData.length-1].deaths, props.averages.medianDeaths],
-                      data: [props.countyData[props.countyData.length-1].deaths, 7],
-                      backgroundColor: ["blue", "red"]
+                      data: [
+                        props.countyData[props.countyData.length-1].deaths,
+                        props.stateAvgs.medianDeaths,
+                        Math.round(props.mostRecentData.deaths / props.counties.length)
+                    ],
+                    backgroundColor: ["#016FC4", "#1891C3", "#3AC0DA"]
                     }
                   ]
               }}

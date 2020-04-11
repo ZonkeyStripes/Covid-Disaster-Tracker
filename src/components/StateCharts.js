@@ -9,12 +9,16 @@ const CovidCharts = (props) => {
           <div className="col-6">
             <Bar
               data={{
-                labels: [`${props.stateName}`, "US median"],
+                labels: [`${props.stateName}`, "US median", "US average"],
                   datasets: [
                     {
                       label: "Cases",
-                      data: [props.mostRecentData.cases, props.averages.medianCases],
-                      backgroundColor: ["blue", "red"]
+                      data: [
+                        props.mostRecentData.cases,
+                        props.nationalAvgs.medianCases,
+                        props.nationalAvgs.avgCases
+                      ],
+                      backgroundColor: ["#016FC4", "#1891C3", "#3AC0DA"]
                     }
                   ]
               }}
@@ -42,11 +46,15 @@ const CovidCharts = (props) => {
           <div className="col-6">
             <Bar
               data={{
-                labels: [`${props.stateName}`, "US median"],
+                labels: [`${props.stateName}`, "US median", "US average"],
                   datasets: [
                     {
-                      data: [props.mostRecentData.deaths, props.averages.medianDeaths],
-                      backgroundColor: ["blue", "red"]
+                      data: [
+                        props.mostRecentData.deaths,
+                        props.nationalAvgs.medianDeaths,
+                        props.nationalAvgs.avgDeaths
+                      ],
+                      backgroundColor: ["#016FC4", "#1891C3", "#3AC0DA"]
                     }
                   ]
               }}
