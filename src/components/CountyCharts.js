@@ -1,15 +1,17 @@
 import React from 'react'
-import {Bar, Line} from "react-chartjs-2"
+import {Bar} from "react-chartjs-2"
 
 const CovidCharts = (props) => {
-  // console.log(props)
+  if (props.stateName === "Guam" || props.stateName === "Virgin Islands" || props.stateName === "District of Columbia"){
+    return <span className="d-none"></span>
+  } else {
     return (
       <div>
         <div className="row">
           <div className="col-6">
             <Bar
               data={{
-                labels: [`${props.county}`, `${props.stateName} median`, `${props.stateName} average`],
+                labels: [`${props.county} County`, `${props.stateName} median`, `${props.stateName} average`],
                   datasets: [
                     {
                       label: "Cases",
@@ -17,7 +19,7 @@ const CovidCharts = (props) => {
                         props.countyData[props.countyData.length-1].cases,
                         props.stateAvgs.medianCases,
                         Math.round(props.mostRecentData.cases / props.counties.length)],
-                      backgroundColor: ["#016FC4", "#1891C3", "#3AC0DA"]
+                      backgroundColor: ["#820401", "#C02323", "#DE542C"]
                     }
                   ]
               }}
@@ -45,7 +47,7 @@ const CovidCharts = (props) => {
           <div className="col-6">
             <Bar
               data={{
-                labels: [`${props.county}`, `${props.stateName} median`, `${props.stateName} average`],
+                labels: [`${props.county} County`, `${props.stateName} median`, `${props.stateName} average`],
                   datasets: [
                     {
                       data: [
@@ -53,7 +55,8 @@ const CovidCharts = (props) => {
                         props.stateAvgs.medianDeaths,
                         Math.round(props.mostRecentData.deaths / props.counties.length)
                     ],
-                    backgroundColor: ["#016FC4", "#1891C3", "#3AC0DA"]
+                    // backgroundColor: ["#016FC4", "#1891C3", "#3AC0DA"]
+                    backgroundColor: ["#820401", "#C02323", "#DE542C"]
                     }
                   ]
               }}
@@ -81,6 +84,7 @@ const CovidCharts = (props) => {
         </div>
       </div>
     )
+  }
 }
 
 export default CovidCharts;

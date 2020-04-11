@@ -1,8 +1,7 @@
 import React from 'react'
-import {Bar, Line} from "react-chartjs-2"
+import {Bar} from "react-chartjs-2"
 
 const CovidCharts = (props) => {
-  console.log(props)
     return (
       <div>
         <div className="row">
@@ -18,7 +17,7 @@ const CovidCharts = (props) => {
                         props.nationalAvgs.medianCases,
                         props.nationalAvgs.avgCases
                       ],
-                      backgroundColor: ["#016FC4", "#1891C3", "#3AC0DA"]
+                      backgroundColor: ["#820401", "#C02323", "#DE542C"]
                     }
                   ]
               }}
@@ -54,7 +53,7 @@ const CovidCharts = (props) => {
                         props.nationalAvgs.medianDeaths,
                         props.nationalAvgs.avgDeaths
                       ],
-                      backgroundColor: ["#016FC4", "#1891C3", "#3AC0DA"]
+                      backgroundColor: ["#820401", "#C02323", "#DE542C"]
                     }
                   ]
               }}

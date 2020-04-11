@@ -8,6 +8,8 @@ import countiesData from "./us-counties.json";
 import stateNames from "./state-names.json";
 
 function App() {
+
+  //Returns array all county names in a given state
   const getCounties = (state) => {
     let setOfCounties = new Set();
     for (let i = 0; i < countiesData.length; i++){
@@ -18,12 +20,13 @@ function App() {
     return Array.from(setOfCounties).sort();
   }
   
-  const [selectedState, setSelectedState] = useState("Alaska")
-  const [stateDataObj, setStateDataObj] = useState(statesData.filter(st => st.state === "Alaska"));
+  const [selectedState, setSelectedState] = useState("Alabama")
+  const [stateDataObj, setStateDataObj] = useState(statesData.filter(st => st.state === "Alabama"));
   const [countiesToShow, setCountiesToShow] = useState(getCounties(selectedState));
   const [selectedCounty, setSelectedCounty] = useState(countiesToShow[0]);
   const [countyData, setCountyData] = useState(countiesData.filter(i => i.state === selectedState && i.county === selectedCounty));
   
+  // Calculates the per-state average and median of COVID-19 data in the US
   const getNationalAvg = () => {
     let loopState = null;
     let totalCases = 0;
@@ -48,6 +51,7 @@ function App() {
     };
   };
 
+  // Calculates the per-county average and median of COVID-19 data in a given state
   const getStateAvg = () => {
     let loopCounty = null;
     let totalCases = 0;
@@ -70,7 +74,7 @@ function App() {
     let cbcSorted = casesByCounty.sort(function(a, b){return a-b});
     let dbcSorted = deathsByCounty.sort(function(a, b){return a-b});
 
-    // Calculating median cases and deaths by county
+    // Calculating median cases and deaths
     if (countiesToShow.length % 2){
       mdnCases = cbcSorted[Math.round(cbcSorted.length / 2)-1];
       mdnDeaths = dbcSorted[Math.round(dbcSorted.length / 2)-1];
@@ -85,10 +89,10 @@ function App() {
       avgDeaths: Math.round(totalDeaths / countiesToShow.length),
       medianCases: mdnCases,
       medianDeaths: mdnDeaths
-      // medianCases: casesByCounty[26],
     };
   };
 
+  // Runs whenever there's a change in the state dropdown menu
   const handleStateChange = e => {
     let countiesToDisplay = getCounties(e.target.value);
     setSelectedState(e.target.value);
@@ -98,6 +102,7 @@ function App() {
     setCountyData(countiesData.filter(i => i.state === e.target.value && i.county === countiesToDisplay[0]));
   }
   
+  // Runs whenever there's a change in the county dropdown menu
   const handleCountyChange = e => {
     setSelectedCounty(e.target.value);
     setCountyData(countiesData.filter(i => i.state === selectedState && i.county === e.target.value));
@@ -112,14 +117,6 @@ function App() {
             <option>{name}</option>
           ))}
         </select>
-        {/* <CovidCharts
-          stateName={selectedState}
-          mostRecentData={stateDataObj[stateDataObj.length-1]}
-          averages = {getNationalAvg()}
-          counties = {countiesToShow}
-          county={selectedCounty}
-          countyData={countyData}
-        /> */}
         <StateCharts
           stateName = {selectedState}
           mostRecentData = {stateDataObj[stateDataObj.length-1]}
