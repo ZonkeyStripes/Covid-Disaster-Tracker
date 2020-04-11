@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import './bootstrap.css';
+// import './bootstrap.css';
 import StateCharts from "./components/StateCharts";
 import CountyCharts from "./components/CountyCharts";
 import statesData from "./us-state.json";
