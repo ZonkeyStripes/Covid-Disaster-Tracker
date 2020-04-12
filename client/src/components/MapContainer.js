@@ -27,7 +27,7 @@ for(let i = 0; i < stateData.length; i++) {
 	}
 }
 
-let dataDisplayed = "cases";
+// let dataDisplayed = "cases";
 
 const mapColors = [
     ['#005824', '#238b45', '#41ae76', '#66c2a4', '#99d8c9', '#ccece6', '#edf8fb'],
@@ -43,9 +43,29 @@ const thresholdData = [
 
 let thresholds = thresholdData[0];
 
+let allMarkersMap = {};
+let currentID = 0;
+
+
 console.log(todayArray);
 
 class MapContainer extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            displayed: "cases"
+        };
+
+        // ES6 React.Component doesn't auto bind methods to itself
+        // Need to bind them manually in constructor
+        this.changeView = this.changeView.bind(this);
+        this.geoJSONStyle = this.geoJSONStyle.bind(this);
+        this.onEachFeature = this.onEachFeature.bind(this);
+        //this.highlightFeature.bind(this)
+
+    }
+    
 
     geoJSONStyle(feature) {
         let covidCases = 0;
@@ -62,7 +82,7 @@ class MapContainer extends Component {
         // console.log("cases" + covidCases);
         // console.log("deaths" +covidDeaths);
  
-        if(dataDisplayed === "cases") {
+        if(this.state.displayed === "cases") {
             // console.log("made it to cases");
             thresholds = thresholdData[0];
             mapClr = mapColors[0];
@@ -109,28 +129,34 @@ class MapContainer extends Component {
 
     
       onEachFeature(feature: Object, layer: Object) {
-        // console.log("onEachFeature -------- feature properties")
+        console.log("onEachFeature");
         // console.log(feature.properties);
+        // console.log(this.state.displayed)
         let dataToDisplay;
 
         for(let i = 0; i < todayArray.length; i++) {
             if(todayArray[i].state == feature.properties.NAME) {
-                if(dataDisplayed == "cases") {
+                if(this.state.displayed == "cases") {
                     dataToDisplay = todayArray[i].cases;
-                } else if (dataDisplayed == "deaths") {
+                } else if (this.state.displayed == "deaths") {
                     dataToDisplay = todayArray[i].deaths;
                 }
             }
         }
 
-        const popupContent = `<h4>COVID-19 ${dataDisplayed} data</h4>` +
-			'<b>' + feature.properties.NAME + '</b><br />' + dataToDisplay + ` ${dataDisplayed}`;
-        layer.bindPopup(popupContent);
-        // layer.on({
-        //     mouseover: this.highlightFeature,
-        //     mouseout: this.resetHighlight,
-        //     click: this.zoomToFeature
-        // });
+
+        const popupContent = `<h4>COVID-19 ${this.state.displayed} data</h4>` +
+			'<b>' + feature.properties.NAME + '</b><br />' + dataToDisplay + ` ${this.state.displayed}`;
+        let marker = layer.bindPopup(popupContent);
+        
+        console.log(marker);
+        allMarkersMap[currentID] = marker;
+        currentID += 1;
+
+        layer.on({
+            mouseover: this.highlightFeature.bind(this),
+            mouseout: this.resetHighlight.bind(this),
+        });
       }
 
     // mouseover a specific state
@@ -160,13 +186,14 @@ class MapContainer extends Component {
         console.log("mouseout");
         let layer = e.target;
 
-        layer.setStyle({
-            weight: 1,
-            color: '#666',
-            dashArray: '',
-            fillOpacity: 0.7
-        });
-        // geojson.resetStyle(e.target);
+        // layer.setStyle({
+        //     weight: 1,
+        //     color: '#666',
+        //     dashArray: '',
+        //     fillOpacity: 0.7
+        // });
+        this.refs.geojson.leafletElement.resetStyle(e.target);
+        // layer.resetStyle();
         // info.update();
     }
 
@@ -174,9 +201,59 @@ class MapContainer extends Component {
         // map.fitBounds(e.target.getBounds());
     }
 
+    changeView(e) {
+        let event = e;
+        console.log("test function");
+        console.log(e.target.value);
+        console.log(this);
+
+        this.setState({displayed: e.target.value}, function() {
+            console.log(this.state);
+            
+            let colors;
+            if(this.state.displayed === "cases") {
+                colors = mapColors[0];
+            } else {
+                colors = mapColors[1];
+            }
     
-      render() {
-          return (
+            // convert values of the allMarkersMap object to an array
+            let markers = Object.values(allMarkersMap);
+            // console.log("********* in testFunction");
+            // console.log(markers);
+    
+            for(let i = 0; i < markers.length; i++) {
+    
+                let dataToDisplay;
+    
+                for(let j = 0; j < todayArray.length; j++) {
+                    // console.log(todayArray[j].state);
+                    // console.log(markers[i].feature.properties.NAME);
+                    if(todayArray[j].state == markers[i].feature.properties.NAME) {
+                        if(this.state.displayed === "cases") {
+                            dataToDisplay = todayArray[j].cases;
+                        } else if (this.state.displayed === "deaths") {
+                            dataToDisplay = todayArray[j].deaths;
+                        }
+                    }
+                }
+    
+                console.log(`this.state.displayed = ${this.state.displayed}`);
+                console.log("dataToDisplay is " + dataToDisplay);
+    
+    
+                let mark = markers[i].getPopup();
+                console.log(markers[i].feature);
+                const popupContent = `<h4>COVID-19 ${this.state.displayed} data</h4>` +
+                '<b>' + markers[i].feature.properties.NAME + '</b><br />' + dataToDisplay + ` ${this.state.displayed}`;
+                mark.setContent(popupContent);
+            }
+        });
+    }
+
+    
+    render() {
+        return (
             <div>
               <div>
                 <Map
@@ -193,6 +270,7 @@ class MapContainer extends Component {
                       onEachFeature={this.onEachFeature}
                       onMouseOut={() => this.resetHighlight}
                       onMouseOver={() => this.highlightFeature}
+                      ref="geojson"
                     />
                     <MapInfo />
                     <MapLegend colors={mapClr} limits={thresholds}/>
@@ -200,11 +278,11 @@ class MapContainer extends Component {
             </div>
                 
                 <div className="custom-control custom-radio">
-                    <input type="radio" id="customRadio1" name="customRadio" className="custom-control-input" value="cases" defaultChecked />
+                    <input type="radio" id="customRadio1" name="customRadio" className="custom-control-input" value="cases" defaultChecked onClick={this.changeView}/>
                     <label className="custom-control-label" htmlFor="customRadio1">Cases</label>
                 </div>
                 <div className="custom-control custom-radio">
-                    <input type="radio" id="customRadio2" name="customRadio" className="custom-control-input" value="deaths" />
+                    <input type="radio" id="customRadio2" name="customRadio" className="custom-control-input" value="deaths" onClick={this.changeView}/>
                     <label className="custom-control-label" htmlFor="customRadio2">Deaths</label>
                 </div>
                 <DataTable data={todayArray}/>
