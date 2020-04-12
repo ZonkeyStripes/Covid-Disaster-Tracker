@@ -177,8 +177,8 @@ class MapContainer extends Component {
     
       render() {
           return (
-            <div>
-              <div>
+            <div id="map-stuff" className="row">
+              <div className="col-8">
                 <Map
                     center={mapCenter}
                     zoom={zoomLevel}
@@ -197,8 +197,8 @@ class MapContainer extends Component {
                     <MapInfo />
                     <MapLegend colors={mapClr} limits={thresholds}/>
                 </Map>
-            </div>
-                
+              </div>
+              <div className="col-4">
                 <div className="custom-control custom-radio">
                     <input type="radio" id="customRadio1" name="customRadio" className="custom-control-input" value="cases" defaultChecked />
                     <label className="custom-control-label" htmlFor="customRadio1">Cases</label>
@@ -208,6 +208,8 @@ class MapContainer extends Component {
                     <label className="custom-control-label" htmlFor="customRadio2">Deaths</label>
                 </div>
                 <DataTable data={todayArray}/>
+              </div>
+                
             </div>
           );
         }

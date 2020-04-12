@@ -109,33 +109,39 @@ function ChartContainer() {
   }
 
   return (
-    <div className="App">
-      <div className="container">
-        <label htmlFor="state">State</label>
-        <select onChange={handleStateChange} class="form-control" id="stateSelect">
-          {stateNames.sort().map(name => (
-            <option>{name}</option>
-          ))}
-        </select>
-        <StateCharts
-          stateName = {selectedState}
-          mostRecentData = {stateDataObj[stateDataObj.length-1]}
-          nationalAvgs = {getNationalAvg()}
-          />
-        <label htmlFor="county">County</label>
-        <select onChange={handleCountyChange} class="form-control" id="countySelect">
-          {countiesToShow.map(county => (
-            <option>{county}</option>
+    <div id="chart-stuff">
+      <div className="row">
+        <div className="col-12">
+          <label htmlFor="state">State</label>
+          <select onChange={handleStateChange} class="form-control" id="stateSelect">
+            {stateNames.sort().map(name => (
+              <option>{name}</option>
             ))}
-        </select>
-        <CountyCharts
-          stateName = {selectedState}
-          mostRecentData = {stateDataObj[stateDataObj.length-1]}
-          counties = {countiesToShow}
-          county = {selectedCounty}
-          countyData = {countyData}
-          stateAvgs = {getStateAvg()}
-        />
+          </select>
+          <StateCharts
+            stateName = {selectedState}
+            mostRecentData = {stateDataObj[stateDataObj.length-1]}
+            nationalAvgs = {getNationalAvg()}
+            />
+        </div>
+      </div>
+      <div className="row">
+        <div className="col-12">
+          <label htmlFor="county">County</label>
+          <select onChange={handleCountyChange} class="form-control" id="countySelect">
+            {countiesToShow.map(county => (
+              <option>{county}</option>
+              ))}
+          </select>
+          <CountyCharts
+            stateName = {selectedState}
+            mostRecentData = {stateDataObj[stateDataObj.length-1]}
+            counties = {countiesToShow}
+            county = {selectedCounty}
+            countyData = {countyData}
+            stateAvgs = {getStateAvg()}
+          />
+        </div>
       </div>
     </div>
   );

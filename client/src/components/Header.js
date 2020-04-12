@@ -8,6 +8,7 @@ function Header() {
     // console.log("process.env.PUBLIC_URL");
     // console.log(process.env.PUBLIC_URL);
     return (
+      <div className="container">
         <div className="row" id="headerRow">
             <div className="col-md-6 col-12 justify-content-center d-flex justify-content-md-start">
                 <h2 id="logo">COVID-19 and Disaster Tracker</h2>
@@ -34,6 +35,7 @@ function Header() {
                 </div>
             </div>
         </div>
+      </div>
     );
   }
   

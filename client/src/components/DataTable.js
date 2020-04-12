@@ -10,7 +10,7 @@ class DataTable extends Component {
     render () {
     return(
         <div>
-            <table>
+            <table className="table table-striped">
                 <thead>
                     <tr>
                     <th>State</th>
@@ -18,7 +18,7 @@ class DataTable extends Component {
                     <th>Deaths</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="dataTableBody">
                 {this.props.data.map((el, index) => {
                     return <tr key={index}>
                         <td>{el.state}</td>

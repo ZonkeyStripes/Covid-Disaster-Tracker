@@ -38,3 +38,12 @@
     margin-right: 8px;
     opacity: 0.7;
 }
+#dataTableBody {
+  display: block;
+  overflow: auto;
+  height: 500px;
+  width: 100%;
+}
+thead tr {
+  display: block;
+}
