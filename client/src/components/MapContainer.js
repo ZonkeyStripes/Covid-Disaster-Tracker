@@ -41,8 +41,6 @@ const thresholdData = [
     [2000, 1000, 500, 250, 100, 50]
 ];
 
-let thresholds = thresholdData[0];
-
 let allMarkersMap = {};
 let currentID = 0;
 
@@ -54,7 +52,9 @@ class MapContainer extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            displayed: "cases"
+            displayed: "cases",
+            colors: mapColors[0],
+            limits: thresholdData[0]
         };
 
         // ES6 React.Component doesn't auto bind methods to itself
@@ -84,13 +84,13 @@ class MapContainer extends Component {
  
         if(this.state.displayed === "cases") {
             // console.log("made it to cases");
-            thresholds = thresholdData[0];
-            mapClr = mapColors[0];
+            //thresholds = thresholdData[0];
+            // mapClr = mapColors[0];
             displayData = covidCases;
         } else {
             // console.log("made it to deaths");
-            thresholds = thresholdData[1];
-            mapClr = mapColors[1];
+            // thresholds = thresholdData[1];
+            // mapClr = mapColors[1];
             displayData = covidDeaths;
         }
         // console.log("***")
@@ -100,20 +100,20 @@ class MapContainer extends Component {
 
         let colorResult;
 
-        if (displayData > thresholds[0]) {
-            colorResult = mapClr[0];
-        } else if (displayData > thresholds[1]) {
-            colorResult = mapClr[1];
-        } else if (displayData > thresholds[2]) {
-            colorResult = mapClr[2];
-        } else if (displayData > thresholds[3]) {
-            colorResult = mapClr[3];
-        } else if (displayData > thresholds[4]) {
-            colorResult = mapClr[4];
-        } else if (displayData > thresholds[5]) {
-            colorResult = mapClr[5];
+        if (displayData > this.state.limits[0]) {
+            colorResult = this.state.colors[0];
+        } else if (displayData > this.state.limits[1]) {
+            colorResult = this.state.colors[1];
+        } else if (displayData > this.state.limits[2]) {
+            colorResult = this.state.colors[2];
+        } else if (displayData > this.state.limits[3]) {
+            colorResult = this.state.colors[3];
+        } else if (displayData > this.state.limits[4]) {
+            colorResult = this.state.colors[4];
+        } else if (displayData > this.state.limits[5]) {
+            colorResult = this.state.colors[5];
         } else {
-            colorResult = mapClr[6];
+            colorResult = this.state.colors[6];
         }
 
         // console.log(colorResult);
@@ -161,8 +161,8 @@ class MapContainer extends Component {
 
     // mouseover a specific state
     highlightFeature(e) {
-        console.log("mouseover");
-        console.log(e);
+        // console.log("mouseover");
+        // console.log(e);
 
         let layer = e.target;
 
@@ -183,7 +183,7 @@ class MapContainer extends Component {
     }
 
     resetHighlight(e) {
-        console.log("mouseout");
+        // console.log("mouseout");
         let layer = e.target;
 
         // layer.setStyle({
@@ -207,16 +207,26 @@ class MapContainer extends Component {
         console.log(e.target.value);
         console.log(this);
 
-        this.setState({displayed: e.target.value}, function() {
+        let tempColor, tempLimit;
+
+        if(e.target.value === "cases") {
+            tempColor = mapColors[0];
+            tempLimit = thresholdData[0];
+        } else {
+            tempColor = mapColors[1];
+            tempLimit = thresholdData[1];
+        }
+
+        console.log("tempColor = " + tempColor);
+
+        this.setState({
+            displayed: e.target.value,
+            colors: tempColor,
+            limits: tempLimit
+        }, function() {
             console.log(this.state);
             
-            let colors;
-            if(this.state.displayed === "cases") {
-                colors = mapColors[0];
-            } else {
-                colors = mapColors[1];
-            }
-    
+
             // convert values of the allMarkersMap object to an array
             let markers = Object.values(allMarkersMap);
             // console.log("********* in testFunction");
@@ -238,12 +248,12 @@ class MapContainer extends Component {
                     }
                 }
     
-                console.log(`this.state.displayed = ${this.state.displayed}`);
-                console.log("dataToDisplay is " + dataToDisplay);
+                // console.log(`this.state.displayed = ${this.state.displayed}`);
+                // console.log("dataToDisplay is " + dataToDisplay);
     
     
                 let mark = markers[i].getPopup();
-                console.log(markers[i].feature);
+                // console.log(markers[i].feature);
                 const popupContent = `<h4>COVID-19 ${this.state.displayed} data</h4>` +
                 '<b>' + markers[i].feature.properties.NAME + '</b><br />' + dataToDisplay + ` ${this.state.displayed}`;
                 mark.setContent(popupContent);
@@ -273,7 +283,7 @@ class MapContainer extends Component {
                       ref="geojson"
                     />
                     <MapInfo />
-                    <MapLegend colors={mapClr} limits={thresholds}/>
+                    <MapLegend colors={this.state.colors} limits={this.state.limits}/>
                 </Map>
             </div>
                 
@@ -292,40 +302,40 @@ class MapContainer extends Component {
       }
       
 
-    class Legend extends MapControl {
-        componentDidMount() {
-            var div = L.DomUtil.create('div', 'info legend'),
-            grades = [0, 10, 50, 100, 200, 500, 1000],
-            labels = [];
+    // class Legend extends MapControl {
+    //     componentDidMount() {
+    //         var div = L.DomUtil.create('div', 'info legend'),
+    //         grades = [0, 10, 50, 100, 200, 500, 1000],
+    //         labels = [];
 
-            // loop through our density intervals and generate a label with a colored square for each interval
-            for (var i = 0; i < grades.length; i++) {
-		    div.innerHTML +=
-			'<i style="background:' + this.getColor(grades[i] + 1) + '"></i> ' +
-            grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
-           }
+    //         // loop through our density intervals and generate a label with a colored square for each interval
+    //         for (var i = 0; i < grades.length; i++) {
+	// 	    div.innerHTML +=
+	// 		'<i style="background:' + this.getColor(grades[i] + 1) + '"></i> ' +
+    //         grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+    //        }
            
-            const legend = L.control({ position: "bottomright" });
+    //         const legend = L.control({ position: "bottomright" });
      
-            const { map } = this.props.leaflet;
-            legend.addTo(map);
+    //         const { map } = this.props.leaflet;
+    //         legend.addTo(map);
 
-           return div;
-        }
+    //        return div;
+    //     }
 
-        getColor(d) {
-            return d > 1000 ? mapClr[0] :
-                   d > 500  ? mapClr[1] :
-                   d > 200  ? mapClr[2] :
-                   d > 100  ? mapClr[3] :
-                   d > 50   ? mapClr[4] :
-                   d > 10   ? mapClr[5] :
-                       mapClr[6];
-        }
+        // getColor(d) {
+        //     return d > 1000 ? mapClr[0] :
+        //            d > 500  ? mapClr[1] :
+        //            d > 200  ? mapClr[2] :
+        //            d > 100  ? mapClr[3] :
+        //            d > 50   ? mapClr[4] :
+        //            d > 10   ? mapClr[5] :
+        //                mapClr[6];
+        // }
 
         // has to be here to avoid error
-        createLeafletElement () {}
-    }
+    //     createLeafletElement () {}
+    // }
 
 
 export default MapContainer;
