@@ -141,7 +141,6 @@ class DashboardMap extends Component {
     
         let geo_id = feature.properties.GEO_ID;
         geo_id = geo_id.substring(geo_id.length - 5);
-        // console.log(geo_id);
         geo_id = parseInt(geo_id);
 
         for(let j = 0; j < countyArray.length; j++) {
@@ -324,7 +323,7 @@ class DashboardMap extends Component {
                     <input type="radio" id="customRadio2" name="customRadio" className="custom-control-input" value="deaths" onClick={this.changeView}/>
                     <label className="custom-control-label" htmlFor="customRadio2">Deaths</label>
                 </div>
-                <DataTable data={countyArray}/>
+                {/* <DataTable data={countyArray}/> */}
             </div>
           );
         }
