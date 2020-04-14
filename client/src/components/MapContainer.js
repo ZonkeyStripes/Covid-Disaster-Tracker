@@ -45,7 +45,7 @@ let allMarkersMap = {};
 let currentID = 0;
 
 
-console.log(todayArray);
+//console.log(todayArray);
 
 class MapContainer extends Component {
 
@@ -129,7 +129,7 @@ class MapContainer extends Component {
 
     
       onEachFeature(feature: Object, layer: Object) {
-        console.log("onEachFeature");
+        // console.log("onEachFeature");
         // console.log(feature.properties);
         // console.log(this.state.displayed)
         let dataToDisplay;
@@ -149,7 +149,7 @@ class MapContainer extends Component {
 			'<b>' + feature.properties.NAME + '</b><br />' + dataToDisplay + ` ${this.state.displayed}`;
         let marker = layer.bindPopup(popupContent);
         
-        console.log(marker);
+        // console.log(marker);
         allMarkersMap[currentID] = marker;
         currentID += 1;
 
@@ -202,10 +202,9 @@ class MapContainer extends Component {
     }
 
     changeView(e) {
-        let event = e;
-        console.log("test function");
-        console.log(e.target.value);
-        console.log(this);
+        // console.log("test function");
+        // console.log(e.target.value);
+        // console.log(this);
 
         let tempColor, tempLimit;
 
@@ -217,14 +216,14 @@ class MapContainer extends Component {
             tempLimit = thresholdData[1];
         }
 
-        console.log("tempColor = " + tempColor);
+        // console.log("tempColor = " + tempColor);
 
         this.setState({
             displayed: e.target.value,
             colors: tempColor,
             limits: tempLimit
         }, function() {
-            console.log(this.state);
+            // console.log(this.state);
             
 
             // convert values of the allMarkersMap object to an array
