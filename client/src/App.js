@@ -4,6 +4,7 @@ import "./App.css";
 import Home from "./pages/Home";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
+import News from "./pages/News"
 import Header from "./components/Header";
 
 const stamenTonerTiles = 'http://stamen-tiles-{s}.a.ssl.fastly.net/toner-background/{z}/{x}/{y}.png';
@@ -20,6 +21,7 @@ class App extends Component {
         <Switch>
           <Route exact path={"/signup"} component={Signup} />
           <Route exact path={"/login"} component={Login} />
+          <Route exact path={"/news"} component={News} />
           <Route exact path={'/'} component={Home} />
         {/* <Route >
           <About />
