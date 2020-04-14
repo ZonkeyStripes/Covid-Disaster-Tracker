@@ -35,6 +35,11 @@ function Header() {
                                 Create Account
                             </Link>
                         </li>
+                        <li className="nav-item">
+                            <Link to={"/news"} className="nav-link">
+                                Current Covid News
+                            </Link>
+                        </li>
                     </ul>
                 </div>
             </div>
