@@ -16,6 +16,11 @@ function Header() {
                 <div className="nav justify-content-center justify-content-md-end" id="navlist">
                     <ul className="nav">
                         <li className="nav-item">
+                            <Link to={"/dashboard"} className="nav-link">
+                                Dashboard
+                            </Link>
+                        </li>
+                        <li className="nav-item">
                             <Link to={"/"} className="nav-link">
                                 Home
                             </Link>

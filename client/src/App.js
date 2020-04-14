@@ -6,11 +6,7 @@ import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import News from "./pages/News"
 import Header from "./components/Header";
-
-const stamenTonerTiles = 'http://stamen-tiles-{s}.a.ssl.fastly.net/toner-background/{z}/{x}/{y}.png';
-const stamenTonerAttr = 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>';
-const mapCenter = [39.82,-98.57];
-const zoomLevel = 4;
+import Dashboard from "./pages/Dashboard";
 
 
 class App extends Component {
@@ -22,6 +18,7 @@ class App extends Component {
           <Route exact path={"/signup"} component={Signup} />
           <Route exact path={"/login"} component={Login} />
           <Route exact path={"/news"} component={News} />
+          <Route exact path={"/dashboard"} component={Dashboard} />
           <Route exact path={'/'} component={Home} />
         {/* <Route >
           <About />
