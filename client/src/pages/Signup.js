@@ -53,7 +53,7 @@ const Signup = () => {
                 </div>
 
                 <p className="text-muted">
-                  Already have an account? Sign in <Link to={"/login2"}>here</Link>
+                  Already have an account? Sign in <Link to={"/login"}>here</Link>
                 </p>
                 <button type="submit" className="btn form-btn">Register</button>         
               </form>

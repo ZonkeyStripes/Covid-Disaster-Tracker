@@ -45,7 +45,6 @@ const Login = () => {
                       <i class="fas fa-key"></i>
                     </span>
                   </div>
-                  {/* <i class="fas fa-eye-slash" id="eye" onClick={toggleEye}></i> */}
                   <input type="password" className="form-control su-inp" id="password" placeholder="Password" autoComplete="off"/>
                   <div className="input-group-append">
                     <span className="input-group-text" id="eye-cont">
@@ -55,7 +54,7 @@ const Login = () => {
                 </div>
 
                 <p className="text-muted">
-                  Don't have an account? Sign up <Link to={"/signup2"}>here!</Link>
+                  Don't have an account? Sign up <Link to={"/signup"}>here!</Link>
                 </p>
                 <button type="submit" className="btn form-btn">Log In</button>         
               </form>
