@@ -26,7 +26,6 @@ const Login = () => {
           <div className="card" id="su-card">
             <div className="card-body">
               <h4 id="signup-header" className="pb-2">Log In</h4>
-              {/* <form onSubmit={onUserSubmit} autoComplete="off"> */}
               <form onSubmit={onUserSubmit}>
 
                 {/* EMAIL */}

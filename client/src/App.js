@@ -1,10 +1,13 @@
 import React, { Component } from "react";
 import { BrowserRouter, HashRouter, Switch, Route} from "react-router-dom";
+import 'bootstrap/dist/css/bootstrap.min.css';
 import "./App.css";
 import Home from "./pages/Home";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
-import Header from "./components/Header";
+// import Header from "./components/Header";
+import Header2 from "./components/Header2";
+import Navbar from "./components/Navbar";
 
 const stamenTonerTiles = 'http://stamen-tiles-{s}.a.ssl.fastly.net/toner-background/{z}/{x}/{y}.png';
 const stamenTonerAttr = 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>';
@@ -16,7 +19,8 @@ class App extends Component {
   render() {
     return (
       <HashRouter>
-        <Header />
+        <Header2/>
+        {/* <Navbar/> */}
         <Switch>
           <Route exact path={"/signup"} component={Signup} />
           <Route exact path={"/login"} component={Login} />
