@@ -11,7 +11,7 @@ module.exports = function (app) {
 
     console.log("** login** req.user on the server: ");
     console.log(req.user);
-    
+
     // Sending back a password, even a hashed password, isn't a good idea
     res.json({
       email: req.user.email,
@@ -54,7 +54,8 @@ module.exports = function (app) {
   app.get("/api/user_data", function (req, res) {
     if (!req.user) {
       // The user is not logged in, send back an empty object
-      res.json({});
+      // res.json({});
+      res.status(401).json(err);
     } else {
       // Otherwise send back the user's email and id
       // Sending back a password, even a hashed password, isn't a good idea

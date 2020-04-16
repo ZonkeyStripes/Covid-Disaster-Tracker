@@ -7,7 +7,7 @@ class Login extends Component {
     super(props);
 
     this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    //this.handleSubmit = this.handleSubmit.bind(this);
 
     this.state = {
       username: "",
@@ -25,7 +25,7 @@ class Login extends Component {
 
 
 
-  handleSubmit(event) {
+  handleSubmit = (event) => {
     event.preventDefault();
     console.log(this.state.username);
     console.log(this.state.password);
@@ -34,9 +34,11 @@ class Login extends Component {
       email: this.state.username,
       password: this.state.password
     })
-    .then(function(data) {
+    .then((data) => {
       console.log("data: ");
       console.log(data);
+      console.log(this);
+      this.props.history.push("/dashboard");
     })
     .catch(function(err) {
       console.log("Error");
@@ -45,6 +47,7 @@ class Login extends Component {
   }
 
   render() {
+    console.log(this.props);
       return (
         <div className="container">
         <div className="row">
