@@ -4,8 +4,9 @@ let db = require("../models");
 let passport = require("../config/passport");
 
 module.exports = function (app) {
+
   // Using the passport.authenticate middleware with our local strategy.
-  // If the user has valid login credentials, send them to the members page.
+  // If the user has valid login credentials, return a json object with email and id
   // Otherwise the user will be sent an error
   app.post("/api/login", passport.authenticate("local"), function (req, res) {
 
@@ -15,7 +16,8 @@ module.exports = function (app) {
     // Sending back a password, even a hashed password, isn't a good idea
     res.json({
       email: req.user.email,
-      id: req.user.id
+      id: req.user.id,
+      ftu: req.user.firstTimeUse
       // display_name: req.user.display_name
     });
   });
@@ -42,7 +44,7 @@ module.exports = function (app) {
       });
   });
 
-  // Route for logging user out
+  // Route for logging user out -- TEST IF THIS WORKS
   app.get("/logout", function (req, res) {
     console.log("/logout api route is FIRING!");
     req.logout();
@@ -55,18 +57,58 @@ module.exports = function (app) {
     if (!req.user) {
       // The user is not logged in, send back an empty object
       // res.json({});
+      console.log("user is not logged in");
       res.status(401).json(err);
     } else {
       // Otherwise send back the user's email and id
       // Sending back a password, even a hashed password, isn't a good idea
+      //console.log(res);
 
       res.json({
         email: req.user.email,
         id: req.user.id,
-        display_name: req.user.display_name
+        ftu: req.user.firstTimeUse
       });
     }
   });
+
+// POST ROUTES
+
+// create new location entry for a user
+app.post("/api/add_location", function (req, res) {
+  console.log("hit /api/add_location");
+
+  db.Location.create({
+    state: req.body.state,
+    county: req.body.county,
+    UserId: req.body.uid
+  })
+  .then(function () {
+
+    let locationObject = {
+      state: req.body.state,
+      county: req.body.county,
+      UserId: req.body.uid
+    }
+    console.log("Below is the log of the newly created locationObject");
+    console.log(locationObject);
+    res.json(locationObject);
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // BELOW IS REFERENCE MATERIAL, DELETE LATER
 
   // GET ROUTES FOR ACCESSING THE DATABASE
 
