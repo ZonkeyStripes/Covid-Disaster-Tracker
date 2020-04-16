@@ -7,6 +7,7 @@ import Login from "./pages/Login";
 import News from "./pages/News"
 import Header from "./components/Header";
 import Dashboard from "./pages/Dashboard";
+import PrivateRoute from "./components/PrivateRoute";
 
 
 class App extends Component {
@@ -18,7 +19,7 @@ class App extends Component {
           <Route exact path={"/signup"} component={Signup} />
           <Route exact path={"/login"} component={Login} />
           <Route exact path={"/news"} component={News} />
-          <Route exact path={"/dashboard"} component={Dashboard} />
+          <PrivateRoute exact path={"/dashboard"} component={Dashboard} />
           <Route exact path={'/'} component={Home} />
         {/* <Route >
           <About />
