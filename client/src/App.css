@@ -147,7 +147,6 @@ thead tr {
 .header-link-active{
   color: #3a57af;
 }
-/* Css for news page */
 .newshead {
   text-align: center;
   margin-top: 25px;
@@ -247,4 +246,12 @@ thead tr {
 .faqs .faq.open .faq-answer {
   max-height: 1000px;
   opacity: 1;
+}
+
+#FTUstateSelect {
+  width: 75%;  
+}
+
+#FTUcountySelect {
+  width: 75%;  
 }
