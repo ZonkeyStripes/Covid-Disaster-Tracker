@@ -72,6 +72,33 @@ module.exports = function (app) {
     }
   });
 
+// GET ROUTES
+
+app.get("/api/location/:id", function(req, res){
+  let userId = req.params.id;
+
+  console.log("userId = " + userId);
+  
+  db.Location.findAll({
+    where: {
+      UserId: userId
+    }
+  }).then(function(dbLocation) {
+    res.json(dbLocation);
+  })
+})
+
+app.get("/api/all_locations", function(req, res){
+  
+  console.log("api/all_locations")
+
+  db.Location.findAll({})
+  .then(function(dbLocation) {
+    console.log(dbLocation);
+    res.json(dbLocation);
+  })
+})
+
 // POST ROUTES
 
 // create new location entry for a user

@@ -80,7 +80,7 @@ class Login extends Component {
                   <div className="input-group my-4">
                     <div className="input-group-prepend">
                       <span className="input-group-text pre-inp">
-                        <i class="far fa-envelope"></i>
+                        <i className="far fa-envelope"></i>
                       </span>
                     </div>
                     <input type="email" name="username" value={this.state.username} 
