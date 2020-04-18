@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import Axios from "axios";
+import {Link} from "react-router-dom"
+import $ from "jquery";
 
 class Login extends Component {
 
@@ -7,12 +9,23 @@ class Login extends Component {
     super(props);
 
     this.handleChange = this.handleChange.bind(this);
+    this.toggleEye = this.toggleEye.bind(this);
     //this.handleSubmit = this.handleSubmit.bind(this);
 
     this.state = {
       username: "",
       password: ""
     };
+  }
+
+  toggleEye() {
+    $("#eye").toggleClass("fa-eye-slash");
+    $("#eye").toggleClass("fa-eye");
+    if ($("#eye").hasClass("fa-eye")){
+      $("#password").attr("type", "text");
+    } else {
+      $("#password").attr("type", "password");
+    }
   }
 
   handleChange(evt) {
@@ -36,10 +49,15 @@ class Login extends Component {
     })
     .then((data) => {
       console.log("data: ");
-      console.log(data);
-      console.log(this);
-      this.props.history.push("/dashboard");
-      alert("Logged In");
+      let firstTime = data.data.ftu;
+      console.log(firstTime);
+      // if user is a first time user, push to FTU page, otherwise to dashboard
+      if(firstTime) {
+        this.props.history.push("/ftu");
+      } else {
+        this.props.history.push("/dashboard");
+      }
+
     })
     .catch(function(err) {
       console.log("Error");
@@ -50,33 +68,52 @@ class Login extends Component {
 
   render() {
     console.log(this.props);
-      return (
-        <div className="container">
-        <div className="row">
-          <div className="col-md-6 col-md-offset-3">
-            <h2>Login Form</h2>
-            <form className="login" onSubmit={this.handleSubmit}>
-              <div className="form-group">
-                <label htmlFor="exampleInputEmail1">Email address</label>
-                <input type="email" className="form-control" 
-                id="email-input" name="username" value={this.state.username} 
-                onChange={this.handleChange} placeholder="Email" />
+    return (
+      <div className="container">
+        <div className="row mt-4">
+          <div className="col-md-5 text-center mx-auto">
+            <div className="card" id="su-card">
+              <div className="card-body">
+                <h4 id="signup-header" className="pb-2">Log In</h4>
+                <form onSubmit={this.handleSubmit}>
+  
+                  {/* EMAIL */}
+                  <div className="input-group my-4">
+                    <div className="input-group-prepend">
+                      <span className="input-group-text pre-inp">
+                        <i className="far fa-envelope"></i>
+                      </span>
+                    </div>
+                    <input type="email" name="username" value={this.state.username} 
+                    onChange={this.handleChange}        className="form-control su-inp" id="email" placeholder="Email"/>
+                  </div>
+  
+                  {/* PASSWORD */}
+                  <div className="input-group mb-4">
+                    <div className="input-group-prepend">
+                      <span className="input-group-text pre-inp">
+                        <i class="fas fa-key"></i>
+                      </span>
+                    </div>
+                    <input type="password" className="form-control su-inp" id="password" name="password" value={this.state.password} onChange={this.handleChange}placeholder="Password" autoComplete="off"/>
+                    <div className="input-group-append">
+                      <span className="input-group-text" id="eye-cont">
+                        <i class="fas fa-eye-slash" id="eye" onClick={this.toggleEye}></i>
+                      </span>
+                    </div>
+                  </div>
+  
+                  <p className="text-muted">
+                    Don't have an account? Sign up <Link to={"/signup"}>here!</Link>
+                  </p>
+                  <button type="submit" className="btn form-btn">Log In</button>
+                </form>
               </div>
-              <div className="form-group">
-                <label htmlFor="exampleInputPassword1">Password</label>
-                <input type="password" className="form-control" id="password-input"
-                name="password" value={this.state.password} onChange={this.handleChange}
-                placeholder="Password" />
-              </div>
-              <button type="submit" className="btn btn-default">Login</button>
-            </form>
-            <br />
-            <p>Or sign up <a href="/">here</a></p>
+            </div>
           </div>
         </div>
       </div>
-      );
-    }
+    )}
   }
   
   export default Login;
