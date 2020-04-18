@@ -147,3 +147,104 @@ thead tr {
 .header-link-active{
   color: #3a57af;
 }
+/* Css for news page */
+.newshead {
+  text-align: center;
+  margin-top: 25px;
+  margin-bottom: 25px;
+}
+.faqhead {
+  text-align: center;
+  margin-bottom: 25px;
+}
+.newslist {
+  /* background-color: lightblue; */
+  width: 50%;
+  max-height: 10%;
+  height: 160vh;
+  overflow: scroll;
+}
+
+.Collapsible {
+  text-emphasis: bolder;
+  background-color: #777;
+  color: white;
+  cursor: pointer;
+  padding: 30px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+}
+
+.content {
+  background-color: #f1f1f1;
+  color: black;
+  margin-left: 20px;
+  padding: 10px;
+} 
+
+
+/* Css for the Frequently asked Questions page (FAQS) */
+.faqs {
+  width: 100%;
+  max-width: 768px;
+  margin: 0 auto;
+  padding: 25px;
+}
+
+.faqs .faq {
+  margin: 15px;
+  padding: 15px;
+  background-color: #EEE;
+  border-radius: 8px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, .02)
+}
+
+.faqs .faq .faq-quetion {
+  position: relative;
+  font-size: 20px;
+  padding-right: 80px;
+
+  /* transition: 0.4s ease; */
+}
+
+.faqs .faq .faq-answer{
+  opacity: 0;
+  max-height: 0;
+  overflow-y: hidden;
+  
+  transition: all 0.4s ease;
+}
+
+.faqs .faq .faq-question::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 0px;
+  transform: translateY(-50%);
+  width: 30px;
+  height: 30px;
+  
+  background-image: url('https://upload.wikimedia.org/wikipedia/commons/9/9d/Arrow-down.svg');
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  
+  transition: all 0.4s ease;
+}
+
+
+.faqs .faq.open .faq-question {
+  margin-bottom: 15px;
+}
+
+.faqs .faq.open .faq-question::after {
+  transform: translateY(-50%) rotate(180deg);
+}
+
+.faqs .faq.open .faq-answer {
+  max-height: 1000px;
+  opacity: 1;
+}
