@@ -164,11 +164,42 @@ thead tr {
   text-align: center;
   margin-bottom: 25px;
 }
-.newslist {
+/* scrollbar style */
+.newslist::-webkit-scrollbar {
+  width: 5px;
+}
+
+.newslist::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px black;
+}
+
+.newslist::-webkit-scrollbar-thumb {
+  background-color: #3a57af;
+  outline: 1px solid red;
+  border-radius: 50%;
+}
+
+body::-webkit-scrollbar {
+  width: 10px;
+}
+
+body::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px black;
+  border-radius: 30px;
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: #3a57af;
+  outline: 1px solid red;
+  border-radius: 30px;
+}
+
+.newslist { 
   width: 50%;
   max-height: 10%;
   height: 160vh;
-  overflow: scroll;
+  overflow-x: hidden;
+  overflow-y: scroll;
 }
 
 .Collapsible {
