@@ -1,12 +1,16 @@
 import React, {useState} from 'react';
 // import './bootstrap.css';
-import StateCharts from "./StateCharts";
-import StateLineChart from "./StateLineChart";
-import CountyCharts from "./CountyCharts";
+import StateBarCharts from "./StateBarCharts";
+import StateLineCharts from "./StateLineCharts";
+import CountyBarCharts from "./CountyBarCharts";
+import CountyDoughnutChart from "./CountyDoughnutChart";
+import CountyPieChart from "./CountyPieChart";
+
 import nationalData from "../utils/json/us.json";
 import statesData from "../utils/json/us-states.json";
 import countiesData from "../utils/json/us-counties.json";
 import stateNames from "../utils/json/state-names.json";
+import $ from "jquery";
 
 function ChartContainer() {
 
@@ -104,6 +108,9 @@ function ChartContainer() {
     let totalDeaths = 0;
     let casesByCounty = [];
     let deathsByCounty = [];
+    let casesByCountyWithNames = [];
+    let deathsByCountyWithNames = [];
+    // let deathsByCountyWithNames = [];
     let mdnCases;
     let mdnDeaths;
 
@@ -113,12 +120,23 @@ function ChartContainer() {
       totalDeaths += loopCounty[loopCounty.length-1].deaths;
       casesByCounty.push(loopCounty[loopCounty.length-1].cases);
       deathsByCounty.push(loopCounty[loopCounty.length-1].deaths);
+      casesByCountyWithNames.push({
+        county: loopCounty[loopCounty.length-1].county,
+        cases: loopCounty[loopCounty.length-1].cases
+      });
+      deathsByCountyWithNames.push({
+        county: loopCounty[loopCounty.length-1].county,
+        deaths: loopCounty[loopCounty.length-1].deaths
+      });
       loopCounty = null;
     }
 
     // Sorting arrays
     let cbcSorted = casesByCounty.sort(function(a, b){return a-b});
     let dbcSorted = deathsByCounty.sort(function(a, b){return a-b});
+
+    casesByCountyWithNames.sort((a, b) => (a.cases < b.cases) ? 1 : (a.cases === b.cases) ? ((a.state > b.state) ? 1 : -1) : -1 );
+    deathsByCountyWithNames.sort((a, b) => (a.deaths < b.deaths) ? 1 : (a.deaths === b.deaths) ? ((a.state > b.state) ? 1 : -1) : -1 );
 
     // Calculating median cases and deaths
     if (countiesToShow.length % 2){
@@ -130,7 +148,8 @@ function ChartContainer() {
     }
 
     return {
-      test: totalCases,
+      casesByCountyWithNames,
+      deathsByCountyWithNames,
       avgCases: Math.round(totalCases / countiesToShow.length),
       avgDeaths: Math.round(totalDeaths / countiesToShow.length),
       medianCases: mdnCases,
@@ -154,48 +173,118 @@ function ChartContainer() {
     setCountyData(countiesData.filter(i => i.state === selectedState && i.county === e.target.value));
   }
 
+  const [display, setDisplay] = useState("cases")
+  const displayDeaths = () => {
+    if (display === "cases"){
+      setDisplay("deaths");
+      $("#btn-cases").toggleClass("btn-chart");
+      $("#btn-cases").toggleClass("btn-chart-outline");
+      $("#btn-deaths").toggleClass("btn-chart");
+      $("#btn-deaths").toggleClass("btn-chart-outline");
+    }
+  }
+
+  const displayCases = () => {
+    if (display === "deaths"){
+      setDisplay("cases");
+      $("#btn-cases").toggleClass("btn-chart");
+      $("#btn-cases").toggleClass("btn-chart-outline");
+      $("#btn-deaths").toggleClass("btn-chart");
+      $("#btn-deaths").toggleClass("btn-chart-outline");
+    }
+  }
+
   return (
-    <div id="chart-stuff">
-      <div className="row">
-        <div className="col-12">
-          <label htmlFor="state">State</label>
-          <select onChange={handleStateChange} class="form-control" id="stateSelect">
-            {stateNames.sort().map(name => (
-              <option>{name}</option>
-            ))}
-          </select>
+    <div id="chart-stuff" className="mt-5">
+      <div id="chart-stuff-top">
+        <div className="row" id="chart-sect-header">
+          <div className="col-4 p-0">
+            <h3>COVID-19 State Summary</h3>
+          </div>
+          <div className="col-4">
+            <div className="input-group" id="table-btn-container">
+              <div className="input-group-prepend">
+                <button id="btn-cases" onClick={displayCases} className="btn btn-chart">Cases</button>
+              </div>
+              <div className="input-group-append">
+                <button id="btn-deaths" onClick={displayDeaths} className="btn btn-chart-outline">Deaths</button>
+              </div>
+            </div>
+          </div>
+          <div className="col-4">
+            {/* <label htmlFor="state">State</label> */}
+            <div className="row">
+              <div className="col-6">
+                <select onChange={handleStateChange} class="form-control" id="stateSelect">
+                  {stateNames.sort().map(name => (
+                    <option>{name}</option>
+                  ))}
+                </select>
+              </div>
+              <div className="col-6">
+                <select onChange={handleCountyChange} class="form-control" id="countySelect">
+                {countiesToShow.map(county => (
+                    <option>{county}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="row">
+          <StateBarCharts
+            display = {display}
+            stateName = {selectedState}
+            mostRecentData = {stateDataObj[stateDataObj.length-1]}
+            nationalAvgs = {getNationalAvg()}
+          />
+          <StateLineCharts
+            display = {display}
+            stateName = {selectedState}
+            stateData = {stateDataObj}
+            mostRecentData = {stateDataObj[stateDataObj.length-1]}
+            nationalAvgs = {getNationalAvg()}
+            nationalData = {nationalData}
+          />
         </div>
       </div>
-      <StateCharts
-        stateName = {selectedState}
-        mostRecentData = {stateDataObj[stateDataObj.length-1]}
-        nationalAvgs = {getNationalAvg()}
-      />
-      <StateLineChart
-        stateName = {selectedState}
-        stateData = {stateDataObj}
-        mostRecentData = {stateDataObj[stateDataObj.length-1]}
-        nationalAvgs = {getNationalAvg()}
-        nationalData = {nationalData}
-      />
-      <div className="row">
-        <div className="col-12">
-          <label htmlFor="county">County</label>
-          <select onChange={handleCountyChange} class="form-control" id="countySelect">
-            {countiesToShow.map(county => (
-              <option>{county}</option>
-              ))}
-          </select>
+      <div id="chart-stuff-bottom">
+        <div className="row mt-3">
+        <div className="col-6">
+            <CountyBarCharts
+              display = {display}
+              stateName = {selectedState}
+              mostRecentData = {stateDataObj[stateDataObj.length-1]}
+              counties = {countiesToShow}
+              county = {selectedCounty}
+              countyData = {countyData}
+              stateAvgs = {getStateAvg()}
+            />
+          </div>
+          <div className="col-3">
+            <CountyPieChart
+              display = {display}
+              stateName = {selectedState}
+              mostRecentData = {stateDataObj[stateDataObj.length-1]}
+              counties = {countiesToShow}
+              county = {selectedCounty}
+              countyData = {countyData}
+              stateAvgs = {getStateAvg()}
+            />
+          </div>
+          <div className="col-3">
+            <CountyDoughnutChart
+              display = {display}
+              stateName = {selectedState}
+              mostRecentData = {stateDataObj[stateDataObj.length-1]}
+              counties = {countiesToShow}
+              county = {selectedCounty}
+              countyData = {countyData[countyData.length-1]}
+              stateAvgs = {getStateAvg()}
+            />
+          </div>
         </div>
       </div>
-      <CountyCharts
-        stateName = {selectedState}
-        mostRecentData = {stateDataObj[stateDataObj.length-1]}
-        counties = {countiesToShow}
-        county = {selectedCounty}
-        countyData = {countyData}
-        stateAvgs = {getStateAvg()}
-      />
     </div>
   );
 }

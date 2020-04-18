@@ -1,7 +1,7 @@
 import React from 'react';
 import {Line} from "react-chartjs-2";
 
-const StateLineChart = (props) => {
+const StateLineCharts = (props) => {
 
   let firstDate = props.stateData[props.stateData.length-22].date;
   let secondDate = props.stateData[props.stateData.length-15].date;
@@ -19,9 +19,9 @@ const StateLineChart = (props) => {
   let stateFourthDateDeaths = props.stateData[props.stateData.length-1].deaths;
 
   console.log(props);
-  return (
-    <div id="line-chart-container">
-      <div className="row">
+  let ret;
+  if (props.display === "cases"){
+    ret = (
         <div className="col-6">
         <Line
             height={170}
@@ -37,7 +37,7 @@ const StateLineChart = (props) => {
                       stateThirdDateCases,
                       stateFourthDateCases
                     ],
-                    borderColor: "#3a57af"
+                    borderColor: "#003f5c"
                   },
                   {
                     label: "US Average",
@@ -48,7 +48,7 @@ const StateLineChart = (props) => {
                       props.nationalAvgs.dateAvgs.cases.three,
                       props.nationalAvgs.dateAvgs.cases.four
                     ],
-                    borderColor: "#1891C3"
+                    borderColor: "#bc5090"
                   },
                   {
                     label: "US Median",
@@ -59,14 +59,14 @@ const StateLineChart = (props) => {
                       props.nationalAvgs.dateMedians.cases.three,
                       props.nationalAvgs.dateMedians.cases.four
                     ],
-                    borderColor: "#3AC0DA"
+                    borderColor: "#ffa600"
                   }
                 ]
             }}
             options={{
               title: {
                   display: true,
-                  text: `Cases In ${props.stateName}`,
+                  text: `${props.stateName} Cases Over Time`,
                   fontSize: 25
               },
               legend: {
@@ -84,9 +84,12 @@ const StateLineChart = (props) => {
             }
           }}
           />
-        </div>          
-        <div className="col-6">
-        <Line
+        </div>
+    )
+  } else {
+    ret = (
+    <div className="col-6">
+      <Line
             height={170}
             data={{
               labels: [firstDate, secondDate, thirdDate, fourthDate],
@@ -100,7 +103,7 @@ const StateLineChart = (props) => {
                       stateThirdDateDeaths,
                       stateFourthDateDeaths
                     ],
-                    borderColor: "#3a57af"
+                    borderColor: "#003f5c"
                   },
                   {
                     label: "US average",
@@ -111,7 +114,7 @@ const StateLineChart = (props) => {
                       props.nationalAvgs.dateAvgs.deaths.three,
                       props.nationalAvgs.dateAvgs.deaths.four
                     ],
-                    borderColor: "#1891C3"
+                    borderColor: "#bc5090"
                   },
                   {
                     label: "US Median",
@@ -122,36 +125,36 @@ const StateLineChart = (props) => {
                       props.nationalAvgs.dateMedians.deaths.three,
                       props.nationalAvgs.dateMedians.deaths.four
                     ],
-                    borderColor: "#3AC0DA"
+                    borderColor: "#ffa600"
                   }
                 ]
             }}
             options={{
-              
               title: {
-                  display: true,
-                  text: `Deaths In ${props.stateName}`,
-                  fontSize: 25
+                display: true,
+                text: `${props.stateName} Deaths Over Time`,
+                fontSize: 25
               },
               legend: {
-                  display: true,
-                  position: "bottom"
+                display: true,
+                position: "bottom"
               },
               scales:{
                 responsive: true,
                 yAxes:[{
-                    ticks:{
-                        beginAtZero: true,
-                        min: 0
-                    }
+                  ticks:{
+                    beginAtZero: true,
+                    min: 0
+                  }
                 }]
-            }
-          }}
+              }
+            }}
           />
-        </div>          
       </div>
-    </div>
-  )
+    )
+  }
+
+  return ret;
 }
 
-export default StateLineChart;
+export default StateLineCharts;
