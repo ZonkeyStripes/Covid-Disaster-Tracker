@@ -3,7 +3,8 @@ import React, {useState} from 'react';
 import StateCharts from "./StateCharts";
 import StateLineChart from "./StateLineChart";
 import CountyCharts from "./CountyCharts";
-import statesData from "../utils/json/us-state.json";
+import nationalData from "../utils/json/us.json";
+import statesData from "../utils/json/us-states.json";
 import countiesData from "../utils/json/us-counties.json";
 import stateNames from "../utils/json/state-names.json";
 
@@ -20,7 +21,6 @@ function ChartContainer() {
     return Array.from(setOfCounties).sort();
   }
   
-  // const [selectedState, setSelectedState] = useState("Alabama")
   const [selectedState, setSelectedState] = useState(stateNames.sort()[0])
   const [stateDataObj, setStateDataObj] = useState(statesData.filter(st => st.state === stateNames.sort()[0]));
   const [countiesToShow, setCountiesToShow] = useState(getCounties(selectedState));
@@ -30,15 +30,32 @@ function ChartContainer() {
   // Calculates the per-state average and median of COVID-19 data in the US
   const getNationalAvg = () => {
     let loopState = null;
-    let totalCases = 0;
-    let totalDeaths = 0;
+    let totalCases = nationalData[nationalData.length-1].cases;
+    let totalDeaths = nationalData[nationalData.length-1].deaths;
     let casesByState =[];
+    let casesByStateDateOne = [];
+    let casesByStateDateTwo = [];
+    let casesByStateDateThree = [];
+    let casesByStateDateFour = [];
+    let deathsByStateDateOne = [];
+    let deathsByStateDateTwo = [];
+    let deathsByStateDateThree = [];
+    let deathsByStateDateFour = [];
     let deathsByState =[];
 
     for (let i = 0; i < stateNames.length; i++){
       loopState = statesData.filter(st => st.state === stateNames[i]);
-      totalCases += loopState[loopState.length-1].cases;
-      totalDeaths += loopState[loopState.length-1].deaths;
+
+      casesByStateDateOne.push(loopState[loopState.length-22].cases);
+      casesByStateDateTwo.push(loopState[loopState.length-15].cases);
+      casesByStateDateThree.push(loopState[loopState.length-8].cases);
+      casesByStateDateFour.push(loopState[loopState.length-1].cases);
+
+      deathsByStateDateOne.push(loopState[loopState.length-22].deaths);
+      deathsByStateDateTwo.push(loopState[loopState.length-15].deaths);
+      deathsByStateDateThree.push(loopState[loopState.length-8].deaths);
+      deathsByStateDateFour.push(loopState[loopState.length-1].deaths);
+
       casesByState.push(loopState[loopState.length-1].cases);
       deathsByState.push(loopState[loopState.length-1].deaths);
       loopState = null;
@@ -47,8 +64,36 @@ function ChartContainer() {
     return {
       avgCases: Math.round(totalCases / 53),
       avgDeaths: Math.round(totalDeaths / 53),
+      dateAvgs: {
+        cases: {
+          one: Math.round(nationalData[nationalData.length-22].cases / 53),
+          two: Math.round(nationalData[nationalData.length-15].cases / 53),
+          three: Math.round(nationalData[nationalData.length-8].cases / 53),
+          four: Math.round(nationalData[nationalData.length-1].cases / 53)
+        },
+        deaths: {
+          one: Math.round(nationalData[nationalData.length-22].deaths / 53),
+          two: Math.round(nationalData[nationalData.length-15].deaths / 53),
+          three: Math.round(nationalData[nationalData.length-8].deaths / 53),
+          four: Math.round(nationalData[nationalData.length-1].deaths / 53)
+        }
+      },
       medianCases: casesByState[26],
-      medianDeaths: deathsByState[26]
+      medianDeaths: deathsByState[26],
+      dateMedians: {
+        cases: {
+          one: casesByStateDateOne[26],
+          two: casesByStateDateTwo[26],
+          three: casesByStateDateThree[26],
+          four: casesByStateDateFour[26]
+        },
+        deaths: {
+          one: deathsByStateDateOne[26],
+          two: deathsByStateDateTwo[26],
+          three: deathsByStateDateThree[26],
+          four: deathsByStateDateFour[26]
+        }
+      }
     };
   };
 
@@ -128,8 +173,10 @@ function ChartContainer() {
       />
       <StateLineChart
         stateName = {selectedState}
+        stateData = {stateDataObj}
         mostRecentData = {stateDataObj[stateDataObj.length-1]}
         nationalAvgs = {getNationalAvg()}
+        nationalData = {nationalData}
       />
       <div className="row">
         <div className="col-12">
