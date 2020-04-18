@@ -7,7 +7,6 @@ import countyData from '../assets/nytimescounties.json';
 import L from 'leaflet';
 import MapInfo from "./MapInfo";
 import MapLegend from "./MapLegend";
-import DataTable from "./DataTable";
 
 
 const stamenTonerTiles = 'http://stamen-tiles-{s}.a.ssl.fastly.net/toner-background/{z}/{x}/{y}.png';
@@ -16,7 +15,7 @@ const mapCenter = [39.82,-98.57];
 let zoomLevel = 4;
 
 
-console.log(countyData);
+// console.log(countyData);
 let todayDate = "4/12/2020";
 
 let countyArray = [];
@@ -26,7 +25,7 @@ for(let i = 0; i < countyData.length; i++) {
 	}
 }
 
-console.log(countyArray);
+// console.log(countyArray);
 
 const mapColors = [
     ['#005824', '#238b45', '#41ae76', '#66c2a4', '#99d8c9', '#ccece6', '#edf8fb'],
@@ -208,10 +207,9 @@ class DashboardMap extends Component {
     }
 
     changeView(e) {
-        let event = e;
-        console.log("test function");
-        console.log(e.target.value);
-        console.log(this);
+        // console.log("test function");
+        // console.log(e.target.value);
+        // console.log(this);
 
         let tempColor, tempLimit;
 
