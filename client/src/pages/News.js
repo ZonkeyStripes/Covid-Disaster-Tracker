@@ -64,7 +64,9 @@ function News() {
                         https://www.cdc.gov/coronavirus/2019-ncov/faq.html</a>
                 </p>
             </div>
+            <div className="row">
             <Extras />
+            </div>
         </div>
     )
 

@@ -147,6 +147,12 @@ thead tr {
 .header-link-active{
   color: #3a57af;
 }
+
+/* Css for news page */
+.video {  
+  justify-content: center;
+  display: block;
+}
 .newshead {
   text-align: center;
   margin-top: 25px;
@@ -157,7 +163,6 @@ thead tr {
   margin-bottom: 25px;
 }
 .newslist {
-  /* background-color: lightblue; */
   width: 50%;
   max-height: 10%;
   height: 160vh;
@@ -220,8 +225,7 @@ thead tr {
 .faqs .faq .faq-question::after {
   content: '';
   position: absolute;
-  top: 50%;
-  right: 0px;
+  right: 8%;
   transform: translateY(-50%);
   width: 30px;
   height: 30px;
