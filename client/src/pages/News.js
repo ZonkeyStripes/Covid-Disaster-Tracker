@@ -3,6 +3,7 @@ import API from "../utils/API";
 import Extras from "../components/NewsExtra";
 import "../App.css";
 import Questions from "../components/Questions";
+import Symptoms from "../components/Symptoms";
 
 function News() {
 
@@ -59,6 +60,8 @@ function News() {
                 <div className="stuff">
                         <Questions />
                 </div>
+                <br />
+                <Symptoms />
                 <p> See more FAQS at the CDC website here:<br></br>
                     <a href="https://www.cdc.gov/coronavirus/2019-ncov/faq.html">
                         https://www.cdc.gov/coronavirus/2019-ncov/faq.html</a>

@@ -151,7 +151,9 @@ thead tr {
 /* Css for news page */
 .video {  
   justify-content: center;
-  display: block;
+  text-align: center;
+  padding: 25px;
+  margin-left: 50%;
 }
 .newshead {
   text-align: center;
