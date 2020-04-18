@@ -39,10 +39,12 @@ class Login extends Component {
       console.log(data);
       console.log(this);
       this.props.history.push("/dashboard");
+      alert("Logged In");
     })
     .catch(function(err) {
       console.log("Error");
       console.log(err);
+      alert(err.message);
     });
   }
 

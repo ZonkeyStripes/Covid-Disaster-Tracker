@@ -37,7 +37,7 @@ function Header() {
                         </li>
                         <li className="nav-item">
                             <Link to={"/news"} className="nav-link">
-                                Current Covid News
+                                Current COVID-19 News
                             </Link>
                         </li>
                     </ul>
