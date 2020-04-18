@@ -56,9 +56,17 @@ class Signup extends Component {
         email: this.state.username,
         password: this.state.password
       })
-      .then(function(data) {
-        console.log("data: ");
-        console.log(data);
+      .then((data) => {
+        Axios.post("/api/login", {
+          email: this.state.username,
+          password: this.state.password
+        })
+        .then((response) => {
+          console.log("data: ");
+          console.log(data);
+          this.props.history.push("/ftu");
+        });
+
         // If there's an error, handle it by throwing up a bootstrap alert
       })
     }

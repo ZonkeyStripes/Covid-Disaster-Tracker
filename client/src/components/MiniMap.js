@@ -4,17 +4,18 @@ import { Icon } from "leaflet";
 import "../App.css";
 import uscounties from '../assets/gz_2010_us_050_00_5m.json';
 import countyData from '../assets/nytimescounties.json';
+import countyLatLong from '../assets/county_latlong.json';
 import L from 'leaflet';
 import MapInfo from "./MapInfo";
 import MapLegend from "./MapLegend";
-import DataTable from "./DataTable";
+
+
 
 
 const stamenTonerTiles = 'http://stamen-tiles-{s}.a.ssl.fastly.net/toner-background/{z}/{x}/{y}.png';
 const stamenTonerAttr = 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>';
 const mapCenter = [39.82,-98.57];
 let zoomLevel = 4;
-
 
 console.log(countyData);
 let todayDate = "4/12/2020";
@@ -43,14 +44,26 @@ let currentID = 0;
 
 
 
-class DashboardMap extends Component {
+class MiniMap extends Component {
 
     constructor(props) {
+
+        let mapCtr;
+
+        for(let index = 0; index < countyLatLong.length; index++) {
+            if(countyLatLong.FIPS == props.fips) {
+                console.log("found " + countyLatLong.COUNTYNAME + "county");
+            }
+        }
+
+
         super(props);
         this.state = {
+            fips: props.fips,
             displayed: "cases",
             colors: mapColors[0],
-            limits: thresholdData[0]
+            limits: thresholdData[0],
+            mapCenter: mapCtr
         };
 
         // ES6 React.Component doesn't auto bind methods to itself
@@ -135,13 +148,15 @@ class DashboardMap extends Component {
     
       onEachFeature(feature, layer) {
         // console.log("onEachFeature");
-        // console.log(feature.properties);
+        console.log(feature.properties);
         // console.log(this.state.displayed)
         let dataToDisplay;
     
         let geo_id = feature.properties.GEO_ID;
         geo_id = geo_id.substring(geo_id.length - 5);
         geo_id = parseInt(geo_id);
+
+        console.log("this.state.fips = " + this.state.fips);
 
         for(let j = 0; j < countyArray.length; j++) {
             // console.log(countyArray[j].state);
@@ -153,6 +168,16 @@ class DashboardMap extends Component {
                     dataToDisplay = countyArray[j].deaths;
                 }
             }
+
+            if(countyArray[j].fips == this.state.fips) {
+                console.log("Found the county!!")
+                console.log(countyArray[j]);
+                console.log(this);
+                let sizeMap = this.refs.map.leafletElement;
+                // sizeMap.fitBounds()
+                //this.fitBounds(this.getBounds());
+            }
+
         }
 
         const popupContent = `<h4>COVID-19 ${this.state.displayed} data</h4>` +
@@ -203,8 +228,8 @@ class DashboardMap extends Component {
     }
 
     zoomToFeature(e) {
-        // const map = this.refs.map.leafletElement;
-        // map.fitBounds(e.target.getBounds());
+        const map = this.refs.map.leafletElement;
+        map.fitBounds(e.target.getBounds());
     }
 
     changeView(e) {
@@ -314,4 +339,4 @@ class DashboardMap extends Component {
         }
       }
       
-export default DashboardMap;
+export default MiniMap;

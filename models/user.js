@@ -16,6 +16,11 @@ module.exports = function(sequelize, DataTypes) {
     password: {
       type: DataTypes.STRING,
       allowNull: false
+    },
+    firstTimeUse: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: true
     }
   });
   // Creating a custom method for our User model. This will check if an unhashed password entered by the user can be compared to the hashed password stored in our database
@@ -27,5 +32,15 @@ module.exports = function(sequelize, DataTypes) {
   User.addHook("beforeCreate", function(user) {
     user.password = bcrypt.hashSync(user.password, bcrypt.genSaltSync(10), null);
   });
+
+  User.associate = function(models) {
+    // Associating Group with Members
+    // When an Group is deleted, also delete any associated Members
+    User.hasMany(models.Location, {
+      onDelete: "cascade"
+    });
+  };
+
+
   return User;
 };

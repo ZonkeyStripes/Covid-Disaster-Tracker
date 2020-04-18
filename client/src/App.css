@@ -147,3 +147,11 @@ thead tr {
 .header-link-active{
   color: #3a57af;
 }
+
+#FTUstateSelect {
+  width: 75%;  
+}
+
+#FTUcountySelect {
+  width: 75%;  
+}

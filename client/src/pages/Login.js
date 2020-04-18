@@ -49,9 +49,15 @@ class Login extends Component {
     })
     .then((data) => {
       console.log("data: ");
-      console.log(data);
-      console.log(this);
-      this.props.history.push("/dashboard");
+      let firstTime = data.data.ftu;
+      console.log(firstTime);
+      // if user is a first time user, push to FTU page, otherwise to dashboard
+      if(firstTime) {
+        this.props.history.push("/ftu");
+      } else {
+        this.props.history.push("/dashboard");
+      }
+
     })
     .catch(function(err) {
       console.log("Error");
@@ -74,7 +80,7 @@ class Login extends Component {
                   <div className="input-group my-4">
                     <div className="input-group-prepend">
                       <span className="input-group-text pre-inp">
-                        <i class="far fa-envelope"></i>
+                        <i className="far fa-envelope"></i>
                       </span>
                     </div>
                     <input type="email" name="username" value={this.state.username} 
@@ -99,7 +105,7 @@ class Login extends Component {
                   <p className="text-muted">
                     Don't have an account? Sign up <Link to={"/signup"}>here!</Link>
                   </p>
-                  <button type="submit" className="btn form-btn">Log In</button>         
+                  <button type="submit" className="btn form-btn">Log In</button>
                 </form>
               </div>
             </div>
