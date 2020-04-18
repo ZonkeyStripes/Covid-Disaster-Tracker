@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 // import './bootstrap.css';
 import StateCharts from "./StateCharts";
+import StateLineChart from "./StateLineChart";
 import CountyCharts from "./CountyCharts";
 import statesData from "../utils/json/us-state.json";
 import countiesData from "../utils/json/us-counties.json";
@@ -118,13 +119,18 @@ function ChartContainer() {
               <option>{name}</option>
             ))}
           </select>
-          <StateCharts
-            stateName = {selectedState}
-            mostRecentData = {stateDataObj[stateDataObj.length-1]}
-            nationalAvgs = {getNationalAvg()}
-            />
         </div>
       </div>
+      <StateCharts
+        stateName = {selectedState}
+        mostRecentData = {stateDataObj[stateDataObj.length-1]}
+        nationalAvgs = {getNationalAvg()}
+      />
+      <StateLineChart
+        stateName = {selectedState}
+        mostRecentData = {stateDataObj[stateDataObj.length-1]}
+        nationalAvgs = {getNationalAvg()}
+      />
       <div className="row">
         <div className="col-12">
           <label htmlFor="county">County</label>
@@ -133,16 +139,16 @@ function ChartContainer() {
               <option>{county}</option>
               ))}
           </select>
-          <CountyCharts
-            stateName = {selectedState}
-            mostRecentData = {stateDataObj[stateDataObj.length-1]}
-            counties = {countiesToShow}
-            county = {selectedCounty}
-            countyData = {countyData}
-            stateAvgs = {getStateAvg()}
-          />
         </div>
       </div>
+      <CountyCharts
+        stateName = {selectedState}
+        mostRecentData = {stateDataObj[stateDataObj.length-1]}
+        counties = {countiesToShow}
+        county = {selectedCounty}
+        countyData = {countyData}
+        stateAvgs = {getStateAvg()}
+      />
     </div>
   );
 }

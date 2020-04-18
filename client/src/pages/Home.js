@@ -3,7 +3,8 @@ import { Map, Marker, Popup, TileLayer, GeoJSON } from "react-leaflet";
 import { Icon } from "leaflet";
 import "../App.css";
 import usstates from '../assets/gz_2010_us_040_00_5m.geojson';
-import MapContainer from "../components/MapContainer";
+// import MapContainer from "../components/MapContainer";
+import MapContainerTest from "../components/MapContainerTest";
 import ChartContainer from "../components/ChartContainer";
 
 
@@ -19,7 +20,8 @@ class Home extends Component {
   render() {
       return (
         <div className="container">
-            <MapContainer />
+            {/* <MapContainer /> */}
+            <MapContainerTest />
             <ChartContainer />
         </div>
       );

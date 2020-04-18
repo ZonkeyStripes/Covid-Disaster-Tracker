@@ -10,7 +10,7 @@ class DataTable extends Component {
     render () {
     return(
         <div>
-            <table className="table table-striped">
+            <table className="table table-striped table-responsive">
                 <thead>
                     <tr>
                     <th>State</th>
