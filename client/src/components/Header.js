@@ -14,13 +14,13 @@ const Header = () => {
         <ReactBootStrap.Navbar.Collapse id="responsive-navbar-nav">
           <ReactBootStrap.Nav className="ml-auto">
             <ReactBootStrap.Nav.Link>
-              <NavLink exact={true} className="header-link" activeClassName="header-link-active" to={"/"}>Home</NavLink>
+              <NavLink exact={true} className="header-link mx-3" activeClassName="header-link-active" to={"/"}>Home</NavLink>
             </ReactBootStrap.Nav.Link>
             <ReactBootStrap.Nav.Link>
-              <NavLink exact={true} className="header-link" activeClassName="header-link-active" to={"/news"}>News</NavLink>
+              <NavLink exact={true} className="header-link mx-3" activeClassName="header-link-active" to={"/news"}>News</NavLink>
             </ReactBootStrap.Nav.Link>
             <ReactBootStrap.Nav.Link>
-              <NavLink exact={true} className="header-link" activeClassName="header-link-active" to={"/sources"}>Sources</NavLink>
+              <NavLink exact={true} className="header-link mx-3" activeClassName="header-link-active" to={"/sources"}>Sources</NavLink>
             </ReactBootStrap.Nav.Link>
           </ReactBootStrap.Nav>
         <ReactBootStrap.Nav className="ml-auto">

@@ -2,9 +2,9 @@ import React from 'react';
 import {Pie} from "react-chartjs-2";
 
 const CountyPieChartT = (props) => {
-  if (props.stateName === "Delaware"){
-    return <h3>No county data available</h3>
-  }
+  // if (props.stateName === "Delaware"){
+  //   return <h3>No county data available</h3>
+  // }
   console.log(props);
   let cbcn = props.stateAvgs.casesByCountyWithNames;
   let dbcn = props.stateAvgs.deathsByCountyWithNames;
@@ -19,15 +19,12 @@ const CountyPieChartT = (props) => {
     restOfDeaths += dbcn[i].deaths;
   }
 
-  console.log("Rest of cases: " + restOfCases);
-  console.log("Rest of deaths: " + restOfDeaths);
-
   if (props.display === "cases"){
     return (
         <Pie
         height={300}
         data = {{
-            labels: [props.county, `Rest of ${props.stateName}`],
+            labels: [props.countyName, `Rest of ${props.stateAbbrev}`],
             datasets: [{
               data: [
                 props.countyData[props.countyData.length-1].cases, 
@@ -46,7 +43,7 @@ const CountyPieChartT = (props) => {
           options={{
             title: {
               display: true,
-              text: `${props.county} county compared to the rest of ${props.stateName}`,
+              text: `${props.countyName} County compared to the rest of ${props.stateAbbrev}`,
               position: "top",
               fontSize: 15
             },
@@ -62,7 +59,7 @@ const CountyPieChartT = (props) => {
         <Pie
         height={300}
         data = {{
-            labels: [props.county, `Rest of ${props.stateName}`],
+            labels: [props.countyName, `Rest of ${props.stateAbbrev}`],
             datasets: [{
               data: [
                 props.countyData[props.countyData.length-1].deaths, 
@@ -81,7 +78,7 @@ const CountyPieChartT = (props) => {
           options={{
             title: {
               display: true,
-              text: `${props.county} county compared to the rest of ${props.stateName}`,
+              text: `${props.countyName} County compared to the rest of ${props.stateAbbrev}`,
               position: "top",
               fontSize: 15
             },

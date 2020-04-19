@@ -181,6 +181,11 @@ thead tr {
   background-color: #3a57af;
 }
 
+.header-link-active{
+  /* color: #3a57af; */
+  color: #fff;
+}
+
 .table-header{
   font-size: 15px;
   margin-bottom: 0;
@@ -273,10 +278,6 @@ thead tr {
 
 .icon{
   font-size: 60px;
-}
-
-.header-link-active{
-  color: #3a57af;
 }
 
 /* Css for news page */

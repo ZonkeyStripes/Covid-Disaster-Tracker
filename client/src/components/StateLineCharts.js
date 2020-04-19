@@ -18,11 +18,9 @@ const StateLineCharts = (props) => {
   let stateThirdDateDeaths = props.stateData[props.stateData.length-8].deaths;
   let stateFourthDateDeaths = props.stateData[props.stateData.length-1].deaths;
 
-  console.log(props);
-  let ret;
+  let returnVal;
   if (props.display === "cases"){
-    ret = (
-        <div className="col-6">
+    returnVal = (
         <Line
             height={170}
             data={{
@@ -84,50 +82,48 @@ const StateLineCharts = (props) => {
             }
           }}
           />
-        </div>
     )
   } else {
-    ret = (
-    <div className="col-6">
+    returnVal = (
       <Line
-            height={170}
-            data={{
-              labels: [firstDate, secondDate, thirdDate, fourthDate],
-                datasets: [
-                  {
-                    label: props.stateName,
-                    fill: false,
-                    data: [
-                      stateFirstDateDeaths,
-                      stateSecondDateDeaths,
-                      stateThirdDateDeaths,
-                      stateFourthDateDeaths
-                    ],
-                    borderColor: "#003f5c"
-                  },
-                  {
-                    label: "US average",
-                    fill: false,
-                    data: [
-                      props.nationalAvgs.dateAvgs.deaths.one,
-                      props.nationalAvgs.dateAvgs.deaths.two,
-                      props.nationalAvgs.dateAvgs.deaths.three,
-                      props.nationalAvgs.dateAvgs.deaths.four
-                    ],
-                    borderColor: "#bc5090"
-                  },
-                  {
-                    label: "US Median",
-                    fill: false,
-                    data: [
-                      props.nationalAvgs.dateMedians.deaths.one,
-                      props.nationalAvgs.dateMedians.deaths.two,
-                      props.nationalAvgs.dateMedians.deaths.three,
-                      props.nationalAvgs.dateMedians.deaths.four
-                    ],
-                    borderColor: "#ffa600"
-                  }
-                ]
+          height={170}
+          data={{
+            labels: [firstDate, secondDate, thirdDate, fourthDate],
+              datasets: [
+                {
+                  label: props.stateName,
+                  fill: false,
+                  data: [
+                    stateFirstDateDeaths,
+                    stateSecondDateDeaths,
+                    stateThirdDateDeaths,
+                    stateFourthDateDeaths
+                  ],
+                  borderColor: "#003f5c"
+                },
+                {
+                  label: "US average",
+                  fill: false,
+                  data: [
+                    props.nationalAvgs.dateAvgs.deaths.one,
+                    props.nationalAvgs.dateAvgs.deaths.two,
+                    props.nationalAvgs.dateAvgs.deaths.three,
+                    props.nationalAvgs.dateAvgs.deaths.four
+                  ],
+                  borderColor: "#bc5090"
+                },
+                {
+                  label: "US Median",
+                  fill: false,
+                  data: [
+                    props.nationalAvgs.dateMedians.deaths.one,
+                    props.nationalAvgs.dateMedians.deaths.two,
+                    props.nationalAvgs.dateMedians.deaths.three,
+                    props.nationalAvgs.dateMedians.deaths.four
+                  ],
+                  borderColor: "#ffa600"
+                }
+              ]
             }}
             options={{
               title: {
@@ -150,11 +146,10 @@ const StateLineCharts = (props) => {
               }
             }}
           />
-      </div>
     )
   }
 
-  return ret;
+  return returnVal;
 }
 
 export default StateLineCharts;

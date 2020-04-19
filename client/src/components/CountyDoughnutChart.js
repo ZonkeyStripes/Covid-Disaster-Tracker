@@ -2,39 +2,72 @@ import React from 'react';
 import {Doughnut} from "react-chartjs-2";
 
 const CountyDoughnutChartT = (props) => {
-  if (props.stateName === "Delaware"){
-    return <h3>No county data available</h3>
-  }
-  let cbcn = props.stateAvgs.casesByCountyWithNames;
-  let dbcn = props.stateAvgs.deathsByCountyWithNames;
-  
-  let mostCountyCases = cbcn.slice(0,5);
-  let mostCountyDeaths = dbcn.slice(0,5);
-  
+  console.log(props);
+
+  let casesTitle;
+  let deathsTitle;
+
   let restOfCases = 0;
   let restOfDeaths = 0;
-  for (let i = 4; i < cbcn.length; i++){
-    restOfCases += cbcn[i].cases;
-    restOfDeaths += dbcn[i].deaths;
+
+  let cbcn = props.stateAvgs.casesByCountyWithNames;
+  let dbcn = props.stateAvgs.deathsByCountyWithNames;
+
+  let mostCountyCases;
+  let mostCountyDeaths;
+
+  let mostCountyCasesNames;
+  let mostCountyCasesTotals;
+
+  let mostCountyDeathsNames;
+  let mostCountyDeathsTotals;
+
+  if (props.counties.length < 10){
+    casesTitle = `${props.stateName} Case Totals By County`;
+    deathsTitle = `${props.stateName} Death Totals By County`;
+    mostCountyCasesNames = cbcn.map(county => county.county);
+    mostCountyCasesTotals = cbcn.map(county => county.cases);
+    mostCountyDeathsNames = dbcn.map(county => county.county);
+    mostCountyDeathsTotals = dbcn.map(county => county.deaths);
+  } else {
+    casesTitle = `${props.stateAbbrev} Counties With Highest Case Totals`;
+    deathsTitle = `${props.stateAbbrev} Counties With Highest Death Totals`;
+    mostCountyCases = cbcn.slice(0,4);
+    mostCountyDeaths = dbcn.slice(0,4);
+    for (let i = 4; i < cbcn.length; i++){
+      restOfCases += cbcn[i].cases;
+      restOfDeaths += dbcn[i].deaths;
+    }
+    mostCountyCasesNames = mostCountyCases.map(county => county.county);
+    mostCountyCasesTotals = mostCountyCases.map(county => county.cases);
+    mostCountyCasesNames.push(`Rest of ${props.stateAbbrev}`);
+    mostCountyCasesTotals.push(restOfCases);
+    
+    mostCountyDeathsNames = mostCountyDeaths.map(county => county.county);
+    mostCountyDeathsTotals = mostCountyDeaths.map(county => county.deaths);
+    mostCountyDeathsNames.push(`Rest of ${props.stateAbbrev}`);
+    mostCountyDeathsTotals.push(restOfDeaths);
   }
 
-  console.log("Rest of cases: " + restOfCases);
-  console.log("Rest of deaths: " + restOfDeaths);
 
   if (props.display === "cases"){
     return (
         <Doughnut
         height={300}
         data = {{
-            labels: [mostCountyCases[0].county, mostCountyCases[1].county, mostCountyCases[2].county, mostCountyCases[3].county, `Rest of ${props.stateName}`],
+            labels: mostCountyCasesNames,
             datasets: [{
-              data: [mostCountyCases[0].cases, mostCountyCases[1].cases, mostCountyCases[2].cases, mostCountyCases[3].cases, restOfCases],
+              data: mostCountyCasesTotals,
               backgroundColor: [
               '#003f5c',
               '#58508d',
               "#bc5090",
               "#ff6361",
-              "#ffa600"
+              "#ffa600",
+              "red",
+              "purple",
+              "grey",
+              "teal"
               ],
               hoverBackgroundColor: [
               '#3a57af',
@@ -45,7 +78,7 @@ const CountyDoughnutChartT = (props) => {
           options={{
             title: {
               display: true,
-              text: `${props.stateName} counties with most cases`,
+              text: casesTitle,
               position: "top",
               fontSize: 15
             },
@@ -61,26 +94,30 @@ const CountyDoughnutChartT = (props) => {
         <Doughnut
         height={300}
         data = {{
-            labels: [mostCountyDeaths[0].county, mostCountyDeaths[1].county, mostCountyDeaths[2].county, mostCountyDeaths[3].county, `Rest of ${props.stateName}`],
+            labels: mostCountyDeathsNames,
             datasets: [{
-              data: [mostCountyDeaths[0].deaths, mostCountyDeaths[1].deaths, mostCountyDeaths[2].deaths, mostCountyDeaths[3].deaths, restOfDeaths],
+              data: mostCountyDeathsTotals,
               backgroundColor: [
-              '#003f5c',
-              '#58508d',
-              "#bc5090",
-              "#ff6361",
-              "#ffa600"
+                '#003f5c',
+                '#58508d',
+                "#bc5090",
+                "#ff6361",
+                "#ffa600",
+                "red",
+                "purple",
+                "grey",
+                "teal"
               ],
               hoverBackgroundColor: [
-              '#3a57af',
-              '#1891C3'
+                '#3a57af',
+                '#1891C3'
               ]
             }]
           }}
           options={{
             title: {
               display: true,
-              text: `${props.stateName} counties with most deaths`,
+              text: deathsTitle,
               position: "top",
               fontSize: 15
             },
