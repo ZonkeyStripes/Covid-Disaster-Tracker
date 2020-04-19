@@ -12,7 +12,7 @@ class Home extends Component {
       return (
         <div className="container">
             {/* <MapContainer /> */}
-            <MapContainerTest />
+            <MapContainer />
             <ChartContainer />
         </div>
       );

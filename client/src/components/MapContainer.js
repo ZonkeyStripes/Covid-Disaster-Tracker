@@ -7,7 +7,9 @@ import stateData from '../assets/nytimesstate.json';
 import L from 'leaflet';
 import MapInfo from "./MapInfo";
 import MapLegend from "./MapLegend";
+import Tables from "./Tables";
 import DataTable from "./DataTable";
+import $ from "jquery";
 
 
 const stamenTonerTiles = 'http://stamen-tiles-{s}.a.ssl.fastly.net/toner-background/{z}/{x}/{y}.png';
@@ -20,19 +22,34 @@ const zoomLevel = 4;
 //console.log(usstates);
 let todayDate = "2020-04-08";
 
+let totalCases = 0;
+let totalDeaths = 0;
+
 let todayArray = [];
 for(let i = 0; i < stateData.length; i++) {
 	if(stateData[i].date === todayDate) {
-		todayArray.push(stateData[i]);
+    todayArray.push(stateData[i]);
+    totalCases += stateData[i].cases;
+    totalDeaths += stateData[i].deaths;
 	}
 }
+
+
+let casesArray = [];
+let deathsArray = [];
+for(let i = 0; i < todayArray.length; i++) {
+	casesArray.push({state: todayArray[i].state, data: todayArray[i].cases})
+	deathsArray.push({state: todayArray[i].state, data: todayArray[i].deaths})
+};
 
 // let dataDisplayed = "cases";
 
 const mapColors = [
+    ["#034e7b", "#0570b0", "#3690c0", "#74a9cf", "#a6bddb", "#d0d1e6", "#f1eef6"],
     ['#005824', '#238b45', '#41ae76', '#66c2a4', '#99d8c9', '#ccece6', '#edf8fb'],
+    ["#b10026", "#e31a1c", "#fc4e2a", "#fd8d3c", "#feb24c", "#fed976", "#ffffb2"],
     ['#990000', '#d7301f', '#ef6548', '#fc8d59', '#fdbb84', '#fdd49e', '#fef0d9']
-]
+];
 
 let mapClr = mapColors[0];
 
@@ -54,7 +71,9 @@ class MapContainer extends Component {
         this.state = {
             displayed: "cases",
             colors: mapColors[0],
-            limits: thresholdData[0]
+            limits: thresholdData[0],
+            total: totalCases,
+            displayList: casesArray
         };
 
         // ES6 React.Component doesn't auto bind methods to itself
@@ -260,43 +279,172 @@ class MapContainer extends Component {
         });
     }
 
+    displayCases = () => {
+        if(this.state.displayed == "deaths") {
+
+            $("#cases-btn").toggleClass("table-btn");
+            $("#cases-btn").toggleClass("table-btn-outline");
+            $("#deaths-btn").toggleClass("table-btn");
+            $("#deaths-btn").toggleClass("table-btn-outline");
+
+            this.setState({
+                displayed: "cases",
+                colors: mapColors[0],
+                limits: thresholdData[0],
+                total: totalCases,
+                displayList: casesArray
+            }, function() {            
+                // convert values of the allMarkersMap object to an array
+                let markers = Object.values(allMarkersMap);
+        
+                for(let i = 0; i < markers.length; i++) {
+                    let dataToDisplay;
+        
+                    for(let j = 0; j < todayArray.length; j++) {
+                        // console.log(todayArray[j].state);
+                        // console.log(markers[i].feature.properties.NAME);
+                        if(todayArray[j].state == markers[i].feature.properties.NAME) {
+                            if(this.state.displayed === "cases") {
+                                dataToDisplay = todayArray[j].cases;
+                            } else if (this.state.displayed === "deaths") {
+                                dataToDisplay = todayArray[j].deaths;
+                            }
+                        }
+                    }
+        
+                    // console.log(`this.state.displayed = ${this.state.displayed}`);
+                    // console.log("dataToDisplay is " + dataToDisplay);
+        
     
-      render() {
-          return (
+                    let mark = markers[i].getPopup();
+                    // console.log(markers[i].feature);
+                    const popupContent = `<h4>COVID-19 ${this.state.displayed} data</h4>` +
+                    '<b>' + markers[i].feature.properties.NAME + '</b><br />' + dataToDisplay + ` ${this.state.displayed}`;
+                    mark.setContent(popupContent);
+                }
+
+                // if (display === "Deaths"){
+                //     // $("#cases-btn").toggleClass("table-btn");
+                //     // $("#cases-btn").toggleClass("table-btn-outline");
+                //     // $("#deaths-btn").toggleClass("table-btn");
+                //     // $("#deaths-btn").toggleClass("table-btn-outline");
+                //     // setDisplay("Cases");
+                //     // setTotal(props.cases);
+                //     // setDisplayData(props.casesArr);
+                // }
+            });
+        }
+    }
+      
+    displayDeaths = () => {
+        console.log("hit displayDeaths");
+        if(this.state.displayed == "cases") {
+            console.log("entered the if statement");
+
+            $("#cases-btn").toggleClass("table-btn");
+            $("#cases-btn").toggleClass("table-btn-outline");
+            $("#deaths-btn").toggleClass("table-btn");
+            $("#deaths-btn").toggleClass("table-btn-outline");
+
+            this.setState({
+                displayed: "deaths",
+                colors: mapColors[2],
+                limits: thresholdData[1],
+                total: totalDeaths,
+                displayList: deathsArray
+            }, function() {            
+                // convert values of the allMarkersMap object to an array
+                let markers = Object.values(allMarkersMap);
+        
+                for(let i = 0; i < markers.length; i++) {
+                    let dataToDisplay;
+        
+                    for(let j = 0; j < todayArray.length; j++) {
+                        // console.log(todayArray[j].state);
+                        // console.log(markers[i].feature.properties.NAME);
+                        if(todayArray[j].state == markers[i].feature.properties.NAME) {
+                            if(this.state.displayed === "cases") {
+                                dataToDisplay = todayArray[j].cases;
+                            } else if (this.state.displayed === "deaths") {
+                                dataToDisplay = todayArray[j].deaths;
+                            }
+                        }
+                    }
+        
+                    // console.log(`this.state.displayed = ${this.state.displayed}`);
+                    // console.log("dataToDisplay is " + dataToDisplay);
+        
+    
+                    let mark = markers[i].getPopup();
+                    // console.log(markers[i].feature);
+                    const popupContent = `<h4>COVID-19 ${this.state.displayed} data</h4>` +
+                    '<b>' + markers[i].feature.properties.NAME + '</b><br />' + dataToDisplay + ` ${this.state.displayed}`;
+                    mark.setContent(popupContent);
+                }
+            });
+        }
+    
+        // if (display === "Cases"){
+        //   $("#deaths-btn").toggleClass("table-btn");
+        //   $("#deaths-btn").toggleClass("table-btn-outline");
+        //   $("#cases-btn").toggleClass("table-btn");
+        //   $("#cases-btn").toggleClass("table-btn-outline");
+        //   setDisplay("Deaths");
+        //   setTotal(props.deaths);
+        //   setDisplayData(props.deathsArr);
+        // }
+    }
+
+
+    
+    render() {
+        return (
             <div id="map-stuff" className="row">
-              <div className="col-8">
-                <Map
-                    center={mapCenter}
-                    zoom={zoomLevel}
-                >
-                    <TileLayer
-                        attribution={stamenTonerAttr}
-                        url={stamenTonerTiles}
-                    />
-                    <GeoJSON
-                      data={usstates}
-                      style={this.geoJSONStyle}
-                      onEachFeature={this.onEachFeature}
-                      onMouseOut={() => this.resetHighlight}
-                      onMouseOver={() => this.highlightFeature}
-                      ref="geojson"
-                    />
-                    <MapInfo />
-                    <MapLegend colors={this.state.colors} limits={this.state.limits}/>
-                </Map>
-              </div>
-              <div className="col-4">
-                <div className="custom-control custom-radio">
-                    <input type="radio" id="customRadio1" name="customRadio" className="custom-control-input" value="cases" defaultChecked onClick={this.changeView}/>
-                    <label className="custom-control-label" htmlFor="customRadio1">Cases</label>
+                <div className="col-8">
+                    <Map
+                        center={mapCenter}
+                        zoom={zoomLevel}
+                    >
+                        <TileLayer
+                            attribution={stamenTonerAttr}
+                            url={stamenTonerTiles}
+                        />
+                        <GeoJSON
+                        data={usstates}
+                        style={this.geoJSONStyle}
+                        onEachFeature={this.onEachFeature}
+                        onMouseOut={() => this.resetHighlight}
+                        onMouseOver={() => this.highlightFeature}
+                        ref="geojson"
+                        />
+                        {/* <MapInfo /> */}
+                        <MapLegend colors={this.state.colors} limits={this.state.limits}/>
+                    </Map>
                 </div>
-                <div className="custom-control custom-radio">
-                    <input type="radio" id="customRadio2" name="customRadio" className="custom-control-input" value="deaths" onClick={this.changeView}/>
-                    <label className="custom-control-label" htmlFor="customRadio2">Deaths</label>
-                </div>
-                <DataTable data={todayArray}/>
-              </div>
-                
+
+                <div className="col-4 px-2">
+                    <div className="card">
+                        <div className="d-flex my-2">
+                            <div className="input-group" id="table-btn-container">
+                            <div className="input-group-prepend">
+                                <button onClick={this.displayCases} id="cases-btn" className="btn table-btn">Cases</button>
+                            </div>
+                            <div className="input-group-append">
+                                <button onClick={this.displayDeaths} id="deaths-btn" className="btn table-btn-outline">Deaths</button>
+                            </div>
+                            </div>
+                        </div>
+                    <Tables
+                    displayed = {this.state.displayed}
+                    total = {this.state.total}
+                    displayList = {this.state.displayList}
+                    cases = {totalCases}
+                    deaths = {totalDeaths}
+                    casesArr = {casesArray}
+                    deathsArr = {deathsArray}
+                    />
+                    </div>
+                </div>  
             </div>
           );
         }
