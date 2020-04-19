@@ -250,7 +250,7 @@ class MapContainer extends Component {
                 // console.log(`this.state.displayed = ${this.state.displayed}`);
                 // console.log("dataToDisplay is " + dataToDisplay);
     
-    
+   
                 let mark = markers[i].getPopup();
                 // console.log(markers[i].feature);
                 const popupContent = `<h4>COVID-19 ${this.state.displayed} data</h4>` +
@@ -261,10 +261,10 @@ class MapContainer extends Component {
     }
 
     
-    render() {
-        return (
-            <div>
-              <div>
+      render() {
+          return (
+            <div id="map-stuff" className="row">
+              <div className="col-8">
                 <Map
                     center={mapCenter}
                     zoom={zoomLevel}
@@ -284,8 +284,8 @@ class MapContainer extends Component {
                     <MapInfo />
                     <MapLegend colors={this.state.colors} limits={this.state.limits}/>
                 </Map>
-            </div>
-                
+              </div>
+              <div className="col-4">
                 <div className="custom-control custom-radio">
                     <input type="radio" id="customRadio1" name="customRadio" className="custom-control-input" value="cases" defaultChecked onClick={this.changeView}/>
                     <label className="custom-control-label" htmlFor="customRadio1">Cases</label>
@@ -295,46 +295,11 @@ class MapContainer extends Component {
                     <label className="custom-control-label" htmlFor="customRadio2">Deaths</label>
                 </div>
                 <DataTable data={todayArray}/>
+              </div>
+                
             </div>
           );
         }
       }
       
-
-    // class Legend extends MapControl {
-    //     componentDidMount() {
-    //         var div = L.DomUtil.create('div', 'info legend'),
-    //         grades = [0, 10, 50, 100, 200, 500, 1000],
-    //         labels = [];
-
-    //         // loop through our density intervals and generate a label with a colored square for each interval
-    //         for (var i = 0; i < grades.length; i++) {
-	// 	    div.innerHTML +=
-	// 		'<i style="background:' + this.getColor(grades[i] + 1) + '"></i> ' +
-    //         grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
-    //        }
-           
-    //         const legend = L.control({ position: "bottomright" });
-     
-    //         const { map } = this.props.leaflet;
-    //         legend.addTo(map);
-
-    //        return div;
-    //     }
-
-        // getColor(d) {
-        //     return d > 1000 ? mapClr[0] :
-        //            d > 500  ? mapClr[1] :
-        //            d > 200  ? mapClr[2] :
-        //            d > 100  ? mapClr[3] :
-        //            d > 50   ? mapClr[4] :
-        //            d > 10   ? mapClr[5] :
-        //                mapClr[6];
-        // }
-
-        // has to be here to avoid error
-    //     createLeafletElement () {}
-    // }
-
-
 export default MapContainer;

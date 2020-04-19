@@ -1,10 +1,16 @@
 import React, {useState} from 'react';
 // import './bootstrap.css';
-import StateCharts from "./StateCharts";
-import CountyCharts from "./CountyCharts";
-import statesData from "../utils/json/us-state.json";
+import StateBarCharts from "./StateBarCharts";
+import StateLineCharts from "./StateLineCharts";
+import CountyBarCharts from "./CountyBarCharts";
+import CountyDoughnutChart from "./CountyDoughnutChart";
+import CountyPieChart from "./CountyPieChart";
+
+import nationalData from "../utils/json/us.json";
+import statesData from "../utils/json/us-states.json";
 import countiesData from "../utils/json/us-counties.json";
 import stateNames from "../utils/json/state-names.json";
+import $ from "jquery";
 
 function ChartContainer() {
 
@@ -19,7 +25,6 @@ function ChartContainer() {
     return Array.from(setOfCounties).sort();
   }
   
-  // const [selectedState, setSelectedState] = useState("Alabama")
   const [selectedState, setSelectedState] = useState(stateNames.sort()[0])
   const [stateDataObj, setStateDataObj] = useState(statesData.filter(st => st.state === stateNames.sort()[0]));
   const [countiesToShow, setCountiesToShow] = useState(getCounties(selectedState));
@@ -29,15 +34,32 @@ function ChartContainer() {
   // Calculates the per-state average and median of COVID-19 data in the US
   const getNationalAvg = () => {
     let loopState = null;
-    let totalCases = 0;
-    let totalDeaths = 0;
+    let totalCases = nationalData[nationalData.length-1].cases;
+    let totalDeaths = nationalData[nationalData.length-1].deaths;
     let casesByState =[];
+    let casesByStateDateOne = [];
+    let casesByStateDateTwo = [];
+    let casesByStateDateThree = [];
+    let casesByStateDateFour = [];
+    let deathsByStateDateOne = [];
+    let deathsByStateDateTwo = [];
+    let deathsByStateDateThree = [];
+    let deathsByStateDateFour = [];
     let deathsByState =[];
 
     for (let i = 0; i < stateNames.length; i++){
       loopState = statesData.filter(st => st.state === stateNames[i]);
-      totalCases += loopState[loopState.length-1].cases;
-      totalDeaths += loopState[loopState.length-1].deaths;
+
+      casesByStateDateOne.push(loopState[loopState.length-22].cases);
+      casesByStateDateTwo.push(loopState[loopState.length-15].cases);
+      casesByStateDateThree.push(loopState[loopState.length-8].cases);
+      casesByStateDateFour.push(loopState[loopState.length-1].cases);
+
+      deathsByStateDateOne.push(loopState[loopState.length-22].deaths);
+      deathsByStateDateTwo.push(loopState[loopState.length-15].deaths);
+      deathsByStateDateThree.push(loopState[loopState.length-8].deaths);
+      deathsByStateDateFour.push(loopState[loopState.length-1].deaths);
+
       casesByState.push(loopState[loopState.length-1].cases);
       deathsByState.push(loopState[loopState.length-1].deaths);
       loopState = null;
@@ -46,8 +68,36 @@ function ChartContainer() {
     return {
       avgCases: Math.round(totalCases / 53),
       avgDeaths: Math.round(totalDeaths / 53),
+      dateAvgs: {
+        cases: {
+          one: Math.round(nationalData[nationalData.length-22].cases / 53),
+          two: Math.round(nationalData[nationalData.length-15].cases / 53),
+          three: Math.round(nationalData[nationalData.length-8].cases / 53),
+          four: Math.round(nationalData[nationalData.length-1].cases / 53)
+        },
+        deaths: {
+          one: Math.round(nationalData[nationalData.length-22].deaths / 53),
+          two: Math.round(nationalData[nationalData.length-15].deaths / 53),
+          three: Math.round(nationalData[nationalData.length-8].deaths / 53),
+          four: Math.round(nationalData[nationalData.length-1].deaths / 53)
+        }
+      },
       medianCases: casesByState[26],
-      medianDeaths: deathsByState[26]
+      medianDeaths: deathsByState[26],
+      dateMedians: {
+        cases: {
+          one: casesByStateDateOne[26],
+          two: casesByStateDateTwo[26],
+          three: casesByStateDateThree[26],
+          four: casesByStateDateFour[26]
+        },
+        deaths: {
+          one: deathsByStateDateOne[26],
+          two: deathsByStateDateTwo[26],
+          three: deathsByStateDateThree[26],
+          four: deathsByStateDateFour[26]
+        }
+      }
     };
   };
 
@@ -58,6 +108,9 @@ function ChartContainer() {
     let totalDeaths = 0;
     let casesByCounty = [];
     let deathsByCounty = [];
+    let casesByCountyWithNames = [];
+    let deathsByCountyWithNames = [];
+    // let deathsByCountyWithNames = [];
     let mdnCases;
     let mdnDeaths;
 
@@ -67,12 +120,23 @@ function ChartContainer() {
       totalDeaths += loopCounty[loopCounty.length-1].deaths;
       casesByCounty.push(loopCounty[loopCounty.length-1].cases);
       deathsByCounty.push(loopCounty[loopCounty.length-1].deaths);
+      casesByCountyWithNames.push({
+        county: loopCounty[loopCounty.length-1].county,
+        cases: loopCounty[loopCounty.length-1].cases
+      });
+      deathsByCountyWithNames.push({
+        county: loopCounty[loopCounty.length-1].county,
+        deaths: loopCounty[loopCounty.length-1].deaths
+      });
       loopCounty = null;
     }
 
     // Sorting arrays
     let cbcSorted = casesByCounty.sort(function(a, b){return a-b});
     let dbcSorted = deathsByCounty.sort(function(a, b){return a-b});
+
+    casesByCountyWithNames.sort((a, b) => (a.cases < b.cases) ? 1 : (a.cases === b.cases) ? ((a.state > b.state) ? 1 : -1) : -1 );
+    deathsByCountyWithNames.sort((a, b) => (a.deaths < b.deaths) ? 1 : (a.deaths === b.deaths) ? ((a.state > b.state) ? 1 : -1) : -1 );
 
     // Calculating median cases and deaths
     if (countiesToShow.length % 2){
@@ -84,7 +148,8 @@ function ChartContainer() {
     }
 
     return {
-      test: totalCases,
+      casesByCountyWithNames,
+      deathsByCountyWithNames,
       avgCases: Math.round(totalCases / countiesToShow.length),
       avgDeaths: Math.round(totalDeaths / countiesToShow.length),
       medianCases: mdnCases,
@@ -108,34 +173,117 @@ function ChartContainer() {
     setCountyData(countiesData.filter(i => i.state === selectedState && i.county === e.target.value));
   }
 
+  const [display, setDisplay] = useState("cases")
+  const displayDeaths = () => {
+    if (display === "cases"){
+      setDisplay("deaths");
+      $("#btn-cases").toggleClass("btn-chart");
+      $("#btn-cases").toggleClass("btn-chart-outline");
+      $("#btn-deaths").toggleClass("btn-chart");
+      $("#btn-deaths").toggleClass("btn-chart-outline");
+    }
+  }
+
+  const displayCases = () => {
+    if (display === "deaths"){
+      setDisplay("cases");
+      $("#btn-cases").toggleClass("btn-chart");
+      $("#btn-cases").toggleClass("btn-chart-outline");
+      $("#btn-deaths").toggleClass("btn-chart");
+      $("#btn-deaths").toggleClass("btn-chart-outline");
+    }
+  }
+
   return (
-    <div className="App">
-      <div className="container">
-        <label htmlFor="state">State</label>
-        <select onChange={handleStateChange} class="form-control" id="stateSelect">
-          {stateNames.sort().map(name => (
-            <option>{name}</option>
-          ))}
-        </select>
-        <StateCharts
-          stateName = {selectedState}
-          mostRecentData = {stateDataObj[stateDataObj.length-1]}
-          nationalAvgs = {getNationalAvg()}
+    <div id="chart-stuff" className="mt-5">
+      <div id="chart-stuff-top">
+        <div className="row" id="chart-sect-header">
+          <div className="col-4 p-0">
+            <h3>COVID-19 State Summary</h3>
+          </div>
+          <div className="col-4">
+            <div className="input-group" id="table-btn-container">
+              <div className="input-group-prepend">
+                <button id="btn-cases" onClick={displayCases} className="btn btn-chart">Cases</button>
+              </div>
+              <div className="input-group-append">
+                <button id="btn-deaths" onClick={displayDeaths} className="btn btn-chart-outline">Deaths</button>
+              </div>
+            </div>
+          </div>
+          <div className="col-4">
+            {/* <label htmlFor="state">State</label> */}
+            <div className="row">
+              <div className="col-6">
+                <select onChange={handleStateChange} class="form-control" id="stateSelect">
+                  {stateNames.sort().map(name => (
+                    <option>{name}</option>
+                  ))}
+                </select>
+              </div>
+              <div className="col-6">
+                <select onChange={handleCountyChange} class="form-control" id="countySelect">
+                {countiesToShow.map(county => (
+                    <option>{county}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="row">
+          <StateBarCharts
+            display = {display}
+            stateName = {selectedState}
+            mostRecentData = {stateDataObj[stateDataObj.length-1]}
+            nationalAvgs = {getNationalAvg()}
           />
-        <label htmlFor="county">County</label>
-        <select onChange={handleCountyChange} class="form-control" id="countySelect">
-          {countiesToShow.map(county => (
-            <option>{county}</option>
-            ))}
-        </select>
-        <CountyCharts
-          stateName = {selectedState}
-          mostRecentData = {stateDataObj[stateDataObj.length-1]}
-          counties = {countiesToShow}
-          county = {selectedCounty}
-          countyData = {countyData}
-          stateAvgs = {getStateAvg()}
-        />
+          <StateLineCharts
+            display = {display}
+            stateName = {selectedState}
+            stateData = {stateDataObj}
+            mostRecentData = {stateDataObj[stateDataObj.length-1]}
+            nationalAvgs = {getNationalAvg()}
+            nationalData = {nationalData}
+          />
+        </div>
+      </div>
+      <div id="chart-stuff-bottom">
+        <div className="row mt-3">
+        <div className="col-6">
+            <CountyBarCharts
+              display = {display}
+              stateName = {selectedState}
+              mostRecentData = {stateDataObj[stateDataObj.length-1]}
+              counties = {countiesToShow}
+              county = {selectedCounty}
+              countyData = {countyData}
+              stateAvgs = {getStateAvg()}
+            />
+          </div>
+          <div className="col-3">
+            <CountyPieChart
+              display = {display}
+              stateName = {selectedState}
+              mostRecentData = {stateDataObj[stateDataObj.length-1]}
+              counties = {countiesToShow}
+              county = {selectedCounty}
+              countyData = {countyData}
+              stateAvgs = {getStateAvg()}
+            />
+          </div>
+          <div className="col-3">
+            <CountyDoughnutChart
+              display = {display}
+              stateName = {selectedState}
+              mostRecentData = {stateDataObj[stateDataObj.length-1]}
+              counties = {countiesToShow}
+              county = {selectedCounty}
+              countyData = {countyData[countyData.length-1]}
+              stateAvgs = {getStateAvg()}
+            />
+          </div>
+        </div>
       </div>
     </div>
   );
