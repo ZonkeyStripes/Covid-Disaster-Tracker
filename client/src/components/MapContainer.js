@@ -27,7 +27,7 @@ for(let i = 0; i < stateData.length; i++) {
 	}
 }
 
-let dataDisplayed = "cases";
+// let dataDisplayed = "cases";
 
 const mapColors = [
     ['#005824', '#238b45', '#41ae76', '#66c2a4', '#99d8c9', '#ccece6', '#edf8fb'],
@@ -41,11 +41,31 @@ const thresholdData = [
     [2000, 1000, 500, 250, 100, 50]
 ];
 
-let thresholds = thresholdData[0];
+let allMarkersMap = {};
+let currentID = 0;
 
-console.log(todayArray);
+
+//console.log(todayArray);
 
 class MapContainer extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            displayed: "cases",
+            colors: mapColors[0],
+            limits: thresholdData[0]
+        };
+
+        // ES6 React.Component doesn't auto bind methods to itself
+        // Need to bind them manually in constructor
+        this.changeView = this.changeView.bind(this);
+        this.geoJSONStyle = this.geoJSONStyle.bind(this);
+        this.onEachFeature = this.onEachFeature.bind(this);
+        //this.highlightFeature.bind(this)
+
+    }
+    
 
     geoJSONStyle(feature) {
         let covidCases = 0;
@@ -62,15 +82,15 @@ class MapContainer extends Component {
         // console.log("cases" + covidCases);
         // console.log("deaths" +covidDeaths);
  
-        if(dataDisplayed === "cases") {
+        if(this.state.displayed === "cases") {
             // console.log("made it to cases");
-            thresholds = thresholdData[0];
-            mapClr = mapColors[0];
+            //thresholds = thresholdData[0];
+            // mapClr = mapColors[0];
             displayData = covidCases;
         } else {
             // console.log("made it to deaths");
-            thresholds = thresholdData[1];
-            mapClr = mapColors[1];
+            // thresholds = thresholdData[1];
+            // mapClr = mapColors[1];
             displayData = covidDeaths;
         }
         // console.log("***")
@@ -80,20 +100,20 @@ class MapContainer extends Component {
 
         let colorResult;
 
-        if (displayData > thresholds[0]) {
-            colorResult = mapClr[0];
-        } else if (displayData > thresholds[1]) {
-            colorResult = mapClr[1];
-        } else if (displayData > thresholds[2]) {
-            colorResult = mapClr[2];
-        } else if (displayData > thresholds[3]) {
-            colorResult = mapClr[3];
-        } else if (displayData > thresholds[4]) {
-            colorResult = mapClr[4];
-        } else if (displayData > thresholds[5]) {
-            colorResult = mapClr[5];
+        if (displayData > this.state.limits[0]) {
+            colorResult = this.state.colors[0];
+        } else if (displayData > this.state.limits[1]) {
+            colorResult = this.state.colors[1];
+        } else if (displayData > this.state.limits[2]) {
+            colorResult = this.state.colors[2];
+        } else if (displayData > this.state.limits[3]) {
+            colorResult = this.state.colors[3];
+        } else if (displayData > this.state.limits[4]) {
+            colorResult = this.state.colors[4];
+        } else if (displayData > this.state.limits[5]) {
+            colorResult = this.state.colors[5];
         } else {
-            colorResult = mapClr[6];
+            colorResult = this.state.colors[6];
         }
 
         // console.log(colorResult);
@@ -109,34 +129,40 @@ class MapContainer extends Component {
 
     
       onEachFeature(feature: Object, layer: Object) {
-        // console.log("onEachFeature -------- feature properties")
+        // console.log("onEachFeature");
         // console.log(feature.properties);
+        // console.log(this.state.displayed)
         let dataToDisplay;
 
         for(let i = 0; i < todayArray.length; i++) {
             if(todayArray[i].state == feature.properties.NAME) {
-                if(dataDisplayed == "cases") {
+                if(this.state.displayed == "cases") {
                     dataToDisplay = todayArray[i].cases;
-                } else if (dataDisplayed == "deaths") {
+                } else if (this.state.displayed == "deaths") {
                     dataToDisplay = todayArray[i].deaths;
                 }
             }
         }
 
-        const popupContent = `<h4>COVID-19 ${dataDisplayed} data</h4>` +
-			'<b>' + feature.properties.NAME + '</b><br />' + dataToDisplay + ` ${dataDisplayed}`;
-        layer.bindPopup(popupContent);
-        // layer.on({
-        //     mouseover: this.highlightFeature,
-        //     mouseout: this.resetHighlight,
-        //     click: this.zoomToFeature
-        // });
+
+        const popupContent = `<h4>COVID-19 ${this.state.displayed} data</h4>` +
+			'<b>' + feature.properties.NAME + '</b><br />' + dataToDisplay + ` ${this.state.displayed}`;
+        let marker = layer.bindPopup(popupContent);
+        
+        // console.log(marker);
+        allMarkersMap[currentID] = marker;
+        currentID += 1;
+
+        layer.on({
+            mouseover: this.highlightFeature.bind(this),
+            mouseout: this.resetHighlight.bind(this),
+        });
       }
 
     // mouseover a specific state
     highlightFeature(e) {
-        console.log("mouseover");
-        console.log(e);
+        // console.log("mouseover");
+        // console.log(e);
 
         let layer = e.target;
 
@@ -157,21 +183,81 @@ class MapContainer extends Component {
     }
 
     resetHighlight(e) {
-        console.log("mouseout");
+        // console.log("mouseout");
         let layer = e.target;
 
-        layer.setStyle({
-            weight: 1,
-            color: '#666',
-            dashArray: '',
-            fillOpacity: 0.7
-        });
-        // geojson.resetStyle(e.target);
+        // layer.setStyle({
+        //     weight: 1,
+        //     color: '#666',
+        //     dashArray: '',
+        //     fillOpacity: 0.7
+        // });
+        this.refs.geojson.leafletElement.resetStyle(e.target);
+        // layer.resetStyle();
         // info.update();
     }
 
     zoomToFeature(e) {
         // map.fitBounds(e.target.getBounds());
+    }
+
+    changeView(e) {
+        // console.log("test function");
+        // console.log(e.target.value);
+        // console.log(this);
+
+        let tempColor, tempLimit;
+
+        if(e.target.value === "cases") {
+            tempColor = mapColors[0];
+            tempLimit = thresholdData[0];
+        } else {
+            tempColor = mapColors[1];
+            tempLimit = thresholdData[1];
+        }
+
+        // console.log("tempColor = " + tempColor);
+
+        this.setState({
+            displayed: e.target.value,
+            colors: tempColor,
+            limits: tempLimit
+        }, function() {
+            // console.log(this.state);
+            
+
+            // convert values of the allMarkersMap object to an array
+            let markers = Object.values(allMarkersMap);
+            // console.log("********* in testFunction");
+            // console.log(markers);
+    
+            for(let i = 0; i < markers.length; i++) {
+    
+                let dataToDisplay;
+    
+                for(let j = 0; j < todayArray.length; j++) {
+                    // console.log(todayArray[j].state);
+                    // console.log(markers[i].feature.properties.NAME);
+                    if(todayArray[j].state == markers[i].feature.properties.NAME) {
+                        if(this.state.displayed === "cases") {
+                            dataToDisplay = todayArray[j].cases;
+                        } else if (this.state.displayed === "deaths") {
+                            dataToDisplay = todayArray[j].deaths;
+                        }
+                    }
+                }
+    
+                // console.log(`this.state.displayed = ${this.state.displayed}`);
+                // console.log("dataToDisplay is " + dataToDisplay);
+    
+   
+                let mark = markers[i].getPopup();
+                // console.log(markers[i].feature);
+                const popupContent = `<h4>COVID-19 ${this.state.displayed} data</h4>` +
+                '<b>' + markers[i].feature.properties.NAME + '</b><br />' + dataToDisplay + ` ${this.state.displayed}`;
+                mark.setContent(popupContent);
+            }
+        });
     }
 
     
@@ -193,18 +279,19 @@ class MapContainer extends Component {
                       onEachFeature={this.onEachFeature}
                       onMouseOut={() => this.resetHighlight}
                       onMouseOver={() => this.highlightFeature}
+                      ref="geojson"
                     />
                     <MapInfo />
-                    <MapLegend colors={mapClr} limits={thresholds}/>
+                    <MapLegend colors={this.state.colors} limits={this.state.limits}/>
                 </Map>
               </div>
               <div className="col-4">
                 <div className="custom-control custom-radio">
-                    <input type="radio" id="customRadio1" name="customRadio" className="custom-control-input" value="cases" defaultChecked />
+                    <input type="radio" id="customRadio1" name="customRadio" className="custom-control-input" value="cases" defaultChecked onClick={this.changeView}/>
                     <label className="custom-control-label" htmlFor="customRadio1">Cases</label>
                 </div>
                 <div className="custom-control custom-radio">
-                    <input type="radio" id="customRadio2" name="customRadio" className="custom-control-input" value="deaths" />
+                    <input type="radio" id="customRadio2" name="customRadio" className="custom-control-input" value="deaths" onClick={this.changeView}/>
                     <label className="custom-control-label" htmlFor="customRadio2">Deaths</label>
                 </div>
                 <DataTable data={todayArray}/>
@@ -215,41 +302,4 @@ class MapContainer extends Component {
         }
       }
       
-
-    class Legend extends MapControl {
-        componentDidMount() {
-            var div = L.DomUtil.create('div', 'info legend'),
-            grades = [0, 10, 50, 100, 200, 500, 1000],
-            labels = [];
-
-            // loop through our density intervals and generate a label with a colored square for each interval
-            for (var i = 0; i < grades.length; i++) {
-		    div.innerHTML +=
-			'<i style="background:' + this.getColor(grades[i] + 1) + '"></i> ' +
-            grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
-           }
-           
-            const legend = L.control({ position: "bottomright" });
-     
-            const { map } = this.props.leaflet;
-            legend.addTo(map);
-
-           return div;
-        }
-
-        getColor(d) {
-            return d > 1000 ? mapClr[0] :
-                   d > 500  ? mapClr[1] :
-                   d > 200  ? mapClr[2] :
-                   d > 100  ? mapClr[3] :
-                   d > 50   ? mapClr[4] :
-                   d > 10   ? mapClr[5] :
-                       mapClr[6];
-        }
-
-        // has to be here to avoid error
-        createLeafletElement () {}
-    }
-
-
 export default MapContainer;
