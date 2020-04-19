@@ -1,11 +1,7 @@
 import React, {useState} from 'react';
-// import './bootstrap.css';
 import StateBarCharts from "./StateBarCharts";
 import StateLineCharts from "./StateLineCharts";
 import CountyChartContainer from "./CountyChartContainer"
-import CountyBarCharts from "./CountyBarCharts";
-import CountyDoughnutChart from "./CountyDoughnutChart";
-import CountyPieChart from "./CountyPieChart";
 
 import nationalData from "../utils/json/us.json";
 import statesData from "../utils/json/us-states.json";
@@ -73,7 +69,8 @@ function ChartContainer() {
     deathsByStateDateFour.sort(function(a, b){return a - b});
 
     return {
-      avgCases: Math.round(totalCases / 53),
+      // Using 53 instead of 50 to account for Guam, DC, & Virgin Islands
+      avgCases: Math.round(totalCases / 53), 
       avgDeaths: Math.round(totalDeaths / 53),
       dateAvgs: {
         cases: {
@@ -168,6 +165,9 @@ function ChartContainer() {
 
   // Runs whenever there's a change in the state dropdown menu
   const handleStateChange = e => {
+    let indexToRender = countiesToShow.indexOf(selectedCounty);
+    console.log(indexToRender);
+
     let counties = getCounties(e.target.value);
     setSelectedState(e.target.value);
     for (let i = 0; i < stateNames.length; i++){
@@ -177,8 +177,11 @@ function ChartContainer() {
     }
     setStateDataObj(statesData.filter(st => st.state === e.target.value))
     setCountiesToShow(counties);
-    setSelectedCounty(counties[0]);
-    setCountyData(countiesData.filter(i => i.state === e.target.value && i.county === counties[0]));
+    if (indexToRender === -1 || indexToRender > counties.length-1){
+      indexToRender = 0;
+    }
+    setSelectedCounty(counties[indexToRender]);
+    setCountyData(countiesData.filter(i => i.state === e.target.value && i.county === counties[indexToRender]));
   }
   
   // Runs whenever there's a change in the county dropdown menu
@@ -279,43 +282,6 @@ function ChartContainer() {
           stateAvgs = {getStateAvg()}
           display = {display}
         />
-        {/* <div className="row mt-3">
-          <div className="col-6">
-              <CountyBarCharts
-                display = {display}
-                stateName = {selectedState}
-                mostRecentData = {stateDataObj[stateDataObj.length-1]}
-                counties = {countiesToShow}
-                county = {selectedCounty}
-                countyData = {countyData}
-                stateAvgs = {getStateAvg()}
-              />
-          </div>
-          <div className="col-3">
-            <CountyPieChart
-              display = {display}
-              stateName = {selectedState}
-              stateAbbrev = {selectedStateAb}
-              mostRecentData = {stateDataObj[stateDataObj.length-1]}
-              counties = {countiesToShow}
-              countyName = {selectedCounty}
-              countyData = {countyData}
-              stateAvgs = {getStateAvg()}
-            />
-          </div>
-          <div className="col-3">
-            <CountyDoughnutChart
-              display = {display}
-              stateName = {selectedState}
-              stateAbbrev = {selectedStateAb}
-              mostRecentData = {stateDataObj[stateDataObj.length-1]}
-              counties = {countiesToShow}
-              countyName = {selectedCounty}
-              countyData = {countyData[countyData.length-1]}
-              stateAvgs = {getStateAvg()}
-            />
-          </div>
-        </div> */}
       </div>
     </div>
   );
