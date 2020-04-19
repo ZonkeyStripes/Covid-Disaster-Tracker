@@ -72,7 +72,7 @@ class MapLegend extends MapControl {
         return this.panelDiv;
       }
     });
-    return new MapLegend({ position: "bottomright" });
+    return new MapLegend({ position: "topright" });
   }
 
   componentDidMount() {
