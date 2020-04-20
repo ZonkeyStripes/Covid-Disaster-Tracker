@@ -37,7 +37,6 @@ function News() {
                 <ul>
                     {/* loops thru articles, displays on page */}
                     {articles.map(article => {
-                        if(articles === "Covid-19" || "Coronovirus")
                         return (
                             <li>
                                 <strong>{article.title}</strong>
