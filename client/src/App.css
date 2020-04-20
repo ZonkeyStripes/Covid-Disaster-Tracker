@@ -176,7 +176,7 @@ thead tr {
 .newslist::-webkit-scrollbar-thumb {
   background-color: #3a57af;
   outline: 1px solid red;
-  border-radius: 50%;
+  border-radius: 25%;
 }
 
 body::-webkit-scrollbar {
