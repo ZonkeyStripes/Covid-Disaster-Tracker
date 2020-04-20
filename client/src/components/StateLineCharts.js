@@ -22,7 +22,7 @@ const StateLineCharts = (props) => {
   if (props.display === "cases"){
     returnVal = (
         <Line
-            height={170}
+            height={160}
             data={{
               labels: [firstDate, secondDate, thirdDate, fourthDate],
                 datasets: [
@@ -35,18 +35,7 @@ const StateLineCharts = (props) => {
                       stateThirdDateCases,
                       stateFourthDateCases
                     ],
-                    borderColor: "#003f5c"
-                  },
-                  {
-                    label: "US Average",
-                    fill: false,
-                    data: [
-                      props.nationalAvgs.dateAvgs.cases.one,
-                      props.nationalAvgs.dateAvgs.cases.two,
-                      props.nationalAvgs.dateAvgs.cases.three,
-                      props.nationalAvgs.dateAvgs.cases.four
-                    ],
-                    borderColor: "#bc5090"
+                    borderColor: "#00589c"
                   },
                   {
                     label: "US Median",
@@ -57,19 +46,30 @@ const StateLineCharts = (props) => {
                       props.nationalAvgs.dateMedians.cases.three,
                       props.nationalAvgs.dateMedians.cases.four
                     ],
-                    borderColor: "#ffa600"
+                    borderColor: "#1891c3"
+                  },
+                  {
+                    label: "US Average",
+                    fill: false,
+                    data: [
+                      props.nationalAvgs.dateAvgs.cases.one,
+                      props.nationalAvgs.dateAvgs.cases.two,
+                      props.nationalAvgs.dateAvgs.cases.three,
+                      props.nationalAvgs.dateAvgs.cases.four
+                    ],
+                    borderColor: "#666"
                   }
                 ]
             }}
             options={{
               title: {
-                  display: true,
+                  display: false,
                   text: `${props.stateName} Cases Over Time`,
                   fontSize: 25
               },
               legend: {
                   display: true,
-                  position: "bottom"
+                  position: "right"
               },
               scales:{
                 responsive: true,
@@ -86,7 +86,7 @@ const StateLineCharts = (props) => {
   } else {
     returnVal = (
       <Line
-          height={170}
+          height={160}
           data={{
             labels: [firstDate, secondDate, thirdDate, fourthDate],
               datasets: [
@@ -99,7 +99,18 @@ const StateLineCharts = (props) => {
                     stateThirdDateDeaths,
                     stateFourthDateDeaths
                   ],
-                  borderColor: "#003f5c"
+                  borderColor: "#00589c"
+                },
+                {
+                  label: "US median",
+                  fill: false,
+                  data: [
+                    props.nationalAvgs.dateMedians.deaths.one,
+                    props.nationalAvgs.dateMedians.deaths.two,
+                    props.nationalAvgs.dateMedians.deaths.three,
+                    props.nationalAvgs.dateMedians.deaths.four
+                  ],
+                  borderColor: "#1891c3"
                 },
                 {
                   label: "US average",
@@ -110,30 +121,19 @@ const StateLineCharts = (props) => {
                     props.nationalAvgs.dateAvgs.deaths.three,
                     props.nationalAvgs.dateAvgs.deaths.four
                   ],
-                  borderColor: "#bc5090"
-                },
-                {
-                  label: "US Median",
-                  fill: false,
-                  data: [
-                    props.nationalAvgs.dateMedians.deaths.one,
-                    props.nationalAvgs.dateMedians.deaths.two,
-                    props.nationalAvgs.dateMedians.deaths.three,
-                    props.nationalAvgs.dateMedians.deaths.four
-                  ],
-                  borderColor: "#ffa600"
+                  borderColor: "#666"
                 }
               ]
             }}
             options={{
               title: {
-                display: true,
+                display: false,
                 text: `${props.stateName} Deaths Over Time`,
                 fontSize: 25
               },
               legend: {
                 display: true,
-                position: "bottom"
+                position: "right"
               },
               scales:{
                 responsive: true,

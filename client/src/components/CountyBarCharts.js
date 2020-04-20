@@ -11,7 +11,7 @@ const CountyBarCharts = (props) => {
     returnVal = (
       <Bar
         data={{
-          labels: [`${props.countyName} County`, `${props.stateName} median`, `${props.stateName} average`],
+          labels: [`${props.countyName} County`, `${props.stateAbbrev} median`, `${props.stateAbbrev} average`],
             datasets: [
               {
                 label: "Cases",
@@ -19,13 +19,14 @@ const CountyBarCharts = (props) => {
                   props.countyData[props.countyData.length-1].cases,
                   props.stateAvgs.medianCases,
                   Math.round(props.mostRecentData.cases / props.counties.length)],
-                backgroundColor: ["#003f5c", "#bc5090", "#ffa600"]
+                backgroundColor: ["#00589c", "#1891c3", "#666"]
               }
             ]
         }}
+        height={160}
         options={{
           title: {
-            display: true,
+            display: false,
             text: `${props.countyName} County Case Totals`,
             fontSize: 25
           },
@@ -49,7 +50,7 @@ const CountyBarCharts = (props) => {
     returnVal = (
       <Bar
         data={{
-          labels: [`${props.countyName} County`, `${props.stateName} median`, `${props.stateName} average`],
+          labels: [`${props.countyName} County`, `${props.stateAbbrev} median`, `${props.stateAbbrev} average`],
             datasets: [
             {
               data: [
@@ -57,14 +58,14 @@ const CountyBarCharts = (props) => {
               props.stateAvgs.medianDeaths,
               Math.round(props.mostRecentData.deaths / props.counties.length)
             ],
-            backgroundColor: ["#003f5c", "#bc5090", "#ffa600"]
-            // backgroundColor: ["#820401", "#C02323", "#DE542C"]
+            backgroundColor: ["#00589c", "#1891c3", "#666"]
             }
           ]
         }}
+        height={160}
         options={{
           title: {
-            display: true,
+            display: false,
             text: `${props.countyName} County Death Totals`,
             fontSize: 25
           },

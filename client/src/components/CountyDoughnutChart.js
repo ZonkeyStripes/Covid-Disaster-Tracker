@@ -76,7 +76,7 @@ const CountyDoughnutChartT = (props) => {
             }]
           }}
           options={{
-            title: {
+            false: {
               display: true,
               text: casesTitle,
               position: "top",
@@ -116,7 +116,7 @@ const CountyDoughnutChartT = (props) => {
           }}
           options={{
             title: {
-              display: true,
+              display: false,
               text: deathsTitle,
               position: "top",
               fontSize: 15

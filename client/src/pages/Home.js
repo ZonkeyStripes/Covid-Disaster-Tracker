@@ -10,10 +10,11 @@ class Home extends Component {
 
   render() {
       return (
-        <div className="container">
-            {/* <MapContainer /> */}
+        <div>
+          <div className="container">
             <MapContainer />
-            <ChartContainer />
+          </div>
+          <ChartContainer />
         </div>
       );
     }

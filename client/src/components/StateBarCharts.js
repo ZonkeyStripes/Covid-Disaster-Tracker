@@ -17,14 +17,18 @@ const StateBarCharts = (props) => {
                     props.nationalAvgs.medianCases,
                     props.nationalAvgs.avgCases
                   ],
-                  // backgroundColor: ["#3a57af", "#1891C3", "#3AC0DA"]
-                  backgroundColor: ["#003f5c", "#bc5090", "#ffa600"]
+                  // backgroundColor: ["#3a57af", "pink", "#273a76"]
+                  // backgroundColor: ["#3a57af", "#003f5c", "#6a6a6a"]
+                  backgroundColor: ["#00589c", "#1891c3", "#666"]
+
+                  // backgroundColor: ["#003f5c", "#bc5090", "#ffa600"]
                 }
               ]
           }}
+          height={160}
           options={{
             title: {
-              display: true,
+              display: false,
               text: `${props.stateName} Case Totals`,
               fontSize: 25
             },
@@ -56,13 +60,14 @@ const StateBarCharts = (props) => {
                     props.nationalAvgs.medianDeaths,
                     props.nationalAvgs.avgDeaths
                   ],
-                  backgroundColor: ["#003f5c", "#bc5090", "#ffa600"]
+                  backgroundColor: ["#00589c", "#1891c3", "#666"]
                 }
               ]
           }}
+          height={160}
           options={{
             title: {
-              display: true,
+              display: false,
               text: `${props.stateName} Death Totals`,
               fontSize: 25
             },

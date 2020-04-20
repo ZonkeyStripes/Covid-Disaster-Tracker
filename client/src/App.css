@@ -226,8 +226,26 @@ thead tr {
   color: #fff;
 }
 
-#chart-stuff-top {
-  /* background-color: #f6f6f6; */
+#chart-stuff {
+  background-color: #f6f6f6;
+  padding-bottom: 30px;
+}
+
+.bar-chart {
+  border-radius: 7px;
+  color: #666;
+  background-color: #fff;
+}
+
+.top-chart-c {
+  /* padding: 40px; */
+}
+
+.top-chart {
+  padding: 10px;
+  border-radius: 7px;
+  color: #666;
+  background-color: #fff;
 }
 
 #chart-sect-header{
@@ -270,6 +288,7 @@ thead tr {
   border-bottom: 4px solid #444;
   padding-bottom: 5px;
   color: #3a57af;
+  /* color: #1b3d4d; */
 }
 
 .cdh{
