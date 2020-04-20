@@ -22,66 +22,66 @@ const StateLineCharts = (props) => {
   if (props.display === "cases"){
     returnVal = (
         <Line
-            height={160}
-            data={{
-              labels: [firstDate, secondDate, thirdDate, fourthDate],
-                datasets: [
-                  {
-                    label: props.stateName,
-                    fill: false,
-                    data: [
-                      stateFirstDateCases,
-                      stateSecondDateCases,
-                      stateThirdDateCases,
-                      stateFourthDateCases
-                    ],
-                    borderColor: "#00589c"
-                  },
-                  {
-                    label: "US Median",
-                    fill: false,
-                    data: [
-                      props.nationalAvgs.dateMedians.cases.one,
-                      props.nationalAvgs.dateMedians.cases.two,
-                      props.nationalAvgs.dateMedians.cases.three,
-                      props.nationalAvgs.dateMedians.cases.four
-                    ],
-                    borderColor: "#1891c3"
-                  },
-                  {
-                    label: "US Average",
-                    fill: false,
-                    data: [
-                      props.nationalAvgs.dateAvgs.cases.one,
-                      props.nationalAvgs.dateAvgs.cases.two,
-                      props.nationalAvgs.dateAvgs.cases.three,
-                      props.nationalAvgs.dateAvgs.cases.four
-                    ],
-                    borderColor: "#666"
-                  }
-                ]
-            }}
+          height={160}
+          data={{
+            labels: [firstDate, secondDate, thirdDate, fourthDate],
+              datasets: [
+                {
+                  label: props.stateName,
+                  fill: false,
+                  data: [
+                    stateFirstDateCases,
+                    stateSecondDateCases,
+                    stateThirdDateCases,
+                    stateFourthDateCases
+                  ],
+                  borderColor: "#00589c"
+                },
+                {
+                  label: "US Median",
+                  fill: false,
+                  data: [
+                    props.nationalAvgs.dateMedians.cases.one,
+                    props.nationalAvgs.dateMedians.cases.two,
+                    props.nationalAvgs.dateMedians.cases.three,
+                    props.nationalAvgs.dateMedians.cases.four
+                  ],
+                  borderColor: "#1891c3"
+                },
+                {
+                  label: "US Average",
+                  fill: false,
+                  data: [
+                    props.nationalAvgs.dateAvgs.cases.one,
+                    props.nationalAvgs.dateAvgs.cases.two,
+                    props.nationalAvgs.dateAvgs.cases.three,
+                    props.nationalAvgs.dateAvgs.cases.four
+                  ],
+                  borderColor: "#666"
+                }
+              ]
+          }}
             options={{
               title: {
-                  display: false,
-                  text: `${props.stateName} Cases Over Time`,
-                  fontSize: 25
+                display: false,
+                text: `${props.stateName} Cases Over Time`,
+                fontSize: 25
               },
               legend: {
-                  display: true,
-                  position: "right"
+                display: true,
+                position: "right"
               },
               scales:{
                 responsive: true,
                 yAxes:[{
-                    ticks:{
-                        beginAtZero: true,
-                        min: 0
-                    }
+                  ticks:{
+                    beginAtZero: true,
+                    min: 0
+                  }
                 }]
-            }
+              }
           }}
-          />
+        />
     )
   } else {
     returnVal = (

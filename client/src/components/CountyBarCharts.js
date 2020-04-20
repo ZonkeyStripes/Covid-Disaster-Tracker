@@ -18,7 +18,7 @@ const CountyBarCharts = (props) => {
                 data: [
                   props.countyData[props.countyData.length-1].cases,
                   props.stateAvgs.medianCases,
-                  Math.round(props.mostRecentData.cases / props.counties.length)],
+                  props.stateAvgs.avgCases],
                 backgroundColor: ["#00589c", "#1891c3", "#666"]
               }
             ]
@@ -56,7 +56,7 @@ const CountyBarCharts = (props) => {
               data: [
               props.countyData[props.countyData.length-1].deaths,
               props.stateAvgs.medianDeaths,
-              Math.round(props.mostRecentData.deaths / props.counties.length)
+              props.stateAvgs.avgDeaths
             ],
             backgroundColor: ["#00589c", "#1891c3", "#666"]
             }

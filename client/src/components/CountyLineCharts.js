@@ -42,7 +42,7 @@ const CountyLineCharts = (props) => {
       props.countyData[props.countyData.length-1].deaths
     ];
     avgCasesArr = props.stateAvgs.dateAvgs.cases.map(caseTotal => caseTotal);
-    avgDeathsArr = props.stateAvgs.dateAvgs.cases.map(deathTotal => deathTotal);
+    avgDeathsArr = props.stateAvgs.dateAvgs.deaths.map(deathTotal => deathTotal);
     medianCasesArr = props.stateAvgs.dateMedians.cases.map(caseTotal => caseTotal);
     medianDeathsArr = props.stateAvgs.dateMedians.deaths.map(deathTotal => deathTotal);
   }

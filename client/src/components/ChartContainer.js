@@ -167,57 +167,178 @@ function ChartContainer() {
     let mdnDeathsDateSeven;
 
     for (let i = 0; i < countiesToShow.length; i++){
-      loopCounty = countiesData.filter(item => item.county === countiesToShow[i]);
-      loopCountyCheck = loopCounty.filter(item => item.state === selectedState);
+      // loopCounty = countiesData.filter(item => item.county === countiesToShow[i]);
+      // loopCountyCheck = loopCounty.filter(item => item.state === selectedState);
+      loopCountyCheck = countiesData.filter(item => item.state === selectedState && item.county === countiesToShow[i]);
       totalCases += loopCountyCheck[loopCountyCheck.length-1].cases;
       totalDeaths += loopCountyCheck[loopCountyCheck.length-1].deaths;
 
-      // FOR AVERAGE PURPOSES, divide this by length of countiesToShow
-      if (loopCountyCheck.length < 7){
-        stateWideCasesDateOne += 0;
-        stateWideCasesDateTwo += 0;
-        stateWideDeathsDateOne += 0;
-        stateWideDeathsDateTwo += 0;
-        casesByCountyDateOne.push(0);
-        casesByCountyDateTwo.push(0);
-        deathsByCountyDateOne.push(0);
-        deathsByCountyDateTwo.push(0);
-      } else {
-        stateWideCasesDateOne += loopCountyCheck[loopCountyCheck.length-7].cases;
-        stateWideCasesDateTwo += loopCountyCheck[loopCountyCheck.length-6].cases;
-        stateWideCasesDateThree += loopCountyCheck[loopCountyCheck.length-5].cases;
-        stateWideCasesDateFour += loopCountyCheck[loopCountyCheck.length-4].cases;
-        stateWideCasesDateFive += loopCountyCheck[loopCountyCheck.length-3].cases;
-        stateWideCasesDateSix += loopCountyCheck[loopCountyCheck.length-2].cases;
-        stateWideCasesDateSeven += loopCountyCheck[loopCountyCheck.length-1].cases;
+      let d1cases;
+      let d2cases;
+      let d3cases;
+      let d4cases;
+      let d5cases;
+      let d6cases;
+      let d7cases;
 
-        stateWideDeathsDateOne += loopCountyCheck[loopCountyCheck.length-7].deaths;
-        stateWideDeathsDateTwo += loopCountyCheck[loopCountyCheck.length-6].deaths;
-        stateWideDeathsDateThree += loopCountyCheck[loopCountyCheck.length-5].deaths;
-        stateWideDeathsDateFour += loopCountyCheck[loopCountyCheck.length-4].deaths;
-        stateWideDeathsDateFive += loopCountyCheck[loopCountyCheck.length-3].deaths;
-        stateWideDeathsDateSix += loopCountyCheck[loopCountyCheck.length-2].deaths;
-        stateWideDeathsDateSeven += loopCountyCheck[loopCountyCheck.length-1].deaths;
+      let d1deaths;
+      let d2deaths;
+      let d3deaths;
+      let d4deaths;
+      let d5deaths;
+      let d6deaths;
+      let d7deaths;
 
-        // FOR MEDIAN PURPOSES
-        casesByCountyDateOne.push(loopCountyCheck[loopCountyCheck.length-7].cases);
-        casesByCountyDateTwo.push(loopCountyCheck[loopCountyCheck.length-6].cases);
-        casesByCountyDateThree.push(loopCountyCheck[loopCountyCheck.length-5].cases);
-        casesByCountyDateFour.push(loopCountyCheck[loopCountyCheck.length-4].cases);
-        casesByCountyDateFive.push(loopCountyCheck[loopCountyCheck.length-3].cases);
-        casesByCountyDateSix.push(loopCountyCheck[loopCountyCheck.length-2].cases);
-        casesByCountyDateSeven.push(loopCountyCheck[loopCountyCheck.length-1].cases);
+      if (loopCountyCheck.length >= 7){
+        d1cases = loopCountyCheck[loopCountyCheck.length-7].cases;
+        d2cases = loopCountyCheck[loopCountyCheck.length-6].cases;
+        d3cases = loopCountyCheck[loopCountyCheck.length-5].cases;
+        d4cases = loopCountyCheck[loopCountyCheck.length-4].cases;
+        d5cases = loopCountyCheck[loopCountyCheck.length-3].cases;
+        d6cases = loopCountyCheck[loopCountyCheck.length-2].cases;
+        d7cases = loopCountyCheck[loopCountyCheck.length-1].cases;
   
-        deathsByCountyDateOne.push(loopCountyCheck[loopCountyCheck.length-7].deaths);
-        deathsByCountyDateTwo.push(loopCountyCheck[loopCountyCheck.length-6].deaths);
-        deathsByCountyDateThree.push(loopCountyCheck[loopCountyCheck.length-5].deaths);
-        deathsByCountyDateFour.push(loopCountyCheck[loopCountyCheck.length-4].deaths);
-        deathsByCountyDateFive.push(loopCountyCheck[loopCountyCheck.length-3].deaths);
-        deathsByCountyDateSix.push(loopCountyCheck[loopCountyCheck.length-2].deaths);
-        deathsByCountyDateSeven.push(loopCountyCheck[loopCountyCheck.length-1].deaths);
+        d1deaths = loopCountyCheck[loopCountyCheck.length-7].deaths;
+        d2deaths = loopCountyCheck[loopCountyCheck.length-6].deaths;
+        d3deaths = loopCountyCheck[loopCountyCheck.length-5].deaths;
+        d4deaths = loopCountyCheck[loopCountyCheck.length-4].deaths;
+        d5deaths = loopCountyCheck[loopCountyCheck.length-3].deaths;
+        d6deaths = loopCountyCheck[loopCountyCheck.length-2].deaths;
+        d7deaths = loopCountyCheck[loopCountyCheck.length-1].deaths;
       }
+      if (loopCountyCheck.length === 6){
+        d1cases = 0;
+        d2cases = loopCountyCheck[loopCountyCheck.length-6].cases;
+        d3cases = loopCountyCheck[loopCountyCheck.length-5].cases;
+        d4cases = loopCountyCheck[loopCountyCheck.length-4].cases;
+        d5cases = loopCountyCheck[loopCountyCheck.length-3].cases;
+        d6cases = loopCountyCheck[loopCountyCheck.length-2].cases;
+        d7cases = loopCountyCheck[loopCountyCheck.length-1].cases;
 
+        d1deaths = 0;
+        d2deaths = loopCountyCheck[loopCountyCheck.length-6].deaths;
+        d3deaths = loopCountyCheck[loopCountyCheck.length-5].deaths;
+        d4deaths = loopCountyCheck[loopCountyCheck.length-4].deaths;
+        d5deaths = loopCountyCheck[loopCountyCheck.length-3].deaths;
+        d6deaths = loopCountyCheck[loopCountyCheck.length-2].deaths;
+        d7deaths = loopCountyCheck[loopCountyCheck.length-1].deaths;
+      } else if (loopCountyCheck.length === 5){
+        d1cases = 0;
+        d2cases = 0;
+        d3cases = loopCountyCheck[loopCountyCheck.length-5].cases;
+        d4cases = loopCountyCheck[loopCountyCheck.length-4].cases;
+        d5cases = loopCountyCheck[loopCountyCheck.length-3].cases;
+        d6cases = loopCountyCheck[loopCountyCheck.length-2].cases;
+        d7cases = loopCountyCheck[loopCountyCheck.length-1].cases;
 
+        d1deaths = 0;
+        d2deaths = 0;
+        d3deaths = loopCountyCheck[loopCountyCheck.length-5].deaths;
+        d4deaths = loopCountyCheck[loopCountyCheck.length-4].deaths;
+        d5deaths = loopCountyCheck[loopCountyCheck.length-3].deaths;
+        d6deaths = loopCountyCheck[loopCountyCheck.length-2].deaths;
+        d7deaths = loopCountyCheck[loopCountyCheck.length-1].deaths;
+        
+      } else if (loopCountyCheck.length === 4){
+        d1cases = 0;
+        d2cases = 0;
+        d3cases = 0;
+        d4cases = loopCountyCheck[loopCountyCheck.length-4].cases;
+        d5cases = loopCountyCheck[loopCountyCheck.length-3].cases;
+        d6cases = loopCountyCheck[loopCountyCheck.length-2].cases;
+        d7cases = loopCountyCheck[loopCountyCheck.length-1].cases;
+
+        d1deaths = 0;
+        d2deaths = 0;
+        d3deaths = 0;
+        d4deaths = loopCountyCheck[loopCountyCheck.length-4].deaths;
+        d5deaths = loopCountyCheck[loopCountyCheck.length-3].deaths;
+        d6deaths = loopCountyCheck[loopCountyCheck.length-2].deaths;
+        d7deaths = loopCountyCheck[loopCountyCheck.length-1].deaths;
+        
+      } else if (loopCountyCheck.length === 3){
+        d1cases = 0;
+        d2cases = 0;
+        d3cases = 0;
+        d4cases = 0;
+        d5cases = loopCountyCheck[loopCountyCheck.length-3].cases;
+        d6cases = loopCountyCheck[loopCountyCheck.length-2].cases;
+        d7cases = loopCountyCheck[loopCountyCheck.length-1].cases;
+
+        d1deaths = 0;
+        d2deaths = 0;
+        d3deaths = 0;
+        d4deaths = 0;
+        d5deaths = loopCountyCheck[loopCountyCheck.length-3].deaths;
+        d6deaths = loopCountyCheck[loopCountyCheck.length-2].deaths;
+        d7deaths = loopCountyCheck[loopCountyCheck.length-1].deaths;
+        
+      } else if (loopCountyCheck.length === 2){
+        d1cases = 0;
+        d2cases = 0;
+        d3cases = 0;
+        d4cases = 0;
+        d5cases = 0;
+        d6cases = loopCountyCheck[loopCountyCheck.length-2].cases;
+        d7cases = loopCountyCheck[loopCountyCheck.length-1].cases;
+
+        d1deaths = 0;
+        d2deaths = 0;
+        d3deaths = 0;
+        d4deaths = 0;
+        d5deaths = 0;
+        d6deaths = loopCountyCheck[loopCountyCheck.length-2].deaths;
+        d7deaths = loopCountyCheck[loopCountyCheck.length-1].deaths;
+        
+      } else if (loopCountyCheck.length === 1){
+        d1cases = 0;
+        d2cases = 0;
+        d3cases = 0;
+        d4cases = 0;
+        d5cases = 0;
+        d6cases = 0;
+        d7cases = loopCountyCheck[loopCountyCheck.length-1].cases;
+
+        d1deaths = 0;
+        d2deaths = 0;
+        d3deaths = 0;
+        d4deaths = 0;
+        d5deaths = 0;
+        d6deaths = 0;
+        d7deaths = loopCountyCheck[loopCountyCheck.length-1].deaths;
+      }
+      stateWideCasesDateOne += d1cases;
+      stateWideCasesDateTwo += d2cases;
+      stateWideCasesDateThree += d3cases;
+      stateWideCasesDateFour += d4cases;
+      stateWideCasesDateFive += d5cases;
+      stateWideCasesDateSix += d6cases;
+      stateWideCasesDateSeven += d7cases;
+
+      stateWideDeathsDateOne += d1deaths;
+      stateWideDeathsDateTwo += d2deaths;
+      stateWideDeathsDateThree += d3deaths;
+      stateWideDeathsDateFour += d4deaths;
+      stateWideDeathsDateFive += d5deaths;
+      stateWideDeathsDateSix += d6deaths;
+      stateWideDeathsDateSeven += d7deaths;
+
+      // FOR MEDIAN PURPOSES
+      casesByCountyDateOne.push(d1cases);
+      casesByCountyDateTwo.push(d2cases);
+      casesByCountyDateThree.push(d3cases);
+      casesByCountyDateFour.push(d4cases);
+      casesByCountyDateFive.push(d5cases);
+      casesByCountyDateSix.push(d6cases);
+      casesByCountyDateSeven.push(d7cases);
+
+      deathsByCountyDateOne.push(d1deaths);
+      deathsByCountyDateTwo.push(d2deaths);
+      deathsByCountyDateThree.push(d3deaths);
+      deathsByCountyDateFour.push(d4deaths);
+      deathsByCountyDateFive.push(d5deaths);
+      deathsByCountyDateSix.push(d6deaths);
+      deathsByCountyDateSeven.push(d7deaths);
 
       casesByCounty.push(loopCountyCheck[loopCountyCheck.length-1].cases);
       deathsByCounty.push(loopCountyCheck[loopCountyCheck.length-1].deaths);
@@ -326,12 +447,12 @@ function ChartContainer() {
         ],
         deaths: [
           Math.round(stateWideDeathsDateOne / countiesToShow.length),
-          Math.round(stateWideDeathsDateOne / countiesToShow.length),
-          Math.round(stateWideDeathsDateOne / countiesToShow.length),
-          Math.round(stateWideDeathsDateOne / countiesToShow.length),
-          Math.round(stateWideDeathsDateOne / countiesToShow.length),
-          Math.round(stateWideDeathsDateOne / countiesToShow.length),
-          Math.round(stateWideDeathsDateOne / countiesToShow.length)
+          Math.round(stateWideDeathsDateTwo / countiesToShow.length),
+          Math.round(stateWideDeathsDateThree / countiesToShow.length),
+          Math.round(stateWideDeathsDateFour / countiesToShow.length),
+          Math.round(stateWideDeathsDateFive / countiesToShow.length),
+          Math.round(stateWideDeathsDateSix / countiesToShow.length),
+          Math.round(stateWideDeathsDateSeven / countiesToShow.length)
         ]
       },
       medianCases: mdnCases,
