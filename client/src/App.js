@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { BrowserRouter, HashRouter, Switch, Route} from "react-router-dom";
+import 'bootstrap/dist/css/bootstrap.min.css';
 import "./App.css";
 import Home from "./pages/Home";
 import Signup from "./pages/Signup";
@@ -14,7 +15,7 @@ class App extends Component {
   render() {
     return (
       <HashRouter>
-        <Header />
+        <Header/>
         <Switch>
           <Route exact path={"/signup"} component={Signup} />
           <Route exact path={"/login"} component={Login} />
