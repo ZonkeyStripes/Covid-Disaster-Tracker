@@ -10,6 +10,7 @@ import Header from "./components/Header";
 import Dashboard from "./pages/Dashboard";
 import PrivateRoute from "./components/PrivateRoute";
 import FirstTimeUse from "./pages/FirstTimeUse";
+import Disasters from "./pages/Disasters";
 
 class App extends Component {
   render() {
@@ -22,7 +23,9 @@ class App extends Component {
           <Route exact path={"/news"} component={News} />
           <PrivateRoute exact path={"/dashboard"} component={Dashboard} />
           <PrivateRoute exact path={"/ftu"} component={FirstTimeUse} />
+          <Route exact path={"/disasters"} component={Disasters} />
           <Route exact path={'/'} component={Home} />
+
         {/* <Route >
           <About />
         </Route> */}
