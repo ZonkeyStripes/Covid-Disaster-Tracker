@@ -83,8 +83,6 @@ class Dashboard extends Component {
                       console.log("fips is 5 characters hopefully");
                       arrayOfLocations[k].push(tempStr);
                     }
-                    
-
                   }
                 }
               }
