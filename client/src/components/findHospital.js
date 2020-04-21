@@ -1,11 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import axios from "axios";
 
-function LoadHospitals() {
+function FindHospitals(props) {
+
+    console.log("hello");
+
         const [hospital, setHospital] = useState([]);
 
-        axios
+        useEffect(() => {
+            axios
             .get("https://services1.arcgis.com/Hp6G80Pky0om7QvQ/arcgis/rest/services/Urgent_Care_Facilities/FeatureServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=json")
             .then(res => {
                 let info = res.data.features;
@@ -14,6 +18,10 @@ function LoadHospitals() {
             .catch(err => {
                 return err;
             });
+        },            
+        []);
+
+
         return (
             <div>
                 <h4>
@@ -40,4 +48,4 @@ function LoadHospitals() {
         )
 }
 
-export default LoadHospitals;
+export default FindHospitals;
