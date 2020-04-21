@@ -98,6 +98,7 @@ class Dashboard extends Component {
   render() {
       return (
         <div>
+          {/* <p>{this.state.username} (Logout)</p> */}
             <h1>Dashboard</h1>
             <h2>Your tracked locations</h2>
             <h2><em>As of {this.state.effective_date}:</em></h2>

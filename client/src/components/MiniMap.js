@@ -340,15 +340,16 @@ class MiniMap extends Component {
                     <MapLegend colors={this.state.colors} limits={this.state.limits}/>
                 </Map>
             </div>
-                
-                <div className="custom-control custom-radio">
-                    <input type="radio" id={"customRadio1" + this.id} name="customRadio" className="custom-control-input" value="cases" defaultChecked onClick={this.changeView}/>
-                    <label className="custom-control-label" htmlFor={"customRadio1" + this.id} >Cases</label>
-                </div>
-                <div className="custom-control custom-radio">
-                    <input type="radio" id={"customRadio2" + this.id} name="customRadio" className="custom-control-input" value="deaths" onClick={this.changeView}/>
-                    <label className="custom-control-label" htmlFor={"customRadio2" + this.id}>Deaths</label>
-                </div>
+                <form>
+                    <div className="custom-control custom-radio">
+                        <input type="radio" id={"customRadio1" + this.id} name="customRadio" className="custom-control-input" value="cases" defaultChecked onClick={this.changeView}/>
+                        <label className="custom-control-label" htmlFor={"customRadio1" + this.id} >Cases</label>
+                    </div>
+                    <div className="custom-control custom-radio">
+                        <input type="radio" id={"customRadio2" + this.id} name="customRadio" className="custom-control-input" value="deaths" onClick={this.changeView}/>
+                        <label className="custom-control-label" htmlFor={"customRadio2" + this.id}>Deaths</label>
+                    </div>
+                </form>
                 {/* <DataTable data={countyArray}/> */}
             </div>
           );
