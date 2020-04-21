@@ -16,7 +16,7 @@ class MapLegend extends MapControl {
     //grades = [0, 10, 50, 100, 200, 500, 1000],
     labels = [];
 
-    let grades = this.props.limits;
+    // let grades = this.props.limits;
 
     // loop through our density intervals and generate a label with a colored square for each interval
     // for (var i = 0; i < grades.length; i++) {
@@ -26,22 +26,17 @@ class MapLegend extends MapControl {
     // }
 
     console.log("I am in the constructor function");
-    props.leaflet.map.addOneTimeEventListener("mousemove", ev => {
-    //   this.panelDiv.innerHTML = `<h2><span>Lat: ${ev.latlng.lat.toFixed(
-    //     4
-    //   )}</span>&nbsp;<br><span>Lng: ${ev.latlng.lng.toFixed(4)}</span></h2>`;
-        for(let i = 0; i < grades.length; i++) {
-            this.panelDiv.innerHTML += '<i style="background:' + this.getColor(grades[i] + 1) + '"></i> ' +
-            grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '&ndash;0');
-        }
+    // props.leaflet.map.addOneTimeEventListener("mousemove", ev => {
+
 
 
       // console.log(this.panelDiv.innerHTML);
-    });
+    //});
   }
 
-  componentDidMount(){
-    console.log("mounted");
+  componentDidMount() {
+    const { map } = this.props.leaflet;
+    this.leafletElement.addTo(map);
   }
 
   componentDidUpdate(){
@@ -69,15 +64,20 @@ class MapLegend extends MapControl {
     const MapLegend = L.Control.extend({
       onAdd: map => {
         this.panelDiv = L.DomUtil.create("div", "info legend");
+        
+        let grades = this.props.limits;
+
+        for(let i = 0; i < grades.length; i++) {
+          console.log(this);
+            this.panelDiv.innerHTML += '<i style="background:' + this.getColor(grades[i] + 1) + '"></i> ' +
+            grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '&ndash;0');
+        }
+        
+        
         return this.panelDiv;
       }
     });
     return new MapLegend({ position: "topright" });
-  }
-
-  componentDidMount() {
-    const { map } = this.props.leaflet;
-    this.leafletElement.addTo(map);
   }
 
   getColor(d) {
