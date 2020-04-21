@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import axios from "axios";
 
 function LoadHospitals() {
-    
         const [hospital, setHospital] = useState([]);
 
         axios
@@ -29,6 +28,7 @@ function LoadHospitals() {
                             <li key={index}>Hospital name: {elem.attributes.NAME}<br />
                                 Address: {elem.attributes.ADDRESS}<br />
                                 Telephone: {elem.attributes.TELEPHONE}<br />
+                                Fips Code: {elem.attributes.FIPS}
                                 {/* X: {elem.attributes.X}<br /> */}
                                 {/* Y: {elem.attributes.Y}<br /> */}
                             </li>
