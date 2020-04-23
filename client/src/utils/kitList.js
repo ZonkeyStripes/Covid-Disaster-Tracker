@@ -13,7 +13,7 @@ const listItems = items.map(item =>
             <p>{item.text}
             <span>
                 <FontAwesomeIcon className="faicons"  
-                oncClick={ () => {props.deleteItem(item.key)}} icon="trash"/>
+                onClick={ () => {props.deleteItem(item.key)}} icon="trash"/>
             </span>
             </p>
         </div>
