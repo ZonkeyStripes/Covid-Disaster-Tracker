@@ -51,8 +51,6 @@ const mapColors = [
     ['#990000', '#d7301f', '#ef6548', '#fc8d59', '#fdbb84', '#fdd49e', '#fef0d9']
 ];
 
-let mapClr = mapColors[0];
-
 const thresholdData = [
     [100000, 5000, 2000, 1000, 500, 100],
     [2000, 1000, 500, 250, 100, 50]
