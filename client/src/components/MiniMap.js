@@ -8,6 +8,7 @@ import countyLatLong from '../assets/county_latlong.json';
 import L from 'leaflet';
 import MapInfo from "./MapInfo";
 import MapLegend from "./MapLegend";
+import newId from '../utils/newid';
 
 
 
@@ -15,7 +16,7 @@ import MapLegend from "./MapLegend";
 const stamenTonerTiles = 'http://stamen-tiles-{s}.a.ssl.fastly.net/toner-background/{z}/{x}/{y}.png';
 const stamenTonerAttr = 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>';
 const mapCenter = [39.82,-98.57];
-let zoomLevel = 4;
+let zoomLevel = 7;
 
 console.log(countyData);
 let todayDate = "4/12/2020";
@@ -48,22 +49,13 @@ class MiniMap extends Component {
 
     constructor(props) {
 
-        let mapCtr;
-
-        for(let index = 0; index < countyLatLong.length; index++) {
-            if(countyLatLong.FIPS == props.fips) {
-                console.log("found " + countyLatLong.COUNTYNAME + "county");
-            }
-        }
-
-
         super(props);
         this.state = {
             fips: props.fips,
             displayed: "cases",
             colors: mapColors[0],
             limits: thresholdData[0],
-            mapCenter: mapCtr
+            mapCenter: [39.82,-98.57]
         };
 
         // ES6 React.Component doesn't auto bind methods to itself
@@ -75,6 +67,30 @@ class MiniMap extends Component {
 
     }
     
+    componentWillMount() {
+        this.id = newId();
+    }
+
+
+    componentDidMount() {
+        console.log("Component did mount");
+        console.log("this.props.fips: " + this.props.fips);
+
+        let mapCtr = [];
+
+        for(let index = 0; index < countyLatLong.length; index++) {
+            if(countyLatLong[index].FIPS == this.props.fips) {
+                console.log("found " + countyLatLong[index].COUNTYNAME + "county");
+                mapCtr.push(countyLatLong[index].LAT);
+                mapCtr.push(countyLatLong[index].LON);
+            }
+        }
+
+        console.log(mapCtr);
+
+        this.setState({mapCenter: mapCtr});
+
+    }
 
     geoJSONStyle(feature) {
         let covidCases = 0;
@@ -148,7 +164,7 @@ class MiniMap extends Component {
     
       onEachFeature(feature, layer) {
         // console.log("onEachFeature");
-        console.log(feature.properties);
+        // console.log(feature.properties);
         // console.log(this.state.displayed)
         let dataToDisplay;
     
@@ -156,7 +172,7 @@ class MiniMap extends Component {
         geo_id = geo_id.substring(geo_id.length - 5);
         geo_id = parseInt(geo_id);
 
-        console.log("this.state.fips = " + this.state.fips);
+        // console.log("this.state.fips = " + this.state.fips);
 
         for(let j = 0; j < countyArray.length; j++) {
             // console.log(countyArray[j].state);
@@ -169,14 +185,14 @@ class MiniMap extends Component {
                 }
             }
 
-            if(countyArray[j].fips == this.state.fips) {
-                console.log("Found the county!!")
-                console.log(countyArray[j]);
-                console.log(this);
-                let sizeMap = this.refs.map.leafletElement;
-                // sizeMap.fitBounds()
-                //this.fitBounds(this.getBounds());
-            }
+            // if(countyArray[j].fips == this.state.fips) {
+            //     console.log("Found the county!!")
+            //     console.log(countyArray[j]);
+            //     console.log(this);
+            //     let sizeMap = this.refs.map.leafletElement;
+            //     // sizeMap.fitBounds()
+            //     //this.fitBounds(this.getBounds());
+            // }
 
         }
 
@@ -304,7 +320,7 @@ class MiniMap extends Component {
             <div>
               <div>
                 <Map
-                    center={mapCenter}
+                    center={this.state.mapCenter}
                     zoom={zoomLevel}
                     ref="map"
                 >
@@ -320,19 +336,20 @@ class MiniMap extends Component {
                       onMouseOver={() => this.highlightFeature}
                       ref="geojson"
                     />
-                    <MapInfo />
+                    {/* <MapInfo /> */}
                     <MapLegend colors={this.state.colors} limits={this.state.limits}/>
                 </Map>
             </div>
-                
-                <div className="custom-control custom-radio">
-                    <input type="radio" id="customRadio1" name="customRadio" className="custom-control-input" value="cases" defaultChecked onClick={this.changeView}/>
-                    <label className="custom-control-label" htmlFor="customRadio1">Cases</label>
-                </div>
-                <div className="custom-control custom-radio">
-                    <input type="radio" id="customRadio2" name="customRadio" className="custom-control-input" value="deaths" onClick={this.changeView}/>
-                    <label className="custom-control-label" htmlFor="customRadio2">Deaths</label>
-                </div>
+                <form>
+                    <div className="custom-control custom-radio">
+                        <input type="radio" id={"customRadio1" + this.id} name="customRadio" className="custom-control-input" value="cases" defaultChecked onClick={this.changeView}/>
+                        <label className="custom-control-label" htmlFor={"customRadio1" + this.id} >Cases</label>
+                    </div>
+                    <div className="custom-control custom-radio">
+                        <input type="radio" id={"customRadio2" + this.id} name="customRadio" className="custom-control-input" value="deaths" onClick={this.changeView}/>
+                        <label className="custom-control-label" htmlFor={"customRadio2" + this.id}>Deaths</label>
+                    </div>
+                </form>
                 {/* <DataTable data={countyArray}/> */}
             </div>
           );

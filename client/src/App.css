@@ -44,6 +44,12 @@ body {
     opacity: 0.7;
 }
 
+
+.table-responsive {
+  overflow-y: scroll;
+  max-height: 600px;
+}
+
 #dataTableBody {
   display: block;
   overflow: auto;
@@ -57,7 +63,6 @@ thead tr {
 
 #su-card{
   background-color: #ebebeb;
-  /* background-color: #474a59; */
 }
 
 #signup-header{
@@ -68,7 +73,6 @@ thead tr {
 .pre-inp{
   background-color: #3a57af;
   /* background-color: rgb(199, 131, 5); */
-  /* background-color: midnightblue; */
   color: #f6f6f6;
   border: none
 }
@@ -79,14 +83,12 @@ thead tr {
 
 .form-btn{
   background-color: #3a57af;
-  /* background-color: midnightblue; */
   color: #f6f6f6;
 }
 
 .form-btn:hover{
   background-color: #31488d;
   color: #f6f6f6;
-  /* color: #dad8d8; */
 }
 
 #eye {
@@ -104,12 +106,10 @@ thead tr {
 }
 
 #header {
-  /* border-bottom: 4px solid midnightblue; */
-  /* border-bottom: 3px solid orange; */
   border-bottom: 3px solid #3a57af;
   /* border-bottom: 3px solid #bae1ff; */
-  /* background-color: #13232f; */
   background-color: #333;
+  margin-bottom: 12px;
 }
 
 #li-btn{
@@ -130,7 +130,6 @@ thead tr {
 
 #su-btn{
   background-color: #3a57af;
-  /* border: none; */
   border: 1px solid #3a57af;
   border-radius: 40px;
 }
@@ -142,10 +141,305 @@ thead tr {
 
 .header-link{
   color: #fff;
+  position: relative;
+  padding-bottom: 5px;
+}
+
+.header-link:hover{
+  text-decoration: none;
+  color: #fff;
+}
+
+.header-link::before{
+  content: "";
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  /* background-color: white; */
+  background-color: #3a57af;
+  transform-origin: bottom right;
+  transition: transform 0.2s ease-out;
+}
+
+.header-link:hover::before{
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
+.header-link-active::before{
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  transform: scaleX(1);
+  bottom: 0;
+  left: 0;
+  /* background-color: white; */
+  background-color: #3a57af;
+}
+
+.table-header{
+  font-size: 15px;
+  margin-bottom: 0;
+}
+
+.state-sect {
+  border-bottom: 1px solid rgba(0,0,0,.125);
+}
+
+#table-btn-container{
+  display: flex;
+  justify-content: center;
+}
+
+.table-btn{
+  padding-left: 50px;
+  padding-right: 50px;
+  background-color: #3a57af;
+  color: #fff;
+  border-radius: 40px;
+}
+
+.table-btn:hover{
+  color: #fff;
+}
+
+.table-btn-outline{
+  padding-left: 50px;
+  padding-right: 50px;
+  background-color: transparent;
+  color: #3a57af;
+  border: 1px solid #3a57af;
+  border-radius: 40px;
+}
+
+.table-btn-outline:hover{
+  background-color: #3a57af;
+  color: #fff;
+}
+
+#chart-stuff-top {
+  /* background-color: #f6f6f6; */
+}
+
+#chart-sect-header{
+  color: #444;
+  border-bottom: 3px solid #444;
+  margin: 0;
+}
+
+.btn-chart{
+  background-color: #003f5c;
+  color: #fff;
+}
+
+.btn-chart:hover{
+  color: #fff;
+}
+
+.btn-chart-outline {
+  background-color: transparent;
+  border: 1px solid #003f5c;
+  color: #003f5c;
+}
+
+.btn-chart-outline:hover{
+  color: #003f5c;
+}
+
+.cd-container{
+  margin-left: 72px;
+  margin-top: 8px;
+  color: #444;
+}
+
+.cd {
+  border-bottom: 4px solid #31488d;
+  padding: 0;
+}
+
+.cdt {
+  border-bottom: 4px solid #444;
+  padding-bottom: 5px;
+  color: #3a57af;
+}
+
+.cdh{
+  font-size: 2.5rem;
+}
+
+.icon{
+  font-size: 60px;
 }
 
 .header-link-active{
   color: #3a57af;
+}
+
+/* Css for news page */
+@media only screen and (min-width: 628px) {
+  .newslist {
+    width: 30%;
+    height: 7%;
+  }
+  .faqhead {
+    width: 30%;
+    height: 7%
+  }
+}
+
+.video {  
+  justify-content: center;
+  text-align: center;
+  padding: 25px;
+  margin-left: 50%;
+}
+.newshead {
+  text-align: center;
+  margin-top: 25px;
+  margin-bottom: 25px;
+}
+.faqhead {
+  text-align: center;
+  margin-bottom: 25px;
+}
+/* scrollbar style */
+.newslist::-webkit-scrollbar {
+  width: 5px;
+}
+
+.newslist::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px black;
+}
+
+.newslist::-webkit-scrollbar-thumb {
+  background-color: #3a57af;
+  outline: 1px solid red;
+  border-radius: 25%;
+}
+
+.table-responsive::-webkit-scrollbar {
+  width: 10px;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px black;
+  border-radius: 0px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+  background-color: #3a57af;
+  outline: 1px solid red;
+  border-radius: 0px;
+}
+
+body::-webkit-scrollbar {
+  width: 10px;
+}
+
+body::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px black;
+  border-radius: 30px;
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: #3a57af;
+  outline: 1px solid red;
+  border-radius: 30px;
+}
+
+.newslist { 
+  width: 50%;
+  max-height: 10%;
+  height: 160vh;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+.Collapsible {
+  text-emphasis: bolder;
+  background-color: #777;
+  color: white;
+  cursor: pointer;
+  padding: 30px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+}
+
+.content {
+  background-color: #f1f1f1;
+  color: black;
+  margin-left: 20px;
+  padding: 10px;
+} 
+
+
+/* Css for the Frequently asked Questions page (FAQS) */
+.faqs {
+  width: 100%;
+  max-width: 768px;
+  margin: 0 auto;
+  padding: 25px;
+}
+
+.faqs .faq {
+  margin: 15px;
+  padding: 15px;
+  background-color: #EEE;
+  border-radius: 8px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, .02)
+}
+
+.faqs .faq .faq-quetion {
+  position: relative;
+  font-size: 20px;
+  padding-right: 80px;
+
+  /* transition: 0.4s ease; */
+}
+
+.faqs .faq .faq-answer{
+  opacity: 0;
+  max-height: 0;
+  overflow-y: hidden;
+  
+  transition: all 0.4s ease;
+}
+
+.faqs .faq .faq-question::after {
+  content: '';
+  position: absolute;
+  right: 8%;
+  transform: translateY(-50%);
+  width: 30px;
+  height: 30px;
+  
+  background-image: url('https://upload.wikimedia.org/wikipedia/commons/9/9d/Arrow-down.svg');
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  
+  transition: all 0.4s ease;
+}
+
+
+.faqs .faq.open .faq-question {
+  margin-bottom: 15px;
+}
+
+.faqs .faq.open .faq-question::after {
+  transform: translateY(-50%) rotate(180deg);
+}
+
+.faqs .faq.open .faq-answer {
+  max-height: 1000px;
+  opacity: 1;
 }
 
 #FTUstateSelect {

@@ -30,13 +30,13 @@ class Login extends Component {
 
   handleChange(evt) {
     const value = evt.target.value;
+    console.log(evt.target.name);
+    
     this.setState({
       ...this.state,
       [evt.target.name]: value
     });
   }
-
-
 
   handleSubmit = (event) => {
     event.preventDefault();

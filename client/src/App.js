@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { BrowserRouter, HashRouter, Switch, Route} from "react-router-dom";
+import 'bootstrap/dist/css/bootstrap.min.css';
 import "./App.css";
 import Home from "./pages/Home";
 import Signup from "./pages/Signup";
@@ -10,12 +11,13 @@ import Header from "./components/Header";
 import Dashboard from "./pages/Dashboard";
 import PrivateRoute from "./components/PrivateRoute";
 import FirstTimeUse from "./pages/FirstTimeUse";
+import Disasters from "./pages/Disasters";
 
 class App extends Component {
   render() {
     return (
       <HashRouter>
-        <Header />
+        <Header/>
         <Switch>
           <Route exact path={"/signup"} component={Signup} />
           <Route exact path={"/login"} component={Login} />
@@ -23,7 +25,9 @@ class App extends Component {
           <Route exact path={"/kit"} component={Kit} />
           <PrivateRoute exact path={"/dashboard"} component={Dashboard} />
           <PrivateRoute exact path={"/ftu"} component={FirstTimeUse} />
+          <Route exact path={"/disasters"} component={Disasters} />
           <Route exact path={'/'} component={Home} />
+
         {/* <Route >
           <About />
         </Route> */}

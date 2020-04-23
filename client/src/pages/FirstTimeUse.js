@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from "react";
 import "../App.css";
-import statesData from "../utils/json/us-state.json";
+import statesData from "../utils/json/us-states.json";
 import countiesData from "../utils/json/us-counties.json";
 import stateNames from "../utils/json/state-names.json";
 import Axios from "axios";
 
 
 function FirstTimeUse(props) {
-
-    
-    
     //Returns array with all county names in a given state
     const getCounties = (state) => {
         let setOfCounties = new Set();
@@ -20,7 +17,6 @@ function FirstTimeUse(props) {
         }
         return Array.from(setOfCounties).sort();
     }
-
 
     const [selectedState, setSelectedState] = useState(stateNames.sort()[0])
     const [countiesToShow, setCountiesToShow] = useState(getCounties(selectedState));
