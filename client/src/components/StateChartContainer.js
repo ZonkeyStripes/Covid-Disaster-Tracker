@@ -4,34 +4,42 @@ import StateLineCharts from "./StateLineCharts";
 import $ from "jquery";
 
 const StateChartContainer = (props) => {
+  console.log(props);
   const [showBarChart, setShowBarChart] = useState(true);
   const [showLineChart, setShowLineChart] = useState(true);
+  const [range, setRange] = useState("4 Weeks");
 
   let barTitle;
   let lineTitle;
 
   const toggleBarChartDisplay = () => {
     if (showBarChart){
-      $("#state-bar-collapse-icon").css("transform", "rotate(90deg)");
       setShowBarChart(false);
+      $("#state-bar-collapse-icon").css("transform", "rotate(90deg)");
       $("#state-bar-chart-container").hide();
     } else {
-      $("#state-bar-collapse-icon").css("transform", "rotate(0deg)");
       setShowBarChart(true);
+      $("#state-bar-collapse-icon").css("transform", "rotate(0deg)");
       $("#state-bar-chart-container").show();
     }
   }
   
   const toggleLineChartDisplay = () => {
     if (showLineChart){
-      $("#state-line-collapse-icon").css("transform", "rotate(90deg)");
       setShowLineChart(false);
+      $("#state-line-collapse-icon").css("transform", "rotate(90deg)");
       $("#state-line-chart-container").hide();
+      $("#range-container").hide();
     } else {
-      $("#state-line-collapse-icon").css("transform", "rotate(0deg)");
       setShowLineChart(true);
+      $("#state-line-collapse-icon").css("transform", "rotate(0deg)");
       $("#state-line-chart-container").show();
+      $("#range-container").show();
     }
+  }
+
+  const handleRangeChange = e => {    
+    setRange(e.target.value);
   }
 
   if (props.display === "cases"){
@@ -64,12 +72,19 @@ const StateChartContainer = (props) => {
         <div className="top-chart">
           <div className="chart-title-sect">
             <h5>{props.stateName} {lineTitle} Over Time</h5>
-            <input type="range" min="1" max="3" defaultValue="2"/>
+            <div id="range-container">
+              <p className="text-muted" id="range-title">Range:</p>
+              <select onChange={handleRangeChange} defaultValue="4 Weeks">
+                <option value="1 Week">1 Week</option>
+                <option value="4 Weeks">4 Weeks</option>
+              </select>
+            </div>
             <i onClick={toggleLineChartDisplay} id="state-line-collapse-icon" class="fas fa-chevron-down chart-toggle-icon"/>
           </div>
           <div id="state-line-chart-container">
             <StateLineCharts
               display = {props.display}
+              range = {range}
               stateName = {props.stateName}
               stateAbbrev = {props.stateAbbrev}
               stateData = {props.stateData}

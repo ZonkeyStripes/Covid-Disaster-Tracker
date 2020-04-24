@@ -2,6 +2,7 @@ import React from 'react'
 import {Bar} from "react-chartjs-2"
 
 const StateBarCharts = (props) => {
+  console.log(props);
   let returnVal;
   if (props.display === "cases"){
     returnVal = (

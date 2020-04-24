@@ -2,7 +2,6 @@ import React from 'react'
 import {Bar} from "react-chartjs-2"
 
 const CountyBarCharts = (props) => {
-  console.log(props);
   let returnVal;
 
   if (props.stateName === "Guam" || props.stateName === "Virgin Islands" || props.stateName === "District of Columbia"){

@@ -32,195 +32,73 @@ function ChartContainer() {
   const getNationalAvg = () => {
     let totalCases = nationalData[nationalData.length-1].cases;
     let totalDeaths = nationalData[nationalData.length-1].deaths;
-    let casesByStateRecent = [];
-    let deathsByStateRecent = [];
-
-    let range4CasesByStateDateOne = [];
-    let range4CasesByStateDateTwo = [];
-    let range4CasesByStateDateThree = [];
-    let range4CasesByStateDateFour = [];
-    let range4CasesByStateDateFive = [];
-    let range4DeathsByStateDateOne = [];
-    let range4DeathsByStateDateTwo = [];
-    let range4DeathsByStateDateThree = [];
-    let range4DeathsByStateDateFour = [];
-    let range4DeathsByStateDateFive = [];
-
-    let range1CasesByStateDateOne = [];
-    let range1CasesByStateDateTwo = [];
-    let range1CasesByStateDateThree = [];
-    let range1CasesByStateDateFour = [];
-    let range1CasesByStateDateFive = [];
-    let range1CasesByStateDateSix = [];
-    let range1CasesByStateDateSeven = [];
-    let range1CasesByStateDateEight = [];
-    let range1DeathsByStateDateOne = [];
-    let range1DeathsByStateDateTwo = [];
-    let range1DeathsByStateDateThree = [];
-    let range1DeathsByStateDateFour = [];
-    let range1DeathsByStateDateFive = [];
-    let range1DeathsByStateDateSix = [];
-    let range1DeathsByStateDateSeven = [];
-    let range1DeathsByStateDateEight = [];
-
+    let casesByStateDateOne = [];
+    let casesByStateDateTwo = [];
+    let casesByStateDateThree = [];
+    let casesByStateDateFour = [];
+    let deathsByStateDateOne = [];
+    let deathsByStateDateTwo = [];
+    let deathsByStateDateThree = [];
+    let deathsByStateDateFour = [];
     let loopState;
 
     for (let i = 0; i < stateNames.length; i++){
       loopState = statesData.filter(st => st.state === stateNames[i].state);
 
-      casesByStateRecent.push(loopState[loopState.length-1].cases);
-      deathsByStateRecent.push(loopState[loopState.length-1].deaths);
+      casesByStateDateOne.push(loopState[loopState.length-22].cases);
+      casesByStateDateTwo.push(loopState[loopState.length-15].cases);
+      casesByStateDateThree.push(loopState[loopState.length-8].cases);
+      casesByStateDateFour.push(loopState[loopState.length-1].cases);
 
-      range4CasesByStateDateOne.push(loopState[loopState.length-29].cases);
-      range4CasesByStateDateTwo.push(loopState[loopState.length-22].cases);
-      range4CasesByStateDateThree.push(loopState[loopState.length-15].cases);
-      range4CasesByStateDateFour.push(loopState[loopState.length-8].cases);
-      range4CasesByStateDateFive.push(loopState[loopState.length-1].cases);
-
-      range4DeathsByStateDateOne.push(loopState[loopState.length-29].deaths);
-      range4DeathsByStateDateTwo.push(loopState[loopState.length-22].deaths);
-      range4DeathsByStateDateThree.push(loopState[loopState.length-15].deaths);
-      range4DeathsByStateDateFour.push(loopState[loopState.length-8].deaths);
-      range4DeathsByStateDateFive.push(loopState[loopState.length-1].deaths);
-
-      range1CasesByStateDateOne.push(loopState[loopState.length-8].cases)
-      range1CasesByStateDateTwo.push(loopState[loopState.length-7].cases)
-      range1CasesByStateDateThree.push(loopState[loopState.length-6].cases)
-      range1CasesByStateDateFour.push(loopState[loopState.length-5].cases)
-      range1CasesByStateDateFive.push(loopState[loopState.length-4].cases)
-      range1CasesByStateDateSix.push(loopState[loopState.length-3].cases)
-      range1CasesByStateDateSeven.push(loopState[loopState.length-2].cases)
-      range1CasesByStateDateEight.push(loopState[loopState.length-1].cases)
-
-      range1DeathsByStateDateOne.push(loopState[loopState.length-8].deaths)
-      range1DeathsByStateDateTwo.push(loopState[loopState.length-7].deaths)
-      range1DeathsByStateDateThree.push(loopState[loopState.length-6].deaths)
-      range1DeathsByStateDateFour.push(loopState[loopState.length-5].deaths)
-      range1DeathsByStateDateFive.push(loopState[loopState.length-4].deaths)
-      range1DeathsByStateDateSix.push(loopState[loopState.length-3].deaths)
-      range1DeathsByStateDateSeven.push(loopState[loopState.length-2].deaths)
-      range1DeathsByStateDateEight.push(loopState[loopState.length-1].deaths)
-      
+      deathsByStateDateOne.push(loopState[loopState.length-22].deaths);
+      deathsByStateDateTwo.push(loopState[loopState.length-15].deaths);
+      deathsByStateDateThree.push(loopState[loopState.length-8].deaths);
+      deathsByStateDateFour.push(loopState[loopState.length-1].deaths);
     }
 
     // Sorting arrays
-    casesByStateRecent.sort(function(a, b){return a - b});
-    deathsByStateRecent.sort(function(a, b){return a - b});
+    casesByStateDateOne.sort(function(a, b){return a - b});
+    casesByStateDateTwo.sort(function(a, b){return a - b});
+    casesByStateDateThree.sort(function(a, b){return a - b});
+    casesByStateDateFour.sort(function(a, b){return a - b});
 
-    range4CasesByStateDateOne.sort(function(a, b){return a - b});
-    range4CasesByStateDateTwo.sort(function(a, b){return a - b});
-    range4CasesByStateDateThree.sort(function(a, b){return a - b});
-    range4CasesByStateDateFour.sort(function(a, b){return a - b});
-    range4CasesByStateDateFive.sort(function(a, b){return a - b});
-
-    range4DeathsByStateDateOne.sort(function(a, b){return a - b});
-    range4DeathsByStateDateTwo.sort(function(a, b){return a - b});
-    range4DeathsByStateDateThree.sort(function(a, b){return a - b});
-    range4DeathsByStateDateFour.sort(function(a, b){return a - b});
-    range4DeathsByStateDateFive.sort(function(a, b){return a - b});
-
-    range1CasesByStateDateOne.sort(function(a, b){return a - b});
-    range1CasesByStateDateTwo.sort(function(a, b){return a - b});
-    range1CasesByStateDateThree.sort(function(a, b){return a - b});
-    range1CasesByStateDateFour.sort(function(a, b){return a - b});
-    range1CasesByStateDateFive.sort(function(a, b){return a - b});
-    range1CasesByStateDateSix.sort(function(a, b){return a - b});
-    range1CasesByStateDateSeven.sort(function(a, b){return a - b});
-    range1CasesByStateDateEight.sort(function(a, b){return a - b});
-
-    range1DeathsByStateDateOne.sort(function(a, b){return a - b});
-    range1DeathsByStateDateTwo.sort(function(a, b){return a - b});
-    range1DeathsByStateDateThree.sort(function(a, b){return a - b});
-    range1DeathsByStateDateFour.sort(function(a, b){return a - b});
-    range1DeathsByStateDateFive.sort(function(a, b){return a - b});
-    range1DeathsByStateDateSix.sort(function(a, b){return a - b});
-    range1DeathsByStateDateSeven.sort(function(a, b){return a - b});
-    range1DeathsByStateDateEight.sort(function(a, b){return a - b});
+    deathsByStateDateOne.sort(function(a, b){return a - b});
+    deathsByStateDateTwo.sort(function(a, b){return a - b});
+    deathsByStateDateThree.sort(function(a, b){return a - b});
+    deathsByStateDateFour.sort(function(a, b){return a - b});
 
     return {
       // Using 53 instead of 50 to account for Guam, DC, & Virgin Islands
       avgCases: Math.round(totalCases / 53), 
       avgDeaths: Math.round(totalDeaths / 53),
       dateAvgs: {
-        fourWeekRange: {
-          cases: [
-            Math.round(nationalData[nationalData.length-29].cases / 53),
-            Math.round(nationalData[nationalData.length-22].cases / 53),
-            Math.round(nationalData[nationalData.length-15].cases / 53),
-            Math.round(nationalData[nationalData.length-8].cases / 53),
-            Math.round(nationalData[nationalData.length-1].cases / 53)
-          ],
-          deaths: [
-            Math.round(nationalData[nationalData.length-29].deaths / 53),
-            Math.round(nationalData[nationalData.length-22].deaths / 53),
-            Math.round(nationalData[nationalData.length-15].deaths / 53),
-            Math.round(nationalData[nationalData.length-8].deaths / 53),
-            Math.round(nationalData[nationalData.length-1].deaths / 53)
-          ]
+        cases: {
+          one: Math.round(nationalData[nationalData.length-22].cases / 53),
+          two: Math.round(nationalData[nationalData.length-15].cases / 53),
+          three: Math.round(nationalData[nationalData.length-8].cases / 53),
+          four: Math.round(nationalData[nationalData.length-1].cases / 53)
         },
-        oneWeekRange: {
-          cases: [
-            Math.round(nationalData[nationalData.length-8].cases / 53),
-            Math.round(nationalData[nationalData.length-7].cases / 53),
-            Math.round(nationalData[nationalData.length-6].cases / 53),
-            Math.round(nationalData[nationalData.length-5].cases / 53),
-            Math.round(nationalData[nationalData.length-4].cases / 53),
-            Math.round(nationalData[nationalData.length-3].cases / 53),
-            Math.round(nationalData[nationalData.length-2].cases / 53),
-            Math.round(nationalData[nationalData.length-1].cases / 53)
-          ],
-          deaths: [
-            Math.round(nationalData[nationalData.length-8].deaths / 53),
-            Math.round(nationalData[nationalData.length-7].deaths / 53),
-            Math.round(nationalData[nationalData.length-6].deaths / 53),
-            Math.round(nationalData[nationalData.length-5].deaths / 53),
-            Math.round(nationalData[nationalData.length-4].deaths / 53),
-            Math.round(nationalData[nationalData.length-3].deaths / 53),
-            Math.round(nationalData[nationalData.length-2].deaths / 53),
-            Math.round(nationalData[nationalData.length-1].deaths / 53)
-          ]
+        deaths: {
+          one: Math.round(nationalData[nationalData.length-22].deaths / 53),
+          two: Math.round(nationalData[nationalData.length-15].deaths / 53),
+          three: Math.round(nationalData[nationalData.length-8].deaths / 53),
+          four: Math.round(nationalData[nationalData.length-1].deaths / 53)
         }
       },
-      medianCases: casesByStateRecent[26],
-      medianDeaths: deathsByStateRecent[26],
+      medianCases: casesByStateDateFour[26],
+      medianDeaths: deathsByStateDateFour[26],
       dateMedians: {
-        fourWeekRange: {
-          cases: [
-            range4CasesByStateDateOne[26],
-            range4CasesByStateDateTwo[26],
-            range4CasesByStateDateThree[26],
-            range4CasesByStateDateFour[26],
-            range4CasesByStateDateFive[26]
-          ],
-          deaths: [
-            range4DeathsByStateDateOne[26],
-            range4DeathsByStateDateTwo[26],
-            range4DeathsByStateDateThree[26],
-            range4DeathsByStateDateFour[26],
-            range4DeathsByStateDateFive[26]
-          ]
+        cases: {
+          one: casesByStateDateOne[26],
+          two: casesByStateDateTwo[26],
+          three: casesByStateDateThree[26],
+          four: casesByStateDateFour[26]
         },
-        oneWeekRange: {
-          cases: [
-            range1CasesByStateDateOne[26],
-            range1CasesByStateDateTwo[26],
-            range1CasesByStateDateThree[26],
-            range1CasesByStateDateFour[26],
-            range1CasesByStateDateFive[26],
-            range1CasesByStateDateSix[26],
-            range1CasesByStateDateSeven[26],
-            range1CasesByStateDateEight[26]
-          ],
-          deaths: [
-            range1DeathsByStateDateOne[26],
-            range1DeathsByStateDateTwo[26],
-            range1DeathsByStateDateThree[26],
-            range1DeathsByStateDateFour[26],
-            range1DeathsByStateDateFive[26],
-            range1DeathsByStateDateSix[26],
-            range1DeathsByStateDateSeven[26],
-            range1DeathsByStateDateEight[26]
-          ]
+        deaths: {
+          one: deathsByStateDateOne[26],
+          two: deathsByStateDateTwo[26],
+          three: deathsByStateDateThree[26],
+          four: deathsByStateDateFour[26]
         }
       }
     };

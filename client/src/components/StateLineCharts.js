@@ -3,21 +3,71 @@ import {Line} from "react-chartjs-2";
 
 const StateLineCharts = (props) => {
   console.log(props);
+  let datesArr = [];
+  let dateCasesArr = [];
+  let dateDeathsArr = [];
+  let ntlMedCases;
+  let ntlMedDeaths;
+  let ntlAvgCases;
+  let ntlAvgDeaths;
+  
+  if (props.range === "4 Weeks"){
+    ntlMedCases = props.nationalAvgs.dateMedians.fourWeekRange.cases;
+    ntlMedDeaths = props.nationalAvgs.dateMedians.fourWeekRange.deaths;
+    ntlAvgCases = props.nationalAvgs.dateAvgs.fourWeekRange.cases;
+    ntlAvgDeaths = props.nationalAvgs.dateAvgs.fourWeekRange.deaths;
 
-  let firstDate = props.stateData[props.stateData.length-22].date;
-  let secondDate = props.stateData[props.stateData.length-15].date;
-  let thirdDate = props.stateData[props.stateData.length-8].date;
-  let fourthDate = props.stateData[props.stateData.length-1].date;
+    datesArr.push(props.stateData[props.stateData.length-29].date);
+    datesArr.push(props.stateData[props.stateData.length-22].date);
+    datesArr.push(props.stateData[props.stateData.length-15].date);
+    datesArr.push(props.stateData[props.stateData.length-8].date);
+    datesArr.push(props.stateData[props.stateData.length-1].date);
 
-  let stateFirstDateCases = props.stateData[props.stateData.length-22].cases;
-  let stateSecondDateCases = props.stateData[props.stateData.length-15].cases;
-  let stateThirdDateCases = props.stateData[props.stateData.length-8].cases;
-  let stateFourthDateCases = props.stateData[props.stateData.length-1].cases;
+    dateCasesArr.push(props.stateData[props.stateData.length-29].cases);
+    dateCasesArr.push(props.stateData[props.stateData.length-22].cases);
+    dateCasesArr.push(props.stateData[props.stateData.length-15].cases);
+    dateCasesArr.push(props.stateData[props.stateData.length-8].cases);
+    dateCasesArr.push(props.stateData[props.stateData.length-1].cases);
 
-  let stateFirstDateDeaths = props.stateData[props.stateData.length-22].deaths;
-  let stateSecondDateDeaths = props.stateData[props.stateData.length-15].deaths;
-  let stateThirdDateDeaths = props.stateData[props.stateData.length-8].deaths;
-  let stateFourthDateDeaths = props.stateData[props.stateData.length-1].deaths;
+    dateDeathsArr.push(props.stateData[props.stateData.length-29].deaths);
+    dateDeathsArr.push(props.stateData[props.stateData.length-22].deaths);
+    dateDeathsArr.push(props.stateData[props.stateData.length-15].deaths);
+    dateDeathsArr.push(props.stateData[props.stateData.length-8].deaths);
+    dateDeathsArr.push(props.stateData[props.stateData.length-1].deaths);
+
+  } else if (props.range === "1 Week"){
+    ntlMedCases = props.nationalAvgs.dateMedians.oneWeekRange.cases;
+    ntlMedDeaths = props.nationalAvgs.dateMedians.oneWeekRange.deaths;
+    ntlAvgCases = props.nationalAvgs.dateAvgs.oneWeekRange.cases;
+    ntlAvgDeaths = props.nationalAvgs.dateAvgs.oneWeekRange.deaths;
+
+    datesArr.push(props.stateData[props.stateData.length-8].date);
+    datesArr.push(props.stateData[props.stateData.length-7].date);
+    datesArr.push(props.stateData[props.stateData.length-6].date);
+    datesArr.push(props.stateData[props.stateData.length-5].date);
+    datesArr.push(props.stateData[props.stateData.length-4].date);
+    datesArr.push(props.stateData[props.stateData.length-3].date);
+    datesArr.push(props.stateData[props.stateData.length-2].date);
+    datesArr.push(props.stateData[props.stateData.length-1].date);
+
+    dateCasesArr.push(props.stateData[props.stateData.length-8].cases);
+    dateCasesArr.push(props.stateData[props.stateData.length-7].cases);
+    dateCasesArr.push(props.stateData[props.stateData.length-6].cases);
+    dateCasesArr.push(props.stateData[props.stateData.length-5].cases);
+    dateCasesArr.push(props.stateData[props.stateData.length-4].cases);
+    dateCasesArr.push(props.stateData[props.stateData.length-3].cases);
+    dateCasesArr.push(props.stateData[props.stateData.length-2].cases);
+    dateCasesArr.push(props.stateData[props.stateData.length-1].cases);
+
+    dateDeathsArr.push(props.stateData[props.stateData.length-8].deaths);
+    dateDeathsArr.push(props.stateData[props.stateData.length-7].deaths);
+    dateDeathsArr.push(props.stateData[props.stateData.length-6].deaths);
+    dateDeathsArr.push(props.stateData[props.stateData.length-5].deaths);
+    dateDeathsArr.push(props.stateData[props.stateData.length-4].deaths);
+    dateDeathsArr.push(props.stateData[props.stateData.length-3].deaths);
+    dateDeathsArr.push(props.stateData[props.stateData.length-2].deaths);
+    dateDeathsArr.push(props.stateData[props.stateData.length-1].deaths);
+  }
 
   let returnVal;
   if (props.display === "cases"){
@@ -25,39 +75,24 @@ const StateLineCharts = (props) => {
         <Line
           height={160}
           data={{
-            labels: [firstDate, secondDate, thirdDate, fourthDate],
+            labels: datesArr,
               datasets: [
                 {
                   label: props.stateAbbrev,
                   fill: false,
-                  data: [
-                    stateFirstDateCases,
-                    stateSecondDateCases,
-                    stateThirdDateCases,
-                    stateFourthDateCases
-                  ],
+                  data: dateCasesArr,
                   borderColor: "#00589c"
                 },
                 {
                   label: "US Med.",
                   fill: false,
-                  data: [
-                    props.nationalAvgs.dateMedians.cases.one,
-                    props.nationalAvgs.dateMedians.cases.two,
-                    props.nationalAvgs.dateMedians.cases.three,
-                    props.nationalAvgs.dateMedians.cases.four
-                  ],
+                  data: ntlMedCases,
                   borderColor: "#1891c3"
                 },
                 {
                   label: "US Avg.",
                   fill: false,
-                  data: [
-                    props.nationalAvgs.dateAvgs.cases.one,
-                    props.nationalAvgs.dateAvgs.cases.two,
-                    props.nationalAvgs.dateAvgs.cases.three,
-                    props.nationalAvgs.dateAvgs.cases.four
-                  ],
+                  data: ntlAvgCases,
                   borderColor: "#666"
                 }
               ]
@@ -89,39 +124,24 @@ const StateLineCharts = (props) => {
       <Line
           height={160}
           data={{
-            labels: [firstDate, secondDate, thirdDate, fourthDate],
+            labels: datesArr,
               datasets: [
                 {
                   label: props.stateAbbrev,
                   fill: false,
-                  data: [
-                    stateFirstDateDeaths,
-                    stateSecondDateDeaths,
-                    stateThirdDateDeaths,
-                    stateFourthDateDeaths
-                  ],
+                  data: dateDeathsArr,
                   borderColor: "#00589c"
                 },
                 {
                   label: "US Med.",
                   fill: false,
-                  data: [
-                    props.nationalAvgs.dateMedians.deaths.one,
-                    props.nationalAvgs.dateMedians.deaths.two,
-                    props.nationalAvgs.dateMedians.deaths.three,
-                    props.nationalAvgs.dateMedians.deaths.four
-                  ],
+                  data: ntlMedDeaths,
                   borderColor: "#1891c3"
                 },
                 {
                   label: "US Avg.",
                   fill: false,
-                  data: [
-                    props.nationalAvgs.dateAvgs.deaths.one,
-                    props.nationalAvgs.dateAvgs.deaths.two,
-                    props.nationalAvgs.dateAvgs.deaths.three,
-                    props.nationalAvgs.dateAvgs.deaths.four
-                  ],
+                  data: ntlAvgDeaths,
                   borderColor: "#666"
                 }
               ]

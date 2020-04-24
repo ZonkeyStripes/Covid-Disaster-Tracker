@@ -437,7 +437,7 @@ class MapContainer extends Component {
       } else {
         $("#table-collapse-icon").css("transform", "rotate(0deg)");
         $(".table-responsive").css("overflow-y", "scroll");
-        $(".table-responsive").css("max-height", "414px");
+        $(".table-responsive").css("max-height", "460px");
         $("#cases-btn").show();
         $("#deaths-btn").show();
         $("#table-header").css("visibility", "hidden");
@@ -479,35 +479,35 @@ class MapContainer extends Component {
                 </div>
               </div>
 
-                <div className="col-md-4">
-                  <div className="card table-container">
-                    <div className="chart-title-sect">
-                      <h5 id="table-header">Nationwide totals</h5>
-                      <i onClick={this.toggleTableDisplay} id="table-collapse-icon" class="fas fa-chevron-down chart-toggle-icon"/>
+              <div className="col-md-4">
+                <div className="card table-container">
+                  <div className="chart-title-sect">
+                    <h5 id="table-header">Nationwide totals</h5>
+                    <i onClick={this.toggleTableDisplay} id="table-collapse-icon" class="fas fa-chevron-down chart-toggle-icon"/>
+                  </div>
+                  <div className="d-flex table-content">
+                    <div className="input-group" id="table-btn-container">
+                    <div className="input-group-prepend">
+                      <button onClick={this.displayCases} id="cases-btn" className="btn table-btn">Cases</button>
                     </div>
-                    <div className="d-flex table-content">
-                      <div className="input-group" id="table-btn-container">
-                      <div className="input-group-prepend">
-                        <button onClick={this.displayCases} id="cases-btn" className="btn table-btn">Cases</button>
-                      </div>
-                      <div className="input-group-append">
-                        <button onClick={this.displayDeaths} id="deaths-btn" className="btn table-btn-outline">Deaths</button>
-                      </div>
-                      </div>
+                    <div className="input-group-append">
+                      <button onClick={this.displayDeaths} id="deaths-btn" className="btn table-btn-outline">Deaths</button>
                     </div>
-                    <div className="table-responsive">
-                      <Tables
-                        displayed = {this.state.displayed}
-                        total = {this.state.total}
-                        displayList = {this.state.displayList}
-                        cases = {totalCases}
-                        deaths = {totalDeaths}
-                        casesArr = {casesArray}
-                        deathsArr = {deathsArray}
-                      />
                     </div>
                   </div>
-                </div>  
+                  <div className="table-responsive">
+                    <Tables
+                      displayed = {this.state.displayed}
+                      total = {this.state.total}
+                      displayList = {this.state.displayList}
+                      cases = {totalCases}
+                      deaths = {totalDeaths}
+                      casesArr = {casesArray}
+                      deathsArr = {deathsArray}
+                    />
+                  </div>
+                </div>
+              </div>
             </div>
           );
         }

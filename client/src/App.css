@@ -235,7 +235,7 @@ thead tr {
 
 .table-responsive {
   overflow-y: scroll;
-  max-height: 414px;
+  max-height: 460px;
 }
 
 #map-header {
@@ -371,6 +371,17 @@ thead tr {
   align-items: center;
   padding-left: 5px;
   padding-right: 5px;
+}
+
+#range-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#range-title{
+  margin-bottom: 0;
+  margin-right: 8px;
 }
 
 /* Css for news page */
