@@ -1,12 +1,13 @@
 import React, { Component } from "react";
 import disasterAPI from "../utils/disasterAPI";
 import stateAbbr from "../utils/stateAbbr";
-import "../App.css";
+import * as ReactBootStrap from "react-bootstrap";
 import Axios from "axios";
 import stateNames from "../utils/json/state-names.json";
 import stateLatLong from "../assets/statelatlong.json";
-import * as ReactBootStrap from "react-bootstrap";
 import DisasterMap from "../components/DisasterMap";
+import DisasterList from "../components/DisasterList";
+import "../App.css";
 
 let objCollection = {};
 let tester = [];
@@ -198,15 +199,41 @@ class Disasters extends Component {
     }
 
     render() {
+
+        let resultToRender;
+        if(this.state.allStates.length > 0) {
+            console.log("****")
+            console.log(this.state.allStates.length);
+            let temp = this.state.allStates.map((st) => {
+                let res = {};
+                //res.question = <div>{st[0]} {"\u2014"} {st[1].length} disasters declared</div>;
+                res.question = <div>{st[0]} {st[1].length} disasters declared</div>;
+                res.answer = st[1].map((dis) => {
+                    return <div>{dis.declaredCountyArea}: {dis.incidentType}<br />
+                    {dis.title}<br />
+                    {dis.declarationDate.substring(0,10)}<br /><br />
+                    </div>
+                } )
+                res.open = false;
+
+                return res;
+            });
+            console.log(temp);
+            resultToRender = <div className="col-6 faqs">
+            <h2>Disasters by State in the last Year</h2>
+            <hr></hr>
+            <div className="stuff">
+                <DisasterList stateDisasters={temp}/>
+            </div>
+        </div>;
+        } else {
+            resultToRender = "";
+        }
+
         return (
             <div>
                 <h1>Disasters</h1>
-                <h3>Disasters by State in the last Year</h3>
-
-                {this.state.allStates.map((el, index) => (
-                    <p key={index}>{el[0]}: {el[1].length} disaster declarations</p>
-                ))}
-
+                {resultToRender}
                 {this.state.locations.map((el, index) => (
                     <div>
                     <DisasterMap key={index} USstate={el[1]} lat={el[2]} long={el[3]} disasters={el[4]}/>

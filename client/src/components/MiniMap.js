@@ -262,8 +262,8 @@ class MiniMap extends Component {
     }
 
     zoomToFeature(e) {
-        const map = this.refs.map.leafletElement;
-        map.fitBounds(e.target.getBounds());
+        // const map = this.refs.map.leafletElement;
+        // map.fitBounds(e.target.getBounds());
     }
 
     changeView(e) {
