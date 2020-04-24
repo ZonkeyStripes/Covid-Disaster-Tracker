@@ -16,19 +16,17 @@ for(let i = 0; i < countyData.length; i++) {
 	}
 }
 
-console.log("countyArray in Dashboard:");
-console.log(countyArray);
-
 class Dashboard extends Component {
 
   constructor(props) {
     super(props);
 
-    //this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleClick = this.handleClick.bind(this);
 
     this.state = {
       locations: [],
-      effective_date: "4-12-2020"
+      effective_date: "4-12-2020",
+      username: ""
     };
   }
 
@@ -38,6 +36,7 @@ class Dashboard extends Component {
     .then((data) => {
         console.log("user logged in")
         console.log(data);
+        this.setState({username: data.data.email});
 
         Axios.get("/api/location/" + data.data.id)
         .then((all_locations) => {
@@ -96,10 +95,25 @@ class Dashboard extends Component {
     });
   }
 
+  handleClick(e) {
+    console.log("logging out perhaps?");
+    e.preventDefault();
+    Axios.post("/logout")
+    .then(() => {
+      console.log("logout route success");
+      this.props.history.push("/");
+    })
+    .catch(() => {
+      console.log("logout route failed, push to home");
+      this.props.history.push("/");
+    })
+  }
+
+
   render() {
       return (
         <div>
-          {/* <p>{this.state.username} (Logout)</p> */}
+          <p>{this.state.username}<span onClick={this.handleClick}>(Logout)</span></p>
             <h1>Dashboard</h1>
             <h2>Your tracked locations</h2>
             <h2><em>As of {this.state.effective_date}:</em></h2>

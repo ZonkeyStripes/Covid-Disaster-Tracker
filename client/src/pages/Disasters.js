@@ -35,18 +35,20 @@ class Disasters extends Component {
 
     componentDidMount() {
         console.log('mounted');
-        
-        this.loadAllDisasters();
-
+    
+        // check if user is logged in
         Axios.get("/api/user_data")
         .then((data) => {
+            // if they are
             console.log("user logged in")
             console.log(data);
     
+            // get their stored locations from the database
             Axios.get("/api/location/" + data.data.id)
             .then((all_locations) => {
-                // update the state with all current locations belonging to user
+                // update the component's state with all current locations belonging to user
                 console.log(all_locations.data);
+
                 let arrayOfLocations = [];
                 for(let i = 0; i < all_locations.data.length; i++) {
                     let tempArray = [];
@@ -56,15 +58,25 @@ class Disasters extends Component {
                     arrayOfLocations.push(tempArray);
                 }
     
-                // set state
                 console.log(arrayOfLocations);
 
                 // get latitude and longitude of state centers
-                arrayOfLocations.forEach(el => {
-                    let tempState = el[1];
-                    console.log(tempState);
-                })
-    
+                for(let i = 0; i < arrayOfLocations.length; i++) {
+                    let tempState = arrayOfLocations[i][1];
+                    // console.log(tempState);
+                    stateLatLong.forEach(state => {
+                        // console.log(state);
+                        if(state.State == tempState) {
+                            console.log("adding coords for " + state.State);
+                            arrayOfLocations[i].push(state.Latitude);
+                            arrayOfLocations[i].push(state.Longitude);
+                        }
+                    })
+                }
+                console.log(arrayOfLocations);
+                this.loadAllDisasters();
+
+                // set state
                 this.setState({locations: arrayOfLocations});
             })
         })
@@ -76,6 +88,8 @@ class Disasters extends Component {
                 ["Pima", "Arizona", 33.729759, -111.431221],
                 ["Orange", "Florida", 27.766279, -81.686783]
             ];
+
+            this.loadAllDisasters();
 
             this.setState({locations: arrayOfLocations}, () => {
                 console.log(this.state);
@@ -138,6 +152,7 @@ class Disasters extends Component {
 
                 let disastersByState = [];
 
+                console.log(this.state.locations);
                 this.state.locations.forEach(el => {
                     console.log(el[1]);
                     this.state.allStates.forEach(state => {
@@ -146,8 +161,8 @@ class Disasters extends Component {
                             el.push(state[1]);
                         }
                     })
-                    
                 })
+                console.log(this.state.locations);
 
                 console.log(disastersByState);
                 this.setState({disastersByState: disastersByState});

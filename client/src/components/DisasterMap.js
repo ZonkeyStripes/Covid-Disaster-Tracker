@@ -19,7 +19,7 @@ const stamenTonerAttr = 'Map tiles by <a href="http://stamen.com">Stamen Design<
 const mapCenter = [39.82,-98.57];
 let zoomLevel = 5;
 
-console.log(countyData);
+// console.log(countyData);
 let todayDate = "4/12/2020";
 
 let countyArray = [];
@@ -29,7 +29,7 @@ for(let i = 0; i < countyData.length; i++) {
 	}
 }
 
-console.log(countyArray);
+// console.log(countyArray);
 
 const mapColors = [
     ["#034e7b", "#0570b0", "#3690c0", "#74a9cf", "#a6bddb", "#d0d1e6", "#f1eef6"],
@@ -67,18 +67,15 @@ class DisasterMap extends Component {
         // Need to bind them manually in constructor
         this.geoJSONStyle = this.geoJSONStyle.bind(this);
         this.onEachFeature = this.onEachFeature.bind(this);
-        //this.highlightFeature.bind(this)
 
-    }
-    
-    componentWillMount() {
-        this.id = newId();
     }
 
 
     componentDidMount() {
         console.log("Component did mount");
         console.log(this.props);
+
+        this.id = newId();
 
         let mapCtr = [];
         let zoom = 7;
@@ -122,7 +119,6 @@ class DisasterMap extends Component {
             let geo_id = feature.properties.GEO_ID;
             geo_id = geo_id.substring(geo_id.length - 5);
             let state_fips = geo_id.substring(0, 2)
-            console.log(state_fips);
             
             let stateName = "";
             statefips.forEach(sta => {
@@ -219,11 +215,8 @@ class DisasterMap extends Component {
         });
       }
 
-    // mouseover a specific state
+    // mouseover a specific state - highlight it
     highlightFeature(e) {
-        // console.log("mouseover");
-        // console.log(e);
-
         let layer = e.target;
 
         layer.setStyle({
@@ -232,23 +225,13 @@ class DisasterMap extends Component {
             dashArray: '',
             fillOpacity: 0.7
         });
-
-        // if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
-        //     layer.bringToFront();
-        // }
-
-        // console.log("layer.feature is");
-        // console.log(layer.feature);
-        // info.update(layer.feature.properties);
     }
 
+    // remove highlight on mouseout
     resetHighlight(e) {
-        // console.log("mouseout");
         let layer = e.target;
 
         this.refs.geojson.leafletElement.resetStyle(e.target);
-        // layer.resetStyle();
-        // info.update();
     }
 
     zoomToFeature(e) {
@@ -260,6 +243,8 @@ class DisasterMap extends Component {
     render() {
         
         let test = "";
+
+        // if there are disasters passed in as props, put markers on the map for them
         if(this.props.disasters) {
 
             let markers = [];
@@ -269,7 +254,7 @@ class DisasterMap extends Component {
                 let i = str.indexOf('(');
                 let tempArr = [];
                 str = str.substring(0, i - 1);
-                console.log(str);
+                // console.log(str);
 
                 let stateStr = el.state;
                 countyLatLong.forEach(county => {
@@ -284,10 +269,10 @@ class DisasterMap extends Component {
                         markers.push(tempArr);
                     }
                 })
-                console.log(markers);
+                // console.log(markers);
             })
 
-            test = markers.map((marker, index) => (<Marker position={[marker[0], marker[1]]}>
+            test = markers.map((marker, index) => (<Marker key={index} position={[marker[0], marker[1]]}>
                 <Popup>
                     <strong>{marker[4]}: {marker[2]}</strong>
                     <br/>

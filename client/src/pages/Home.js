@@ -11,7 +11,6 @@ class Home extends Component {
   render() {
       return (
         <div className="container">
-            {/* <MapContainer /> */}
             <MapContainer />
             <ChartContainer />
         </div>
