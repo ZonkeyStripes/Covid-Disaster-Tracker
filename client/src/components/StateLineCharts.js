@@ -2,6 +2,7 @@ import React from 'react';
 import {Line} from "react-chartjs-2";
 
 const StateLineCharts = (props) => {
+  console.log(props);
 
   let firstDate = props.stateData[props.stateData.length-22].date;
   let secondDate = props.stateData[props.stateData.length-15].date;
@@ -27,7 +28,7 @@ const StateLineCharts = (props) => {
             labels: [firstDate, secondDate, thirdDate, fourthDate],
               datasets: [
                 {
-                  label: props.stateName,
+                  label: props.stateAbbrev,
                   fill: false,
                   data: [
                     stateFirstDateCases,
@@ -38,7 +39,7 @@ const StateLineCharts = (props) => {
                   borderColor: "#00589c"
                 },
                 {
-                  label: "US Median",
+                  label: "US Med.",
                   fill: false,
                   data: [
                     props.nationalAvgs.dateMedians.cases.one,
@@ -49,7 +50,7 @@ const StateLineCharts = (props) => {
                   borderColor: "#1891c3"
                 },
                 {
-                  label: "US Average",
+                  label: "US Avg.",
                   fill: false,
                   data: [
                     props.nationalAvgs.dateAvgs.cases.one,
@@ -69,7 +70,7 @@ const StateLineCharts = (props) => {
               },
               legend: {
                 display: true,
-                position: "right"
+                position: "top"
               },
               scales:{
                 responsive: true,
@@ -91,7 +92,7 @@ const StateLineCharts = (props) => {
             labels: [firstDate, secondDate, thirdDate, fourthDate],
               datasets: [
                 {
-                  label: props.stateName,
+                  label: props.stateAbbrev,
                   fill: false,
                   data: [
                     stateFirstDateDeaths,
@@ -102,7 +103,7 @@ const StateLineCharts = (props) => {
                   borderColor: "#00589c"
                 },
                 {
-                  label: "US median",
+                  label: "US Med.",
                   fill: false,
                   data: [
                     props.nationalAvgs.dateMedians.deaths.one,
@@ -113,7 +114,7 @@ const StateLineCharts = (props) => {
                   borderColor: "#1891c3"
                 },
                 {
-                  label: "US average",
+                  label: "US Avg.",
                   fill: false,
                   data: [
                     props.nationalAvgs.dateAvgs.deaths.one,
@@ -133,7 +134,7 @@ const StateLineCharts = (props) => {
               },
               legend: {
                 display: true,
-                position: "right"
+                position: "top"
               },
               scales:{
                 responsive: true,

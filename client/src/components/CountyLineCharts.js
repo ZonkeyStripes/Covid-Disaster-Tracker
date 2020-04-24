@@ -61,13 +61,13 @@ const CountyLineCharts = (props) => {
                     borderColor: "#00589c"
                   },
                   {
-                    label: `${props.stateAbbrev} Median`,
+                    label: `${props.stateAbbrev} Med.`,
                     fill: false,
                     data: medianCasesArr,
                     borderColor: "#1891c3"
                   },
                   {
-                    label: `${props.stateAbbrev} Average`,
+                    label: `${props.stateAbbrev} Avg.`,
                     fill: false,
                     data: avgCasesArr,
                     borderColor: "#666"
@@ -76,13 +76,13 @@ const CountyLineCharts = (props) => {
             }}
             options={{
               title: {
-                  display: false,
-                  text: `${props.countyName} Cases Over Time`,
-                  fontSize: 25
+                display: false,
+                text: `${props.countyName} Cases Over Time`,
+                fontSize: 25
               },
               legend: {
-                  display: true,
-                  position: "right"
+                display: true,
+                position: "top"
               },
               scales:{
                 responsive: true,
@@ -110,13 +110,13 @@ const CountyLineCharts = (props) => {
                   borderColor: "#00589c"
                 },
                 {
-                  label: `${props.stateAbbrev} Median`,
+                  label: `${props.stateAbbrev} Med.`,
                   fill: false,
                   data: medianDeathsArr,
                   borderColor: "#1891c3"
                 },
                 {
-                  label: `${props.stateAbbrev} Average`,
+                  label: `${props.stateAbbrev} Avg.`,
                   fill: false,
                   data: avgDeathsArr,
                   borderColor: "#666"
@@ -131,7 +131,7 @@ const CountyLineCharts = (props) => {
               },
               legend: {
                 display: true,
-                position: "right"
+                position: "top"
               },
               scales:{
                 responsive: true,

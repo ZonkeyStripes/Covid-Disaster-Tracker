@@ -2,13 +2,12 @@ import React from 'react'
 import {Bar} from "react-chartjs-2"
 
 const StateBarCharts = (props) => {
-  console.log(props);
   let returnVal;
   if (props.display === "cases"){
     returnVal = (
         <Bar
           data={{
-            labels: [`${props.stateName}`, "US median", "US average"],
+            labels: [`${props.stateAbbrev}`, "US Median", "US Average"],
               datasets: [
                 {
                   label: "Cases",
@@ -51,7 +50,7 @@ const StateBarCharts = (props) => {
     returnVal = (
         <Bar
           data={{
-            labels: [`${props.stateName}`, "US median", "US average"],
+            labels: [`${props.stateAbbrev}`, "US Median", "US Average"],
               datasets: [
                 {
                   label: "Deaths",

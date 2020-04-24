@@ -1,0 +1,34 @@
+@media screen and (min-width: 767px) and (max-width: 1200px) { 
+  .table-btn, .table-btn-outline {
+      padding-left: 25px;
+      padding-right: 25px;
+  }
+}
+
+@media screen and (max-width: 767px) { 
+  .table-container {
+    margin-top: 20px;
+  }
+  .header-link{
+    /* margin-left: 40%; */
+  }
+  #home-link{
+    margin-left: 41.5%;
+  }
+  #news-link{
+    margin-left: 42%;
+  }
+  #sources-link{
+    margin-left: 40.3%;
+  }
+  #li-btn{
+    margin-left: 38%;
+  }
+  #su-btn{
+    margin-left: 37%;
+  }
+  #ss-header-text{
+    text-align: center;
+    margin-bottom: 18px;
+  }
+}

@@ -1,4 +1,5 @@
-import React, {useState} from 'react';
+import React, {useState, useContext, useEffect} from 'react';
+import {Context} from "../utils/stateContext";
 import CountyChartContainer from "./CountyChartContainer";
 import StateChartContainer from "./StateChartContainer";
 
@@ -8,9 +9,8 @@ import countiesData from "../utils/json/us-counties.json";
 import stateNames from "../utils/json/state-names-&-abbrevs.json";
 import $ from "jquery";
 
-function ChartContainer() {
+function ChartContainer(props) {
 
-  //Returns array all county names in a given state
   const getCounties = (state) => {
     let setOfCounties = new Set(); //Using a set to ensure that duplicate counties aren't added
     for (let i = 0; i < countiesData.length; i++){
@@ -20,14 +20,36 @@ function ChartContainer() {
     }
     return Array.from(setOfCounties).sort();
   }
-  
+
+  const [display, setDisplay] = useState("cases")
   const [selectedState, setSelectedState] = useState(stateNames[0].state)
+  // const [selectedState, setSelectedState] = useState(props.rdStateName);
   const [selectedStateAb, setSelectedStateAb] = useState(stateNames[0].code)
   const [stateDataObj, setStateDataObj] = useState(statesData.filter(st => st.state === stateNames[0].state));
   const [countiesToShow, setCountiesToShow] = useState(getCounties(selectedState));
   const [selectedCounty, setSelectedCounty] = useState(countiesToShow[0]);
   const [countyData, setCountyData] = useState(countiesData.filter(i => i.state === selectedState && i.county === selectedCounty));
+
+  useEffect(() => {
+    
+    console.log("ASDFADSGDF");
+    console.log(props.rdStateName.stateName);
+    thing();
+  });
+
+  const thing = () => {
+    if (props.rdStateName.ur === false){
+      handleButtonStateChange(props.rdStateName.stateName);
+    }
+  }
+
+  const [myState, myDispatch] = useContext(Context);
   
+  //Returns array all county names in a given state
+  
+  
+  console.log("SELECTED: " + selectedState)
+
   // Calculates the per-state average and median of COVID-19 data in the US
   const getNationalAvg = () => {
     let totalCases = nationalData[nationalData.length-1].cases;
@@ -107,6 +129,7 @@ function ChartContainer() {
   // Calculates the per-county average and median of COVID-19 data in a given state
   const getStateAvg = () => {
     let loopCounty;
+    let loopCountyCheck;
     let totalCases = 0;
     let totalDeaths = 0;
     let casesByCounty = [];
@@ -166,9 +189,11 @@ function ChartContainer() {
     let mdnDeathsDateSeven;
 
     for (let i = 0; i < countiesToShow.length; i++){
-      loopCounty = countiesData.filter(item => item.state === selectedState && item.county === countiesToShow[i]);
-      totalCases += loopCounty[loopCounty.length-1].cases;
-      totalDeaths += loopCounty[loopCounty.length-1].deaths;
+      // loopCounty = countiesData.filter(item => item.county === countiesToShow[i]);
+      // loopCountyCheck = loopCounty.filter(item => item.state === selectedState);
+      loopCountyCheck = countiesData.filter(item => item.state === selectedState && item.county === countiesToShow[i]);
+      totalCases += loopCountyCheck[loopCountyCheck.length-1].cases;
+      totalDeaths += loopCountyCheck[loopCountyCheck.length-1].deaths;
 
       let d1cases;
       let d2cases;
@@ -186,115 +211,115 @@ function ChartContainer() {
       let d6deaths;
       let d7deaths;
 
-      if (loopCounty.length >= 7){
-        d1cases = loopCounty[loopCounty.length-7].cases;
-        d2cases = loopCounty[loopCounty.length-6].cases;
-        d3cases = loopCounty[loopCounty.length-5].cases;
-        d4cases = loopCounty[loopCounty.length-4].cases;
-        d5cases = loopCounty[loopCounty.length-3].cases;
-        d6cases = loopCounty[loopCounty.length-2].cases;
-        d7cases = loopCounty[loopCounty.length-1].cases;
+      if (loopCountyCheck.length >= 7){
+        d1cases = loopCountyCheck[loopCountyCheck.length-7].cases;
+        d2cases = loopCountyCheck[loopCountyCheck.length-6].cases;
+        d3cases = loopCountyCheck[loopCountyCheck.length-5].cases;
+        d4cases = loopCountyCheck[loopCountyCheck.length-4].cases;
+        d5cases = loopCountyCheck[loopCountyCheck.length-3].cases;
+        d6cases = loopCountyCheck[loopCountyCheck.length-2].cases;
+        d7cases = loopCountyCheck[loopCountyCheck.length-1].cases;
   
-        d1deaths = loopCounty[loopCounty.length-7].deaths;
-        d2deaths = loopCounty[loopCounty.length-6].deaths;
-        d3deaths = loopCounty[loopCounty.length-5].deaths;
-        d4deaths = loopCounty[loopCounty.length-4].deaths;
-        d5deaths = loopCounty[loopCounty.length-3].deaths;
-        d6deaths = loopCounty[loopCounty.length-2].deaths;
-        d7deaths = loopCounty[loopCounty.length-1].deaths;
+        d1deaths = loopCountyCheck[loopCountyCheck.length-7].deaths;
+        d2deaths = loopCountyCheck[loopCountyCheck.length-6].deaths;
+        d3deaths = loopCountyCheck[loopCountyCheck.length-5].deaths;
+        d4deaths = loopCountyCheck[loopCountyCheck.length-4].deaths;
+        d5deaths = loopCountyCheck[loopCountyCheck.length-3].deaths;
+        d6deaths = loopCountyCheck[loopCountyCheck.length-2].deaths;
+        d7deaths = loopCountyCheck[loopCountyCheck.length-1].deaths;
       }
-      if (loopCounty.length === 6){
+      if (loopCountyCheck.length === 6){
         d1cases = 0;
-        d2cases = loopCounty[loopCounty.length-6].cases;
-        d3cases = loopCounty[loopCounty.length-5].cases;
-        d4cases = loopCounty[loopCounty.length-4].cases;
-        d5cases = loopCounty[loopCounty.length-3].cases;
-        d6cases = loopCounty[loopCounty.length-2].cases;
-        d7cases = loopCounty[loopCounty.length-1].cases;
+        d2cases = loopCountyCheck[loopCountyCheck.length-6].cases;
+        d3cases = loopCountyCheck[loopCountyCheck.length-5].cases;
+        d4cases = loopCountyCheck[loopCountyCheck.length-4].cases;
+        d5cases = loopCountyCheck[loopCountyCheck.length-3].cases;
+        d6cases = loopCountyCheck[loopCountyCheck.length-2].cases;
+        d7cases = loopCountyCheck[loopCountyCheck.length-1].cases;
 
         d1deaths = 0;
-        d2deaths = loopCounty[loopCounty.length-6].deaths;
-        d3deaths = loopCounty[loopCounty.length-5].deaths;
-        d4deaths = loopCounty[loopCounty.length-4].deaths;
-        d5deaths = loopCounty[loopCounty.length-3].deaths;
-        d6deaths = loopCounty[loopCounty.length-2].deaths;
-        d7deaths = loopCounty[loopCounty.length-1].deaths;
-      } else if (loopCounty.length === 5){
+        d2deaths = loopCountyCheck[loopCountyCheck.length-6].deaths;
+        d3deaths = loopCountyCheck[loopCountyCheck.length-5].deaths;
+        d4deaths = loopCountyCheck[loopCountyCheck.length-4].deaths;
+        d5deaths = loopCountyCheck[loopCountyCheck.length-3].deaths;
+        d6deaths = loopCountyCheck[loopCountyCheck.length-2].deaths;
+        d7deaths = loopCountyCheck[loopCountyCheck.length-1].deaths;
+      } else if (loopCountyCheck.length === 5){
         d1cases = 0;
         d2cases = 0;
-        d3cases = loopCounty[loopCounty.length-5].cases;
-        d4cases = loopCounty[loopCounty.length-4].cases;
-        d5cases = loopCounty[loopCounty.length-3].cases;
-        d6cases = loopCounty[loopCounty.length-2].cases;
-        d7cases = loopCounty[loopCounty.length-1].cases;
+        d3cases = loopCountyCheck[loopCountyCheck.length-5].cases;
+        d4cases = loopCountyCheck[loopCountyCheck.length-4].cases;
+        d5cases = loopCountyCheck[loopCountyCheck.length-3].cases;
+        d6cases = loopCountyCheck[loopCountyCheck.length-2].cases;
+        d7cases = loopCountyCheck[loopCountyCheck.length-1].cases;
 
         d1deaths = 0;
         d2deaths = 0;
-        d3deaths = loopCounty[loopCounty.length-5].deaths;
-        d4deaths = loopCounty[loopCounty.length-4].deaths;
-        d5deaths = loopCounty[loopCounty.length-3].deaths;
-        d6deaths = loopCounty[loopCounty.length-2].deaths;
-        d7deaths = loopCounty[loopCounty.length-1].deaths;
+        d3deaths = loopCountyCheck[loopCountyCheck.length-5].deaths;
+        d4deaths = loopCountyCheck[loopCountyCheck.length-4].deaths;
+        d5deaths = loopCountyCheck[loopCountyCheck.length-3].deaths;
+        d6deaths = loopCountyCheck[loopCountyCheck.length-2].deaths;
+        d7deaths = loopCountyCheck[loopCountyCheck.length-1].deaths;
         
-      } else if (loopCounty.length === 4){
+      } else if (loopCountyCheck.length === 4){
         d1cases = 0;
         d2cases = 0;
         d3cases = 0;
-        d4cases = loopCounty[loopCounty.length-4].cases;
-        d5cases = loopCounty[loopCounty.length-3].cases;
-        d6cases = loopCounty[loopCounty.length-2].cases;
-        d7cases = loopCounty[loopCounty.length-1].cases;
+        d4cases = loopCountyCheck[loopCountyCheck.length-4].cases;
+        d5cases = loopCountyCheck[loopCountyCheck.length-3].cases;
+        d6cases = loopCountyCheck[loopCountyCheck.length-2].cases;
+        d7cases = loopCountyCheck[loopCountyCheck.length-1].cases;
 
         d1deaths = 0;
         d2deaths = 0;
         d3deaths = 0;
-        d4deaths = loopCounty[loopCounty.length-4].deaths;
-        d5deaths = loopCounty[loopCounty.length-3].deaths;
-        d6deaths = loopCounty[loopCounty.length-2].deaths;
-        d7deaths = loopCounty[loopCounty.length-1].deaths;
+        d4deaths = loopCountyCheck[loopCountyCheck.length-4].deaths;
+        d5deaths = loopCountyCheck[loopCountyCheck.length-3].deaths;
+        d6deaths = loopCountyCheck[loopCountyCheck.length-2].deaths;
+        d7deaths = loopCountyCheck[loopCountyCheck.length-1].deaths;
         
-      } else if (loopCounty.length === 3){
+      } else if (loopCountyCheck.length === 3){
         d1cases = 0;
         d2cases = 0;
         d3cases = 0;
         d4cases = 0;
-        d5cases = loopCounty[loopCounty.length-3].cases;
-        d6cases = loopCounty[loopCounty.length-2].cases;
-        d7cases = loopCounty[loopCounty.length-1].cases;
+        d5cases = loopCountyCheck[loopCountyCheck.length-3].cases;
+        d6cases = loopCountyCheck[loopCountyCheck.length-2].cases;
+        d7cases = loopCountyCheck[loopCountyCheck.length-1].cases;
 
         d1deaths = 0;
         d2deaths = 0;
         d3deaths = 0;
         d4deaths = 0;
-        d5deaths = loopCounty[loopCounty.length-3].deaths;
-        d6deaths = loopCounty[loopCounty.length-2].deaths;
-        d7deaths = loopCounty[loopCounty.length-1].deaths;
+        d5deaths = loopCountyCheck[loopCountyCheck.length-3].deaths;
+        d6deaths = loopCountyCheck[loopCountyCheck.length-2].deaths;
+        d7deaths = loopCountyCheck[loopCountyCheck.length-1].deaths;
         
-      } else if (loopCounty.length === 2){
+      } else if (loopCountyCheck.length === 2){
         d1cases = 0;
         d2cases = 0;
         d3cases = 0;
         d4cases = 0;
         d5cases = 0;
-        d6cases = loopCounty[loopCounty.length-2].cases;
-        d7cases = loopCounty[loopCounty.length-1].cases;
+        d6cases = loopCountyCheck[loopCountyCheck.length-2].cases;
+        d7cases = loopCountyCheck[loopCountyCheck.length-1].cases;
 
         d1deaths = 0;
         d2deaths = 0;
         d3deaths = 0;
         d4deaths = 0;
         d5deaths = 0;
-        d6deaths = loopCounty[loopCounty.length-2].deaths;
-        d7deaths = loopCounty[loopCounty.length-1].deaths;
+        d6deaths = loopCountyCheck[loopCountyCheck.length-2].deaths;
+        d7deaths = loopCountyCheck[loopCountyCheck.length-1].deaths;
         
-      } else if (loopCounty.length === 1){
+      } else if (loopCountyCheck.length === 1){
         d1cases = 0;
         d2cases = 0;
         d3cases = 0;
         d4cases = 0;
         d5cases = 0;
         d6cases = 0;
-        d7cases = loopCounty[loopCounty.length-1].cases;
+        d7cases = loopCountyCheck[loopCountyCheck.length-1].cases;
 
         d1deaths = 0;
         d2deaths = 0;
@@ -302,7 +327,7 @@ function ChartContainer() {
         d4deaths = 0;
         d5deaths = 0;
         d6deaths = 0;
-        d7deaths = loopCounty[loopCounty.length-1].deaths;
+        d7deaths = loopCountyCheck[loopCountyCheck.length-1].deaths;
       }
       stateWideCasesDateOne += d1cases;
       stateWideCasesDateTwo += d2cases;
@@ -337,16 +362,16 @@ function ChartContainer() {
       deathsByCountyDateSix.push(d6deaths);
       deathsByCountyDateSeven.push(d7deaths);
 
-      casesByCounty.push(loopCounty[loopCounty.length-1].cases);
-      deathsByCounty.push(loopCounty[loopCounty.length-1].deaths);
+      casesByCounty.push(loopCountyCheck[loopCountyCheck.length-1].cases);
+      deathsByCounty.push(loopCountyCheck[loopCountyCheck.length-1].deaths);
       casesByCountyWithNames.push({
-        state: loopCounty[loopCounty.length-1].state,
-        county: loopCounty[loopCounty.length-1].county,
-        cases: loopCounty[loopCounty.length-1].cases
+        state: loopCountyCheck[loopCountyCheck.length-1].state,
+        county: loopCountyCheck[loopCountyCheck.length-1].county,
+        cases: loopCountyCheck[loopCountyCheck.length-1].cases
       });
       deathsByCountyWithNames.push({
-        county: loopCounty[loopCounty.length-1].county,
-        deaths: loopCounty[loopCounty.length-1].deaths
+        county: loopCountyCheck[loopCountyCheck.length-1].county,
+        deaths: loopCountyCheck[loopCountyCheck.length-1].deaths
       });
     }
 
@@ -479,7 +504,6 @@ function ChartContainer() {
 
   // Runs whenever there's a change in the state dropdown menu
   const handleStateChange = e => {
-    // Ensuring we grab data from whichever county will initially showup in the county dropdown menu when the user changes the state
     let indexToRender = countiesToShow.indexOf(selectedCounty);
 
     let counties = getCounties(e.target.value);
@@ -496,15 +520,65 @@ function ChartContainer() {
     }
     setSelectedCounty(counties[indexToRender]);
     setCountyData(countiesData.filter(i => i.state === e.target.value && i.county === counties[indexToRender]));
+
+    myDispatch({
+      type: "get_state_data",
+      payload: {
+        stateName: e.target.value,
+        ur: false
+        // stateAbbrev: selectedStateAb,
+        // stateData: statesData.filter(st => st.state === e.target.value),
+        // counties: counties,
+        // countyName: counties[indexToRender],
+        // countyData: countiesData.filter(i => i.state === e.target.value && i.county === counties[indexToRender])
+      }
+    })
   }
   
   // Runs whenever there's a change in the county dropdown menu
   const handleCountyChange = e => {
     setSelectedCounty(e.target.value);
     setCountyData(countiesData.filter(i => i.state === selectedState && i.county === e.target.value));
+    
+    myDispatch({
+      type: "get_county_data",
+      payload: {
+        countyName: e.target.value,
+        countyData: countiesData.filter(i => i.state === selectedState && i.county === e.target.value)
+      }
+    })
   }
 
-  const [display, setDisplay] = useState("cases")
+
+
+  const handleButtonStateChange = (staate) => {
+    let indexToRender = countiesToShow.indexOf(selectedCounty);
+
+    let counties = getCounties(staate);
+    setSelectedState(staate);
+    for (let i = 0; i < stateNames.length; i++){
+      if (stateNames[i].state === staate){
+        setSelectedStateAb(stateNames[i].code);
+      }
+    }
+    setStateDataObj(statesData.filter(st => st.state === staate))
+    setCountiesToShow(counties);
+    if (indexToRender === -1 || indexToRender > counties.length-1){
+      indexToRender = 0;
+    }
+    setSelectedCounty(counties[indexToRender]);
+    setCountyData(countiesData.filter(i => i.state === staate && i.county === counties[indexToRender]));
+
+    myDispatch({
+      type: "get_state_data",
+      payload: {
+        stateName: staate,
+        ur: false
+      }
+    })
+  }
+
+  
   const displayDeaths = () => {
     if (display === "cases"){
       setDisplay("deaths");
@@ -528,11 +602,12 @@ function ChartContainer() {
   return (
     <div id="chart-stuff" className="mt-5">
       <div className="container">
+        <div id="chart-stuff-top">
           <div className="row" id="chart-sect-header">
-            <div className="col-md-4 p-0">
-              <h3 id="ss-header-text">COVID-19 State Summary</h3>
+            <div className="col-4 p-0">
+              <h3>COVID-19 State Summary</h3>
             </div>
-            <div className="col-md-4">
+            <div className="col-4">
               <div className="input-group" id="table-btn-container">
                 <div className="input-group-prepend">
                   <button id="btn-cases" onClick={displayCases} className="btn btn-chart">Cases</button>
@@ -542,33 +617,26 @@ function ChartContainer() {
                 </div>
               </div>
             </div>
-            <div className="col-md-4">
+            <div className="col-4">
               {/* <label htmlFor="state">State</label> */}
               <div className="row">
                 <div className="col-6">
-                  <p className="text-muted dd-label">
-                    State
-                  </p>
-                  <select className="form-control" onChange={handleStateChange} id="stateSelect">
+                  <select onChange={handleStateChange} class="form-control" id="stateSelect">
                     {stateNames.map(name => (
                       <option>{name.state}</option>
                     ))}
                   </select>
                 </div>
                 <div className="col-6">
-                  <p className="text-muted dd-label">
-                    County
-                  </p>
-                  <select className="form-control" onChange={handleCountyChange} id="countySelect">
+                  <select onChange={handleCountyChange} class="form-control" id="countySelect">
                   {countiesToShow.map(county => (
-                    <option>{county}</option>
+                      <option>{county}</option>
                     ))}
                   </select>
                 </div>
               </div>
             </div>
           </div>
-        <div id="chart-stuff-top">
           <StateChartContainer
             display = {display}
             stateName = {selectedState}
@@ -589,6 +657,7 @@ function ChartContainer() {
             countyName = {selectedCounty}
             countyData = {countyData}
             stateAvgs = {getStateAvg()}
+            display = {display}
           />
         </div>
       </div>

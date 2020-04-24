@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { BrowserRouter, HashRouter, Switch, Route} from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "./App.css";
+import "./mediaQueries.css";
 import Home from "./pages/Home";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
@@ -10,6 +11,7 @@ import Header from "./components/Header";
 import Dashboard from "./pages/Dashboard";
 import PrivateRoute from "./components/PrivateRoute";
 import FirstTimeUse from "./pages/FirstTimeUse";
+import Footer from "./components/Footer";
 
 class App extends Component {
   render() {
@@ -27,6 +29,7 @@ class App extends Component {
           <About />
         </Route> */}
         </Switch>
+        <Footer/>
       </HashRouter>
     );
   }

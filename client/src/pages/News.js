@@ -29,6 +29,7 @@ function News() {
     };
 
     return (
+      <div className="container">
         <div className="row">
 
             <div className="col-6 container newslist">
@@ -71,6 +72,7 @@ function News() {
             <Extras />
             </div>
         </div>
+      </div>
     )
 
 

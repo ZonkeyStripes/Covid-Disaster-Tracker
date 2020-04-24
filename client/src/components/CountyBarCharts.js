@@ -11,7 +11,7 @@ const CountyBarCharts = (props) => {
     returnVal = (
       <Bar
         data={{
-          labels: [`${props.countyName} County`, `${props.stateAbbrev} median`, `${props.stateAbbrev} average`],
+          labels: [`${props.countyName} County`, `${props.stateAbbrev} Median`, `${props.stateAbbrev} Average`],
             datasets: [
               {
                 label: "Cases",
@@ -50,7 +50,7 @@ const CountyBarCharts = (props) => {
     returnVal = (
       <Bar
         data={{
-          labels: [`${props.countyName} County`, `${props.stateAbbrev} median`, `${props.stateAbbrev} average`],
+          labels: [`${props.countyName} County`, `${props.stateAbbrev} Median`, `${props.stateAbbrev} Average`],
             datasets: [
             {
               data: [
