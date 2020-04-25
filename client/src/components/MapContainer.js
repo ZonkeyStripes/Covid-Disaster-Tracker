@@ -1,14 +1,10 @@
 import React, { Component } from "react";
-import { Map, Marker, Popup, TileLayer, GeoJSON, MapControl } from "react-leaflet";
-import { Icon } from "leaflet";
+import { Map, TileLayer, GeoJSON } from "react-leaflet";
 import "../App.css";
 import usstates from '../assets/gz_2010_us_040_00_5m.json';
 import stateData from '../assets/nytimesstate.json';
-import L from 'leaflet';
-import MapInfo from "./MapInfo";
 import MapLegend from "./MapLegend";
 import Tables from "./Tables";
-import DataTable from "./DataTable";
 import $ from "jquery";
 
 
@@ -20,7 +16,7 @@ const zoomLevel = 4;
 
 
 //console.log(usstates);
-let todayDate = "2020-04-08";
+let todayDate = "2020-04-23";
 
 let totalCases = 0;
 let totalDeaths = 0;
@@ -52,7 +48,7 @@ const mapColors = [
 ];
 
 const thresholdData = [
-    [100000, 5000, 2000, 1000, 500, 100],
+    [200000, 10000, 5000, 1000, 500, 100],
     [2000, 1000, 500, 250, 100, 50]
 ];
 
@@ -153,9 +149,9 @@ class MapContainer extends Component {
 
         for(let i = 0; i < todayArray.length; i++) {
             if(todayArray[i].state == feature.properties.NAME) {
-                if(this.state.displayed == "cases") {
+                if(this.state.displayed === "cases") {
                     dataToDisplay = todayArray[i].cases;
-                } else if (this.state.displayed == "deaths") {
+                } else if (this.state.displayed === "deaths") {
                     dataToDisplay = todayArray[i].deaths;
                 }
             }
@@ -200,18 +196,7 @@ class MapContainer extends Component {
     }
 
     resetHighlight(e) {
-        // console.log("mouseout");
-        let layer = e.target;
-
-        // layer.setStyle({
-        //     weight: 1,
-        //     color: '#666',
-        //     dashArray: '',
-        //     fillOpacity: 0.7
-        // });
         this.refs.geojson.leafletElement.resetStyle(e.target);
-        // layer.resetStyle();
-        // info.update();
     }
 
     zoomToFeature(e) {

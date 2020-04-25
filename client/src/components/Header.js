@@ -20,6 +20,9 @@ const Header = () => {
               <NavLink exact={true} className="header-link" activeClassName="header-link-active" to={"/news"}>News</NavLink>
             </ReactBootStrap.Nav.Link>
             <ReactBootStrap.Nav.Link>
+              <NavLink exact={true} className="header-link" activeClassName="header-link-active" to={"/disasters"}>Disasters</NavLink>
+            </ReactBootStrap.Nav.Link>
+            <ReactBootStrap.Nav.Link>
               <NavLink exact={true} className="header-link" activeClassName="header-link-active" to={"/kit"}>Disaster Kit</NavLink>
             </ReactBootStrap.Nav.Link>
           </ReactBootStrap.Nav>

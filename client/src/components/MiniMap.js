@@ -18,8 +18,8 @@ const stamenTonerAttr = 'Map tiles by <a href="http://stamen.com">Stamen Design<
 const mapCenter = [39.82,-98.57];
 let zoomLevel = 7;
 
-console.log(countyData);
-let todayDate = "4/12/2020";
+// console.log(countyData);
+let todayDate = "2020-04-23";
 
 let countyArray = [];
 for(let i = 0; i < countyData.length; i++) {
@@ -28,7 +28,7 @@ for(let i = 0; i < countyData.length; i++) {
 	}
 }
 
-console.log(countyArray);
+// console.log(countyArray);
 
 const mapColors = [
     ["#034e7b", "#0570b0", "#3690c0", "#74a9cf", "#a6bddb", "#d0d1e6", "#f1eef6"],
@@ -262,8 +262,8 @@ class MiniMap extends Component {
     }
 
     zoomToFeature(e) {
-        const map = this.refs.map.leafletElement;
-        map.fitBounds(e.target.getBounds());
+        // const map = this.refs.map.leafletElement;
+        // map.fitBounds(e.target.getBounds());
     }
 
     changeView(e) {
@@ -319,9 +319,12 @@ class MiniMap extends Component {
                     }
                 }
     
+                if(dataToDisplay == undefined) {
+                    dataToDisplay = 0;
+                }
                 // console.log(`this.state.displayed = ${this.state.displayed}`);
-                console.log("dataToDisplay is " + dataToDisplay);
-    
+                //console.log("dataToDisplay is " + dataToDisplay);
+                
     
                 let mark = markers[i].getPopup();
                 // console.log(markers[i].feature);
