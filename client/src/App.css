@@ -412,6 +412,7 @@ thead tr {
   text-align: center;
   margin-bottom: 25px;
 }
+
 /* scrollbar style */
 .newslist::-webkit-scrollbar {
   width: 5px;
