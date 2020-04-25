@@ -1,23 +1,24 @@
 import React from 'react'
 import {Bar} from "react-chartjs-2"
 
-const CountyBarCharts = (props) => {
+const CountyBarCharts = ({display, stateName, countyName, stateAbbrev, countyData, stateAvgs}) => {
+  
   let returnVal;
 
-  if (props.stateName === "Guam" || props.stateName === "Virgin Islands" || props.stateName === "District of Columbia"){
+  if (stateName === "Guam" || stateName === "Virgin Islands" || stateName === "District of Columbia"){
     returnVal = <span className="d-none"></span>
-  } else if (props.display === "cases") {
+  } else if (display === "cases") {
     returnVal = (
       <Bar
         data={{
-          labels: [`${props.countyName} County`, `${props.stateAbbrev} Median`, `${props.stateAbbrev} Average`],
+          labels: [`${countyName} County`, `${stateAbbrev} Median`, `${stateAbbrev} Average`],
             datasets: [
               {
                 label: "Cases",
                 data: [
-                  props.countyData[props.countyData.length-1].cases,
-                  props.stateAvgs.medianCases,
-                  props.stateAvgs.avgCases],
+                  countyData[countyData.length-1].cases,
+                  stateAvgs.medianCases,
+                  stateAvgs.avgCases],
                 backgroundColor: ["#00589c", "#1891c3", "#666"]
               }
             ]
@@ -26,7 +27,7 @@ const CountyBarCharts = (props) => {
         options={{
           title: {
             display: false,
-            text: `${props.countyName} County Case Totals`,
+            text: `${countyName} County Case Totals`,
             fontSize: 25
           },
           legend: {
@@ -49,13 +50,13 @@ const CountyBarCharts = (props) => {
     returnVal = (
       <Bar
         data={{
-          labels: [`${props.countyName} County`, `${props.stateAbbrev} Median`, `${props.stateAbbrev} Average`],
+          labels: [`${countyName} County`, `${stateAbbrev} Median`, `${stateAbbrev} Average`],
             datasets: [
             {
               data: [
-              props.countyData[props.countyData.length-1].deaths,
-              props.stateAvgs.medianDeaths,
-              props.stateAvgs.avgDeaths
+              countyData[countyData.length-1].deaths,
+              stateAvgs.medianDeaths,
+              stateAvgs.avgDeaths
             ],
             backgroundColor: ["#00589c", "#1891c3", "#666"]
             }
@@ -65,7 +66,7 @@ const CountyBarCharts = (props) => {
         options={{
           title: {
             display: false,
-            text: `${props.countyName} County Death Totals`,
+            text: `${countyName} County Death Totals`,
             fontSize: 25
           },
           legend: {

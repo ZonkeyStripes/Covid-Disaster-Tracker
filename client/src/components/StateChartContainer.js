@@ -4,7 +4,6 @@ import StateLineCharts from "./StateLineCharts";
 import $ from "jquery";
 
 const StateChartContainer = (props) => {
-  console.log(props);
   const [showBarChart, setShowBarChart] = useState(true);
   const [showLineChart, setShowLineChart] = useState(true);
   const [range, setRange] = useState("4 Weeks");
@@ -64,7 +63,7 @@ const StateChartContainer = (props) => {
               stateAbbrev = {props.stateAbbrev}
               mostRecentData = {props.mostRecentData}
               nationalAvgs = {props.nationalAvgs}
-              />
+            />
           </div>
         </div>
       </div>
@@ -74,7 +73,7 @@ const StateChartContainer = (props) => {
             <h5>{props.stateName} {lineTitle} Over Time</h5>
             <div id="range-container">
               <p className="text-muted" id="range-title">Range:</p>
-              <select onChange={handleRangeChange} defaultValue="4 Weeks">
+              <select id="range-dropdown" onChange={handleRangeChange} defaultValue="4 Weeks">
                 <option value="1 Week">1 Week</option>
                 <option value="4 Weeks">4 Weeks</option>
               </select>

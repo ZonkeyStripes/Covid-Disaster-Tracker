@@ -3,7 +3,7 @@ import CountyBarCharts from "./CountyBarCharts";
 import CountyLineCharts from "./CountyLineCharts";
 import $ from "jquery";
 
-const CountyChartContainer = (props) => {
+const CountyChartContainer = ({display, countyName, countyData, counties, stateName, stateAbbrev, mostRecentData, stateAvgs}) => {
   let returnVal;
 
   const [showBarChart, setShowBarChart] = useState(true);
@@ -36,21 +36,21 @@ const CountyChartContainer = (props) => {
     }
   }
 
-  if (props.display === "cases"){
-    barTitle = `${props.countyName} County Case Totals`;
-    lineTitle = `${props.countyName} County Cases Over Time`;
-  } else if (props.display === "deaths") {
-    barTitle = `${props.countyName} County Death Totals`;
-    lineTitle = `${props.countyName} County Deaths Over Time`;
+  if (display === "cases"){
+    barTitle = `${countyName} County Case Totals`;
+    lineTitle = `${countyName} County Cases Over Time`;
+  } else if (display === "deaths") {
+    barTitle = `${countyName} County Death Totals`;
+    lineTitle = `${countyName} County Deaths Over Time`;
   }
 
-  if (props.countyData.length < 7){
+  if (countyData.length < 7){
     lineTitle = "";
   }
 
-  if (props.stateName === "District of Columbia" || props.stateName === "Guam" || props.stateName === "Virgin Islands"){
+  if (stateName === "District of Columbia" || stateName === "Guam" || stateName === "Virgin Islands"){
     returnVal = <div className="col-12">
-      <h3 className="text-center">County data unavailable for {props.stateName}</h3>
+      <h3 className="text-center">County data unavailable for {stateName}</h3>
     </div>
   } else {
     returnVal = (
@@ -63,14 +63,14 @@ const CountyChartContainer = (props) => {
           </div>
           <div id="county-bar-chart-container">
             <CountyBarCharts
-              display = {props.display}
-              stateName = {props.stateName}
-              stateAbbrev = {props.stateAbbrev}
-              mostRecentData = {props.mostRecentData}
-              counties = {props.counties}
-              countyName = {props.countyName}
-              countyData = {props.countyData}
-              stateAvgs = {props.stateAvgs}
+              display = {display}
+              stateName = {stateName}
+              stateAbbrev = {stateAbbrev}
+              mostRecentData = {mostRecentData}
+              counties = {counties}
+              countyName = {countyName}
+              countyData = {countyData}
+              stateAvgs = {stateAvgs}
             />
           </div>
         </div>
@@ -83,14 +83,14 @@ const CountyChartContainer = (props) => {
           </div>
           <div id="county-line-chart-container">
             <CountyLineCharts
-              display = {props.display}
-              stateName = {props.stateName}
-              stateAbbrev = {props.stateAbbrev}
-              mostRecentData = {props.mostRecentData}
-              counties = {props.counties}
-              countyName = {props.countyName}
-              countyData = {props.countyData}
-              stateAvgs = {props.stateAvgs}
+              display = {display}
+              stateName = {stateName}
+              stateAbbrev = {stateAbbrev}
+              mostRecentData = {mostRecentData}
+              counties = {counties}
+              countyName = {countyName}
+              countyData = {countyData}
+              stateAvgs = {stateAvgs}
             />
           </div>
         </div>

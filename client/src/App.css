@@ -380,8 +380,14 @@ thead tr {
 }
 
 #range-title{
-  margin-bottom: 0;
-  margin-right: 8px;
+  margin-bottom: 4px;
+  margin-right: 6px;
+}
+
+#range-dropdown{
+  margin-left: 6px;
+  font-size: 14px;
+  border-radius: 3px;
 }
 
 /* Css for news page */
