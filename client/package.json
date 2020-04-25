@@ -2,6 +2,10 @@
   "name": "mern",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": "6.13.4",
+    "npm": "13.5.0"
+  },
   "proxy": "http://localhost:3001/",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.28",
