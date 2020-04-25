@@ -16,7 +16,7 @@ let zoomLevel = 4;
 
 
 // console.log(countyData);
-let todayDate = "4/12/2020";
+let todayDate = "2020-04-23";
 
 let countyArray = [];
 for(let i = 0; i < countyData.length; i++) {
@@ -28,6 +28,8 @@ for(let i = 0; i < countyData.length; i++) {
 // console.log(countyArray);
 
 const mapColors = [
+    ["#034e7b", "#0570b0", "#3690c0", "#74a9cf", "#a6bddb", "#d0d1e6", "#f1eef6"],
+    ['#005824', '#238b45', '#41ae76', '#66c2a4', '#99d8c9', '#ccece6', '#edf8fb'],
     ['#005824', '#238b45', '#41ae76', '#66c2a4', '#99d8c9', '#ccece6', '#edf8fb'],
     ['#990000', '#d7301f', '#ef6548', '#fc8d59', '#fdbb84', '#fdd49e', '#fef0d9']
 ]
@@ -293,7 +295,6 @@ class DashboardMap extends Component {
                       onMouseOver={() => this.highlightFeature}
                       ref="geojson"
                     />
-                    <MapInfo />
                     <MapLegend colors={this.state.colors} limits={this.state.limits}/>
                 </Map>
             </div>

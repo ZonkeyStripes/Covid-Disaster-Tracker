@@ -48,7 +48,18 @@ module.exports = function (app) {
   app.get("/logout", function (req, res) {
     console.log("/logout api route is FIRING!");
     req.logout();
-    res.redirect("/login");
+    req.session = null;
+    res.json({});
+  });
+
+
+  app.post('/logout', (req, res) => {
+    req.logout();
+    req.session.destroy((err) => {
+      res.clearCookie('connect.sid');
+      // Don't redirect, just print text
+      res.send('Logged out');
+    });
   });
 
 
@@ -58,7 +69,7 @@ module.exports = function (app) {
       // The user is not logged in, send back an empty object
       // res.json({});
       console.log("user is not logged in");
-      res.status(401).json(err);
+      res.status(401).json("user is not logged in");
     } else {
       // Otherwise send back the user's email and id
       // Sending back a password, even a hashed password, isn't a good idea
@@ -123,8 +134,44 @@ app.post("/api/add_location", function (req, res) {
   });
 });
 
+// create new location entry for a user
+app.post("/api/set_user_ftu", function (req, res) {
+  console.log("hit /api/set_user_ftu");
+  console.log(req.body);
+
+  db.Location.create({
+    state: req.body.state,
+    county: req.body.county,
+    UserId: req.body.uid
+  })
+  .then(function () {
+
+    let locationObject = {
+      state: req.body.state,
+      county: req.body.county,
+      UserId: req.body.uid
+    }
+    console.log("Below is the log of the newly created locationObject");
+    console.log(locationObject);
+    res.json(locationObject);
+  });
+});
 
 
+app.put("/api/set_user_ftu", function (req, res) {
+
+  console.log("hit /api/set_user_ftu");
+  console.log(req.body);
+  db.User.update({ firstTimeUse: req.body.value }, {
+    where: {
+      id: req.body.uid
+    }
+  })
+  .then(function (dbMember) {
+    res.json({});
+  });
+
+});
 
 
 

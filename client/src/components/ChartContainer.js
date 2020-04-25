@@ -215,14 +215,14 @@ function ChartContainer() {
             {/* <label htmlFor="state">State</label> */}
             <div className="row">
               <div className="col-6">
-                <select onChange={handleStateChange} class="form-control" id="stateSelect">
+                <select onChange={handleStateChange} className="form-control" id="stateSelect">
                   {stateNames.sort().map(name => (
                     <option>{name}</option>
                   ))}
                 </select>
               </div>
               <div className="col-6">
-                <select onChange={handleCountyChange} class="form-control" id="countySelect">
+                <select onChange={handleCountyChange} className="form-control" id="countySelect">
                 {countiesToShow.map(county => (
                     <option>{county}</option>
                   ))}
