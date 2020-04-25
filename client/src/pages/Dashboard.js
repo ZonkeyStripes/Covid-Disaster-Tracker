@@ -5,9 +5,12 @@ import MiniMap from "../components/MiniMap";
 import Axios from "axios";
 import countyData from '../assets/nytimescounties.json';
 import * as ReactBootStrap from "react-bootstrap";
+import FindHospital from "../components/FindHospital";
 
-let todayDate = "4/12/2020";
+let todayDate = "2020-04-23";
 let countyArray = [];
+
+console.log(countyData);
 
 for(let i = 0; i < countyData.length; i++) {
 	if(countyData[i].date === todayDate) {
@@ -15,7 +18,6 @@ for(let i = 0; i < countyData.length; i++) {
 	}
 }
 
-console.log("countyArray in Dashboard:");
 console.log(countyArray);
 
 class Dashboard extends Component {
@@ -23,11 +25,12 @@ class Dashboard extends Component {
   constructor(props) {
     super(props);
 
-    //this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleClick = this.handleClick.bind(this);
 
     this.state = {
       locations: [],
-      effective_date: "4-12-2020"
+      effective_date: "2020-04-23",
+      username: ""
     };
   }
 
@@ -37,6 +40,7 @@ class Dashboard extends Component {
     .then((data) => {
         console.log("user logged in")
         console.log(data);
+        this.setState({username: data.data.email});
 
         Axios.get("/api/location/" + data.data.id)
         .then((all_locations) => {
@@ -83,8 +87,6 @@ class Dashboard extends Component {
                       console.log("fips is 5 characters hopefully");
                       arrayOfLocations[k].push(tempStr);
                     }
-                    
-
                   }
                 }
               }
@@ -97,9 +99,25 @@ class Dashboard extends Component {
     });
   }
 
+  handleClick(e) {
+    console.log("logging out perhaps?");
+    e.preventDefault();
+    Axios.post("/logout")
+    .then(() => {
+      console.log("logout route success");
+      this.props.history.push("/");
+    })
+    .catch(() => {
+      console.log("logout route failed, push to home");
+      this.props.history.push("/");
+    })
+  }
+
+
   render() {
       return (
         <div>
+          <p>{this.state.username}<span onClick={this.handleClick}>(Logout)</span></p>
             <h1>Dashboard</h1>
             <h2>Your tracked locations</h2>
             <h2><em>As of {this.state.effective_date}:</em></h2>
@@ -113,6 +131,7 @@ class Dashboard extends Component {
                     <li>{item[2]} Cases</li>
                     <li>{item[3]} Deaths</li>
                   </ul>
+                  <FindHospital fips={item[4]}/>
                 </ReactBootStrap.Col>
                 <ReactBootStrap.Col xs={12} md={6}>
                   <MiniMap fips={item[4]}/>

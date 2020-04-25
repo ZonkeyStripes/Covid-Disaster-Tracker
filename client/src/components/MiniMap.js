@@ -18,8 +18,8 @@ const stamenTonerAttr = 'Map tiles by <a href="http://stamen.com">Stamen Design<
 const mapCenter = [39.82,-98.57];
 let zoomLevel = 7;
 
-console.log(countyData);
-let todayDate = "4/12/2020";
+// console.log(countyData);
+let todayDate = "2020-04-23";
 
 let countyArray = [];
 for(let i = 0; i < countyData.length; i++) {
@@ -28,9 +28,11 @@ for(let i = 0; i < countyData.length; i++) {
 	}
 }
 
-console.log(countyArray);
+// console.log(countyArray);
 
 const mapColors = [
+    ["#034e7b", "#0570b0", "#3690c0", "#74a9cf", "#a6bddb", "#d0d1e6", "#f1eef6"],
+    ["#b10026", "#e31a1c", "#fc4e2a", "#fd8d3c", "#feb24c", "#fed976", "#ffffb2"],
     ['#005824', '#238b45', '#41ae76', '#66c2a4', '#99d8c9', '#ccece6', '#edf8fb'],
     ['#990000', '#d7301f', '#ef6548', '#fc8d59', '#fdbb84', '#fdd49e', '#fef0d9']
 ]
@@ -55,7 +57,8 @@ class MiniMap extends Component {
             displayed: "cases",
             colors: mapColors[0],
             limits: thresholdData[0],
-            mapCenter: [39.82,-98.57]
+            mapCenter: [39.82,-98.57],
+            mapZoom: 7
         };
 
         // ES6 React.Component doesn't auto bind methods to itself
@@ -77,18 +80,33 @@ class MiniMap extends Component {
         console.log("this.props.fips: " + this.props.fips);
 
         let mapCtr = [];
+        let zoom = 7;
 
-        for(let index = 0; index < countyLatLong.length; index++) {
-            if(countyLatLong[index].FIPS == this.props.fips) {
-                console.log("found " + countyLatLong[index].COUNTYNAME + "county");
-                mapCtr.push(countyLatLong[index].LAT);
-                mapCtr.push(countyLatLong[index].LON);
+        // if we have a fips code for county, get the Lat and Long for that county
+        if(this.props.fips) {
+            for(let index = 0; index < countyLatLong.length; index++) {
+                if(countyLatLong[index].FIPS == this.props.fips) {
+                    console.log("found " + countyLatLong[index].COUNTYNAME + "county");
+                    mapCtr.push(countyLatLong[index].LAT);
+                    mapCtr.push(countyLatLong[index].LON);
+                }
             }
+        } else if (this.props.lat) {
+            // else if we have a lat and long passed in (from a state), use that
+            console.log(this.props.lat);
+            mapCtr.push(this.props.lat);
+            mapCtr.push(this.props.long);
+            zoom = 5;
+        } else {
+            // otherwise use the geographic center of the US
+            mapCtr = [39.82,-98.57];
+            zoom = 4;
         }
+
 
         console.log(mapCtr);
 
-        this.setState({mapCenter: mapCtr});
+        this.setState({mapCenter: mapCtr, mapZoom: zoom});
 
     }
 
@@ -244,8 +262,8 @@ class MiniMap extends Component {
     }
 
     zoomToFeature(e) {
-        const map = this.refs.map.leafletElement;
-        map.fitBounds(e.target.getBounds());
+        // const map = this.refs.map.leafletElement;
+        // map.fitBounds(e.target.getBounds());
     }
 
     changeView(e) {
@@ -301,9 +319,12 @@ class MiniMap extends Component {
                     }
                 }
     
+                if(dataToDisplay == undefined) {
+                    dataToDisplay = 0;
+                }
                 // console.log(`this.state.displayed = ${this.state.displayed}`);
-                console.log("dataToDisplay is " + dataToDisplay);
-    
+                //console.log("dataToDisplay is " + dataToDisplay);
+                
     
                 let mark = markers[i].getPopup();
                 // console.log(markers[i].feature);
@@ -321,7 +342,7 @@ class MiniMap extends Component {
               <div>
                 <Map
                     center={this.state.mapCenter}
-                    zoom={zoomLevel}
+                    zoom={this.state.mapZoom}
                     ref="map"
                 >
                     <TileLayer
@@ -340,15 +361,16 @@ class MiniMap extends Component {
                     <MapLegend colors={this.state.colors} limits={this.state.limits}/>
                 </Map>
             </div>
-                
-                <div className="custom-control custom-radio">
-                    <input type="radio" id={"customRadio1" + this.id} name="customRadio" className="custom-control-input" value="cases" defaultChecked onClick={this.changeView}/>
-                    <label className="custom-control-label" htmlFor={"customRadio1" + this.id} >Cases</label>
-                </div>
-                <div className="custom-control custom-radio">
-                    <input type="radio" id={"customRadio2" + this.id} name="customRadio" className="custom-control-input" value="deaths" onClick={this.changeView}/>
-                    <label className="custom-control-label" htmlFor={"customRadio2" + this.id}>Deaths</label>
-                </div>
+                <form>
+                    <div className="custom-control custom-radio">
+                        <input type="radio" id={"customRadio1" + this.id} name="customRadio" className="custom-control-input" value="cases" defaultChecked onClick={this.changeView}/>
+                        <label className="custom-control-label" htmlFor={"customRadio1" + this.id} >Cases</label>
+                    </div>
+                    <div className="custom-control custom-radio">
+                        <input type="radio" id={"customRadio2" + this.id} name="customRadio" className="custom-control-input" value="deaths" onClick={this.changeView}/>
+                        <label className="custom-control-label" htmlFor={"customRadio2" + this.id}>Deaths</label>
+                    </div>
+                </form>
                 {/* <DataTable data={countyArray}/> */}
             </div>
           );

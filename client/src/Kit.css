@@ -1,0 +1,68 @@
+/* body{
+    background: blue;
+} */
+
+.listed {
+    background-color: #3a57af;
+    min-height: 500px;
+    width: 400px;
+    margin: 40px auto;
+
+}
+
+#to-do-form input {
+    background-color: grey;
+    border: 0;
+    width: 200px;
+    height: 50px;
+    padding: 0 20px;
+    margin: 20px;
+    font-size: 18px;
+    border-radius: 10px;
+    color: white;
+}
+
+#to-do-form input::placeholder{
+    color: white;
+
+}
+
+#to-do-form input:focus, #to-do-form button:focus{
+    outline: none;
+
+}
+#to-do-form button {
+    height: 50px;
+    width: 80px;
+    border-radius: 50px;
+    border: 0;
+    background-color: rgb(67, 153, 67);
+    cursor: pointer;
+    font-weight: bolder;
+    color: white;
+}
+
+.listing{
+    color: white;
+    width: 300px;
+    background-color: rgb(67, 153, 67);
+    height: 50PX;
+    margin: 20px auto;
+    border-radius: 5px;
+}
+
+.listing p{
+    padding: 10px;
+    position: relative;
+}
+
+.listing p span{
+    position: absolute;
+    right: 10px;
+    cursor: pointer;
+}
+
+.faicons{
+    margin: 0 5px;
+    font-size: 15px;
+}

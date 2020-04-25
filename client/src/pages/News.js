@@ -39,7 +39,6 @@ function News() {
                     {/* loops thru articles, displays on page */}
                     {articles.map(article => {
                         return (
-
                             <li>
                                 <strong>{article.title}</strong>
                                 <br></br>

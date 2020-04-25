@@ -6,11 +6,9 @@ import countiesData from "../utils/json/us-counties.json";
 import stateNames from "../utils/json/state-names.json";
 import Axios from "axios";
 
+let user_id;
 
 function FirstTimeUse(props) {
-
-    
-    
     //Returns array with all county names in a given state
     const getCounties = (state) => {
         let setOfCounties = new Set();
@@ -21,7 +19,6 @@ function FirstTimeUse(props) {
         }
         return Array.from(setOfCounties).sort();
     }
-
 
     const [selectedState, setSelectedState] = useState(stateNames.sort()[0])
     const [countiesToShow, setCountiesToShow] = useState(getCounties(selectedState));
@@ -55,6 +52,9 @@ function FirstTimeUse(props) {
         .then((data) => {
             console.log("*****")
             console.log(data.data);
+
+            user_id = data.data.id;
+            console.log(user_id);
 
             let locationObj = {};
             locationObj.state = selectedState;
@@ -93,7 +93,13 @@ function FirstTimeUse(props) {
     }
 
     const redirectToDashboard = () => {
-        props.history.push("/dashboard");
+        console.log(user_id);
+        
+        Axios.put("/api/set_user_ftu", {uid: user_id, value: false})
+        .then((res) => {
+            console.log("set the ftu to false");
+            props.history.push("/dashboard");
+        });
     }
 
     // fire once to load location data
@@ -103,6 +109,7 @@ function FirstTimeUse(props) {
         .then((data) => {
             console.log("is user logged in?")
             console.log(data);
+            user_id = data.data.id;
 
             Axios.get("/api/location/" + data.data.id)
             .then((all_locations) => {

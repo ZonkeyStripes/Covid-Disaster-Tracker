@@ -7,9 +7,9 @@ const Tables = (props) => {
       <div>
         <p className="text-center table-top-text mt-2">Total {props.displayed}</p>
         <h2 className="text-center">{props.total}</h2>
-        {props.displayList.map(el => (
-          <div className="state-sect p-2 d-flex">
-            {el.data} <span className="text-muted"> - {el.state}</span>
+        {props.displayList.map((el, index) => (
+          <div key={index} className="state-sect p-2 d-flex">
+          {el.data} <span className="text-muted"> - {el.state}</span>
           </div>
         ))}
       </div>

@@ -30,6 +30,8 @@ class Login extends Component {
 
   handleChange(evt) {
     const value = evt.target.value;
+    console.log(evt.target.name);
+    
     this.setState({
       ...this.state,
       [evt.target.name]: value
@@ -60,6 +62,7 @@ class Login extends Component {
     .catch(function(err) {
       console.log("Error");
       console.log(err);
+      alert(err.message);
     });
   }
 

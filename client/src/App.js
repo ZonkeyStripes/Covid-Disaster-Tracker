@@ -6,12 +6,14 @@ import "./mediaQueries.css";
 import Home from "./pages/Home";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
-import News from "./pages/News"
+import News from "./pages/News";
+import Kit from "./pages/Kit";
 import Header from "./components/Header";
 import Dashboard from "./pages/Dashboard";
 import PrivateRoute from "./components/PrivateRoute";
 import FirstTimeUse from "./pages/FirstTimeUse";
 import Footer from "./components/Footer";
+import Disasters from "./pages/Disasters";
 
 class App extends Component {
   render() {
@@ -22,12 +24,11 @@ class App extends Component {
           <Route exact path={"/signup"} component={Signup} />
           <Route exact path={"/login"} component={Login} />
           <Route exact path={"/news"} component={News} />
+          <Route exact path={"/kit"} component={Kit} />
           <PrivateRoute exact path={"/dashboard"} component={Dashboard} />
           <PrivateRoute exact path={"/ftu"} component={FirstTimeUse} />
+          <Route exact path={"/disasters"} component={Disasters} />
           <Route exact path={'/'} component={Home} />
-        {/* <Route >
-          <About />
-        </Route> */}
         </Switch>
         <Footer/>
       </HashRouter>

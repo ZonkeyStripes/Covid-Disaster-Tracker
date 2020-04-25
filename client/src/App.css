@@ -391,6 +391,17 @@ thead tr {
 }
 
 /* Css for news page */
+@media only screen and (min-width: 628px) {
+  .newslist {
+    width: 30%;
+    height: 7%;
+  }
+  .faqhead {
+    width: 30%;
+    height: 7%
+  }
+}
+
 .video {  
   justify-content: center;
   text-align: center;
@@ -418,7 +429,22 @@ thead tr {
 .newslist::-webkit-scrollbar-thumb {
   background-color: #3a57af;
   outline: 1px solid red;
-  border-radius: 50%;
+  border-radius: 25%;
+}
+
+.table-responsive::-webkit-scrollbar {
+  width: 10px;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px black;
+  border-radius: 0px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+  background-color: #3a57af;
+  outline: 1px solid red;
+  border-radius: 0px;
 }
 
 body::-webkit-scrollbar {
@@ -481,7 +507,7 @@ body::-webkit-scrollbar-thumb {
   box-shadow: 0px 0px 10px rgba(0, 0, 0, .02)
 }
 
-.faqs .faq .faq-quetion {
+.faqs .faq .faq-question {
   position: relative;
   font-size: 20px;
   padding-right: 80px;
@@ -523,7 +549,7 @@ body::-webkit-scrollbar-thumb {
 }
 
 .faqs .faq.open .faq-answer {
-  max-height: 1000px;
+  max-height: 2000px;
   opacity: 1;
 }
 
