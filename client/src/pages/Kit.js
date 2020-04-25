@@ -10,7 +10,7 @@ import KitResults from '../utils/kitResults';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Card, CardGroup } from "react-bootstrap";
-//import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 library.add(faTrash);
 
 class Kit extends Component {
