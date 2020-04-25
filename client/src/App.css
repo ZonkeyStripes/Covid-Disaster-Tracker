@@ -397,7 +397,7 @@ body::-webkit-scrollbar-thumb {
   box-shadow: 0px 0px 10px rgba(0, 0, 0, .02)
 }
 
-.faqs .faq .faq-quetion {
+.faqs .faq .faq-question {
   position: relative;
   font-size: 20px;
   padding-right: 80px;
@@ -439,7 +439,7 @@ body::-webkit-scrollbar-thumb {
 }
 
 .faqs .faq.open .faq-answer {
-  max-height: 1000px;
+  max-height: 2000px;
   opacity: 1;
 }
 
@@ -450,3 +450,4 @@ body::-webkit-scrollbar-thumb {
 #FTUcountySelect {
   width: 75%;  
 }
+

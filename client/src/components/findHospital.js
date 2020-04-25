@@ -1,43 +1,38 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import HospitalAPI from "../utils/HospitalsAPI";
 
 function FindHospitals(props) {
 
+    // console.log(props.fips);
 
         const [hospital, setHospital] = useState([]);
 
         useEffect(() => {
-            axios
-            .get("https://services1.arcgis.com/Hp6G80Pky0om7QvQ/arcgis/rest/services/Urgent_Care_Facilities/FeatureServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=json")
+            HospitalAPI.getHospitalsByFIPS(props.fips)
             .then(res => {
+                console.log(res.data.feature);
                 let info = res.data.features;
                 setHospital(info);
             })
-            .catch(err => {
-                return err;
-            });
         },            
         []);
-
-
 
         return (
             <div>
                 <h4>
-                    test hospital {props.test}
+                    Hospitals and Urgent Cares
                 </h4>
-                <ul> 
-                    {hospital.filter((elem) => {
-                    return elem.attributes.COUNTY === {}
-                    })
+                <ul>
+                    {hospital.slice(0,5)
                     .map((elem, index) => {
                         return <div>
                             <li key={index}>Hospital name: {elem.attributes.NAME}<br />
                                 Address: {elem.attributes.ADDRESS}<br />
                                 Telephone: {elem.attributes.TELEPHONE}<br />
-                                Fips Code: {elem.attributes.FIPS}
-                                X: {elem.attributes.X}<br />
-                                Y: {elem.attributes.Y}<br />
+                                {/* Fips Code: {elem.attributes.FIPS} */}
+                                {/* X: {elem.attributes.X}<br /> */}
+                                {/* Y: {elem.attributes.Y}<br /> */}
                             </li>
                         </div>
                     }) }
