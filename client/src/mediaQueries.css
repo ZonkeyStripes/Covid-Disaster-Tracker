@@ -1,0 +1,46 @@
+@media screen and (min-width: 767px) and (max-width: 1200px) { 
+  .table-btn, .table-btn-outline {
+      padding-left: 25px;
+      padding-right: 25px;
+  }
+}
+
+@media screen and (max-width: 767px) { 
+  .table-container {
+    margin-top: 20px;
+  }
+  #home-link{
+    margin-left: 41.5%;
+  }
+  #news-link{
+    margin-left: 42%;
+  }
+  #sources-link{
+    margin-left: 40.3%;
+  }
+  #li-btn{
+    margin-left: 38%;
+  }
+  #su-btn{
+    margin-left: 37%;
+  }
+  #ss-header-text{
+    text-align: center;
+    margin-bottom: 18px;
+  }
+  #range-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    margin-right: 8px;
+  }
+  
+  #range-title{
+    margin-bottom: 0px;
+    margin-right: 0px;
+  }
+  #range-dropdown{
+    margin-left: 0px;
+  }
+}

@@ -69,12 +69,12 @@ class Login extends Component {
   render() {
     console.log(this.props);
     return (
-      <div className="container">
+      <div className="container" id="login-body">
         <div className="row mt-4">
           <div className="col-md-5 text-center mx-auto">
-            <div className="card" id="su-card">
+            <div className="card su-card">
               <div className="card-body">
-                <h4 id="signup-header" className="pb-2">Log In</h4>
+                <h4 className="pb-2 signup-header">Log In</h4>
                 <form onSubmit={this.handleSubmit}>
   
                   {/* EMAIL */}

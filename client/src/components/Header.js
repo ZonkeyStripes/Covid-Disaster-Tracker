@@ -6,7 +6,7 @@ import logo from "../assets/dt-logo-.png"
 const Header = () => {
     return (
       // <ReactBootStrap.Navbar id="nav" collapseOnSelect expand="lg" bg="light" variant="light">
-      <ReactBootStrap.Navbar id="header" collapseOnSelect expand="lg" variant="dark">
+      <ReactBootStrap.Navbar id="header" collapseOnSelect expand="md" variant="dark sticky-nav">
         <ReactBootStrap.Navbar.Brand href="#/">
           <img src={logo} alt="logo"/>
         </ReactBootStrap.Navbar.Brand>
@@ -14,10 +14,10 @@ const Header = () => {
         <ReactBootStrap.Navbar.Collapse id="responsive-navbar-nav">
           <ReactBootStrap.Nav className="ml-auto">
             <ReactBootStrap.Nav.Link>
-              <NavLink exact={true} className="header-link" activeClassName="header-link-active" to={"/"}>Home</NavLink>
+              <NavLink exact={true} id="home-link" className="header-link" activeClassName="header-link-active" to={"/"}>Home</NavLink>
             </ReactBootStrap.Nav.Link>
             <ReactBootStrap.Nav.Link>
-              <NavLink exact={true} className="header-link" activeClassName="header-link-active" to={"/news"}>News</NavLink>
+              <NavLink exact={true} id="news-link" className="header-link" activeClassName="header-link-active" to={"/news"}>News</NavLink>
             </ReactBootStrap.Nav.Link>
             <ReactBootStrap.Nav.Link>
               <NavLink exact={true} className="header-link" activeClassName="header-link-active" to={"/disasters"}>Disasters</NavLink>

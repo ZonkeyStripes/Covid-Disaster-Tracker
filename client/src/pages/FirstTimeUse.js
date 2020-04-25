@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import {Link} from "react-router-dom";
 import "../App.css";
 import statesData from "../utils/json/us-states.json";
 import countiesData from "../utils/json/us-counties.json";
@@ -131,31 +132,68 @@ function FirstTimeUse(props) {
     }, []);
 
     return (
-        <div>
-            <h1>Welcome to Disaster Tracker</h1>
+        <div className="container">
+          <div className="row mt-4">
+            <div className="col-md-5 md-5 text-center mx-auto">
+              <div className="card su-card">
+                <div className="card-body">
+                  <h3 className="pb-2">
+                    Welcome to Disaster Tracker!
+                  </h3>
+                  <h6>Enter up to three counties to follow</h6>
+                    <form>
+                      <label htmlFor="state">State</label>
+                      <select onChange={handleStateChange} className="form-control mx-auto" id="FTUstateSelect">
+                      {stateNames.sort().map(name => (
+                        <option>{name}</option>
+                      ))}
+                      </select>
+                      <label htmlFor="county">County</label>
+                      <select onChange={handleCountyChange} className="form-control mx-auto" id="FTUcountySelect">
+                      {countiesToShow.map(county => (
+                        <option>{county}</option>
+                        ))}
+                      </select>
+                      <button type="submit" className="btn form-btn-outline mt-3 mr-2 d-inline">Enter Location</button>
+                      <button className="btn form-btn d-inline mt-3 ml-2" onClick={redirectToDashboard}>Finish</button>
+                      <ul>
+                          {userLocations.map((item, index) => (
+                              <li key={index}>{item[0]} County, {item[1]}</li>
+                              //<li key={index}>{item}</li>
+                          ))}
+                      </ul>
+                    </form>
+                    <p className="skip">
+                      <Link className="text-muted">Skip this step <i class="fas fa-share"/></Link>
+                    </p>
+                </div>
+              </div>
+            </div>
+          </div>
+            {/* <h1>Welcome to Disaster Tracker</h1>
             <h4>Enter your location and locations that you want to watch</h4>
             <form onSubmit={handleSubmit}>
-                <label htmlFor="state">State</label>
-                <select onChange={handleStateChange} className="form-control" id="FTUstateSelect">
-                {stateNames.sort().map(name => (
-                    <option>{name}</option>
+              <label htmlFor="state">State</label>
+              <select onChange={handleStateChange} className="form-control" id="FTUstateSelect">
+              {stateNames.sort().map(name => (
+                <option>{name}</option>
+              ))}
+              </select>
+              <label htmlFor="county">County</label>
+              <select onChange={handleCountyChange} className="form-control" id="FTUcountySelect">
+              {countiesToShow.map(county => (
+                <option>{county}</option>
                 ))}
-                </select>
-                <label htmlFor="county">County</label>
-                <select onChange={handleCountyChange} className="form-control" id="FTUcountySelect">
-                {countiesToShow.map(county => (
-                    <option>{county}</option>
-                    ))}
-                </select>
-                <button type="submit" className="btn form-btn">Enter Location</button>
-                </form>
+              </select>
+              <button type="submit" className="btn form-btn">Enter Location</button>
+            </form>
                 <button className="btn form-btn" onClick={redirectToDashboard}>Finish</button>
                 <ul>
                     {userLocations.map((item, index) => (
                         <li key={index}>{item[0]} County, {item[1]}</li>
                         //<li key={index}>{item}</li>
                     ))}
-                </ul>
+                </ul> */}
         </div>
       );
   }

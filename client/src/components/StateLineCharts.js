@@ -1,143 +1,160 @@
 import React from 'react';
 import {Line} from "react-chartjs-2";
 
-const StateLineCharts = (props) => {
+const StateLineCharts = ({nationalAvgs, stateData, range, display, stateName, stateAbbrev}) => {
 
-  let firstDate = props.stateData[props.stateData.length-22].date;
-  let secondDate = props.stateData[props.stateData.length-15].date;
-  let thirdDate = props.stateData[props.stateData.length-8].date;
-  let fourthDate = props.stateData[props.stateData.length-1].date;
+  let datesArr = [];
+  let dateCasesArr = [];
+  let dateDeathsArr = [];
+  let ntlMedCases;
+  let ntlMedDeaths;
+  let ntlAvgCases;
+  let ntlAvgDeaths;
+  
+  if (range === "4 Weeks"){
+    ntlMedCases = nationalAvgs.dateMedians.fourWeekRange.cases;
+    ntlMedDeaths = nationalAvgs.dateMedians.fourWeekRange.deaths;
+    ntlAvgCases = nationalAvgs.dateAvgs.fourWeekRange.cases;
+    ntlAvgDeaths = nationalAvgs.dateAvgs.fourWeekRange.deaths;
 
-  let stateFirstDateCases = props.stateData[props.stateData.length-22].cases;
-  let stateSecondDateCases = props.stateData[props.stateData.length-15].cases;
-  let stateThirdDateCases = props.stateData[props.stateData.length-8].cases;
-  let stateFourthDateCases = props.stateData[props.stateData.length-1].cases;
+    datesArr.push(stateData[stateData.length-29].date);
+    datesArr.push(stateData[stateData.length-22].date);
+    datesArr.push(stateData[stateData.length-15].date);
+    datesArr.push(stateData[stateData.length-8].date);
+    datesArr.push(stateData[stateData.length-1].date);
 
-  let stateFirstDateDeaths = props.stateData[props.stateData.length-22].deaths;
-  let stateSecondDateDeaths = props.stateData[props.stateData.length-15].deaths;
-  let stateThirdDateDeaths = props.stateData[props.stateData.length-8].deaths;
-  let stateFourthDateDeaths = props.stateData[props.stateData.length-1].deaths;
+    dateCasesArr.push(stateData[stateData.length-29].cases);
+    dateCasesArr.push(stateData[stateData.length-22].cases);
+    dateCasesArr.push(stateData[stateData.length-15].cases);
+    dateCasesArr.push(stateData[stateData.length-8].cases);
+    dateCasesArr.push(stateData[stateData.length-1].cases);
 
-  console.log(props);
-  let ret;
-  if (props.display === "cases"){
-    ret = (
-        <div className="col-6">
+    dateDeathsArr.push(stateData[stateData.length-29].deaths);
+    dateDeathsArr.push(stateData[stateData.length-22].deaths);
+    dateDeathsArr.push(stateData[stateData.length-15].deaths);
+    dateDeathsArr.push(stateData[stateData.length-8].deaths);
+    dateDeathsArr.push(stateData[stateData.length-1].deaths);
+
+  } else if (range === "1 Week"){
+    ntlMedCases = nationalAvgs.dateMedians.oneWeekRange.cases;
+    ntlMedDeaths = nationalAvgs.dateMedians.oneWeekRange.deaths;
+    ntlAvgCases = nationalAvgs.dateAvgs.oneWeekRange.cases;
+    ntlAvgDeaths = nationalAvgs.dateAvgs.oneWeekRange.deaths;
+
+    datesArr.push(stateData[stateData.length-8].date);
+    datesArr.push(stateData[stateData.length-7].date);
+    datesArr.push(stateData[stateData.length-6].date);
+    datesArr.push(stateData[stateData.length-5].date);
+    datesArr.push(stateData[stateData.length-4].date);
+    datesArr.push(stateData[stateData.length-3].date);
+    datesArr.push(stateData[stateData.length-2].date);
+    datesArr.push(stateData[stateData.length-1].date);
+
+    dateCasesArr.push(stateData[stateData.length-8].cases);
+    dateCasesArr.push(stateData[stateData.length-7].cases);
+    dateCasesArr.push(stateData[stateData.length-6].cases);
+    dateCasesArr.push(stateData[stateData.length-5].cases);
+    dateCasesArr.push(stateData[stateData.length-4].cases);
+    dateCasesArr.push(stateData[stateData.length-3].cases);
+    dateCasesArr.push(stateData[stateData.length-2].cases);
+    dateCasesArr.push(stateData[stateData.length-1].cases);
+
+    dateDeathsArr.push(stateData[stateData.length-8].deaths);
+    dateDeathsArr.push(stateData[stateData.length-7].deaths);
+    dateDeathsArr.push(stateData[stateData.length-6].deaths);
+    dateDeathsArr.push(stateData[stateData.length-5].deaths);
+    dateDeathsArr.push(stateData[stateData.length-4].deaths);
+    dateDeathsArr.push(stateData[stateData.length-3].deaths);
+    dateDeathsArr.push(stateData[stateData.length-2].deaths);
+    dateDeathsArr.push(stateData[stateData.length-1].deaths);
+  }
+
+  let returnVal;
+  if (display === "cases"){
+    returnVal = (
         <Line
-            height={170}
-            data={{
-              labels: [firstDate, secondDate, thirdDate, fourthDate],
-                datasets: [
-                  {
-                    label: props.stateName,
-                    fill: false,
-                    data: [
-                      stateFirstDateCases,
-                      stateSecondDateCases,
-                      stateThirdDateCases,
-                      stateFourthDateCases
-                    ],
-                    borderColor: "#003f5c"
-                  },
-                  {
-                    label: "US Average",
-                    fill: false,
-                    data: [
-                      props.nationalAvgs.dateAvgs.cases.one,
-                      props.nationalAvgs.dateAvgs.cases.two,
-                      props.nationalAvgs.dateAvgs.cases.three,
-                      props.nationalAvgs.dateAvgs.cases.four
-                    ],
-                    borderColor: "#bc5090"
-                  },
-                  {
-                    label: "US Median",
-                    fill: false,
-                    data: [
-                      props.nationalAvgs.dateMedians.cases.one,
-                      props.nationalAvgs.dateMedians.cases.two,
-                      props.nationalAvgs.dateMedians.cases.three,
-                      props.nationalAvgs.dateMedians.cases.four
-                    ],
-                    borderColor: "#ffa600"
-                  }
-                ]
-            }}
-            options={{
-              title: {
-                  display: true,
-                  text: `${props.stateName} Cases Over Time`,
-                  fontSize: 25
-              },
-              legend: {
-                  display: true,
-                  position: "bottom"
-              },
-              scales:{
-                responsive: true,
-                yAxes:[{
-                    ticks:{
-                        beginAtZero: true,
-                        min: 0
-                    }
-                }]
-            }
+          height={160}
+          data={{
+            labels: datesArr,
+              datasets: [
+                {
+                  label: stateAbbrev,
+                  fill: false,
+                  data: dateCasesArr,
+                  borderColor: "#00589c"
+                },
+                {
+                  label: "US Med.",
+                  fill: false,
+                  data: ntlMedCases,
+                  borderColor: "#1891c3"
+                },
+                {
+                  label: "US Avg.",
+                  fill: false,
+                  data: ntlAvgCases,
+                  borderColor: "#666"
+                }
+              ]
           }}
-          />
-        </div>
-    )
-  } else {
-    ret = (
-    <div className="col-6">
-      <Line
-            height={170}
-            data={{
-              labels: [firstDate, secondDate, thirdDate, fourthDate],
-                datasets: [
-                  {
-                    label: props.stateName,
-                    fill: false,
-                    data: [
-                      stateFirstDateDeaths,
-                      stateSecondDateDeaths,
-                      stateThirdDateDeaths,
-                      stateFourthDateDeaths
-                    ],
-                    borderColor: "#003f5c"
-                  },
-                  {
-                    label: "US average",
-                    fill: false,
-                    data: [
-                      props.nationalAvgs.dateAvgs.deaths.one,
-                      props.nationalAvgs.dateAvgs.deaths.two,
-                      props.nationalAvgs.dateAvgs.deaths.three,
-                      props.nationalAvgs.dateAvgs.deaths.four
-                    ],
-                    borderColor: "#bc5090"
-                  },
-                  {
-                    label: "US Median",
-                    fill: false,
-                    data: [
-                      props.nationalAvgs.dateMedians.deaths.one,
-                      props.nationalAvgs.dateMedians.deaths.two,
-                      props.nationalAvgs.dateMedians.deaths.three,
-                      props.nationalAvgs.dateMedians.deaths.four
-                    ],
-                    borderColor: "#ffa600"
-                  }
-                ]
-            }}
             options={{
               title: {
-                display: true,
-                text: `${props.stateName} Deaths Over Time`,
+                display: false,
+                text: `${stateName} Cases Over Time`,
                 fontSize: 25
               },
               legend: {
                 display: true,
-                position: "bottom"
+                position: "top"
+              },
+              scales:{
+                responsive: true,
+                yAxes:[{
+                  ticks:{
+                    beginAtZero: true,
+                    min: 0
+                  }
+                }]
+              }
+          }}
+        />
+    )
+  } else {
+    returnVal = (
+      <Line
+          height={160}
+          data={{
+            labels: datesArr,
+              datasets: [
+                {
+                  label: stateAbbrev,
+                  fill: false,
+                  data: dateDeathsArr,
+                  borderColor: "#00589c"
+                },
+                {
+                  label: "US Med.",
+                  fill: false,
+                  data: ntlMedDeaths,
+                  borderColor: "#1891c3"
+                },
+                {
+                  label: "US Avg.",
+                  fill: false,
+                  data: ntlAvgDeaths,
+                  borderColor: "#666"
+                }
+              ]
+            }}
+            options={{
+              title: {
+                display: false,
+                text: `${stateName} Deaths Over Time`,
+                fontSize: 25
+              },
+              legend: {
+                display: true,
+                position: "top"
               },
               scales:{
                 responsive: true,
@@ -150,11 +167,10 @@ const StateLineCharts = (props) => {
               }
             }}
           />
-      </div>
     )
   }
 
-  return ret;
+  return returnVal;
 }
 
 export default StateLineCharts;

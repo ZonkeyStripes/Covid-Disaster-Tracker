@@ -3,7 +3,6 @@ import Axios from "axios";
 import {Link} from "react-router-dom"
 import $ from "jquery";
 
-
 class Signup extends Component {
 
   constructor(props) {
@@ -29,15 +28,16 @@ class Signup extends Component {
       ...this.state,
       [evt.target.name]: value
     });
+    $("#pw-error").hide();
   }
-
-
 
   handleSubmit(event) {
     event.preventDefault();
 
-    if ( this.state.password !== this.state.pwconfirm){
-      alert("Passwords do not match")
+    if (!this.state.username || !this.state.password || !this.state.pwconfirm){
+      $("#pw-error").show().html("<strong>Error:</strong> Please fill out every field");
+    } else if (this.state.password !== this.state.pwconfirm){
+      $("#pw-error").show().html("<strong>Error:</strong> Passwords do not match");
     } else {
       console.log(this.state.username);
       console.log(this.state.password);
@@ -65,12 +65,12 @@ class Signup extends Component {
 
   render() {
     return (
-      <div className="container">
+      <div className="container" id="signup-body">
         <div className="row mt-4">
           <div className="col-md-5 text-center mx-auto">
-            <div className="card" id="su-card">
+            <div className="card su-card">
               <div className="card-body">
-                <h4 id="signup-header" className="pb-2">Sign Up</h4>
+                <h4 className="pb-2 signup-header">Sign Up</h4>
                 <form onSubmit={this.handleSubmit}>
   
                   {/* EMAIL */}
@@ -102,9 +102,10 @@ class Signup extends Component {
                     </div>
                     <input type="password" className="form-control su-inp" id="confirmPassword" name="pwconfirm" value={this.state.pwconfirm} onChange={this.handleChange} placeholder="Confirm Password"/>
                   </div>
+                  <div id="pw-error" className="alert alert-danger"></div>
   
                   <p className="text-muted">
-                    Already have an account? Sign in <Link to={"/login"}>here</Link>
+                    Already have an account? Sign in <Link to={"/login"}>here!</Link>
                   </p>
                   <button type="submit" className="btn form-btn">Register</button>         
                 </form>
