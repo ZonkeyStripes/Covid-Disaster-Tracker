@@ -5,7 +5,7 @@ import MiniMap from "../components/MiniMap";
 import Axios from "axios";
 import countyData from '../assets/nytimescounties.json';
 import * as ReactBootStrap from "react-bootstrap";
-import FindHospital from "../components/FindHospital";
+import Hospital from "../components/Hospital";
 
 let todayDate = "2020-04-23";
 let countyArray = [];
@@ -131,7 +131,7 @@ class Dashboard extends Component {
                     <li>{item[2]} Cases</li>
                     <li>{item[3]} Deaths</li>
                   </ul>
-                  <FindHospital fips={item[4]}/>
+                  <Hospital fips={item[4]}/>
                 </ReactBootStrap.Col>
                 <ReactBootStrap.Col xs={12} md={6}>
                   <MiniMap fips={item[4]}/>

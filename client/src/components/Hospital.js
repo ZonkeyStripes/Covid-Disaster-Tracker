@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import HospitalAPI from "../utils/HospitalsAPI";
 
-function FindHospitals(props) {
+function Hospital(props) {
 
     // console.log(props.fips);
 
@@ -42,4 +42,4 @@ function FindHospitals(props) {
         )
 }
 
-export default FindHospitals;
+export default Hospital;
