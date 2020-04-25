@@ -154,15 +154,15 @@ function FirstTimeUse(props) {
                         <option>{county}</option>
                         ))}
                       </select>
-                      <button type="submit" className="btn form-btn-outline mt-4 mr-2 d-inline">Enter Location</button>
-                      <button className="btn form-btn d-inline mt-4 ml-2" onClick={redirectToDashboard}>Finish</button>
+                      <button type="submit" className="btn form-btn-outline mt-3">Enter Location</button>
                       <ul>
                           {userLocations.map((item, index) => (
-                              <li key={index}>{item[0]} County, {item[1]}</li>
-                              //<li key={index}>{item}</li>
-                          ))}
+                            <li key={index}>{item[0]} County, {item[1]}</li>
+                            //<li key={index}>{item}</li>
+                            ))}
                       </ul>
                     </form>
+                    <button className="btn form-btn" onClick={redirectToDashboard}>Finish</button>
                 </div>
               </div>
             </div>
