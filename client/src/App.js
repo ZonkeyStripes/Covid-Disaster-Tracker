@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { BrowserRouter, HashRouter, Switch, Route} from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "./App.css";
+import "./mediaQueries.css";
 import Home from "./pages/Home";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
@@ -11,6 +12,7 @@ import Header from "./components/Header";
 import Dashboard from "./pages/Dashboard";
 import PrivateRoute from "./components/PrivateRoute";
 import FirstTimeUse from "./pages/FirstTimeUse";
+import Footer from "./components/Footer";
 import Disasters from "./pages/Disasters";
 
 class App extends Component {
@@ -27,11 +29,8 @@ class App extends Component {
           <PrivateRoute exact path={"/ftu"} component={FirstTimeUse} />
           <Route exact path={"/disasters"} component={Disasters} />
           <Route exact path={'/'} component={Home} />
-
-        {/* <Route >
-          <About />
-        </Route> */}
         </Switch>
+        <Footer/>
       </HashRouter>
     );
   }
