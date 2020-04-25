@@ -148,17 +148,12 @@ thead tr {
   border-radius: 40px;
 }
 
-/* #confirmPassword{
-  outline: none !important;
-} */
+#su-btn:hover{
+  background-color: #31488d;
+  border: 1px solid #31488d;
+}
 
-/* #confirmPassword:focus {
-  border-color: #28a745;
-  box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
-  box-shadow: 0 0 0 0.1rem rgb(209, 9, 9, 0.25);
-}  */
-
-#pw-error{
+#pw-error, #li-error{
   display: none;
   padding: 8px;
 }
@@ -393,11 +388,15 @@ thead tr {
 /* Css for news page */
 
 .video {  
-  justify-content: center;
-  text-align: center;
   padding: 25px;
-  margin-left: 50%;
+  text-align: center;
+  justify-content: center;
 }
+iframe {
+  width: 400px;
+  height: 250px;
+}
+
 .newshead {
   text-align: center;
   margin-top: 25px;
@@ -452,14 +451,6 @@ body::-webkit-scrollbar-thumb {
   border-radius: 30px;
 }
 
-.newslist { 
-  width: 50%;
-  max-height: 10%;
-  height: 160vh;
-  overflow-x: hidden;
-  overflow-y: scroll;
-}
-
 .Collapsible {
   text-emphasis: bolder;
   background-color: #777;
@@ -480,13 +471,48 @@ body::-webkit-scrollbar-thumb {
   padding: 10px;
 } 
 
+.newslist { 
+  width: 90%;
+  max-height: 10%;
+  height: 1000px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
 
 /* Css for the Frequently asked Questions page (FAQS) */
 .faqs {
-  width: 100%;
+  max-height: 10%;
+  height: 1000px;
+  width: 90%;
   max-width: 768px;
   margin: 0 auto;
   padding: 25px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.newscon {
+  margin: 0;
+}
+
+.faqs::-webkit-scrollbar {
+  width: 5px;
+}
+
+.faqs::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px black;
+}
+
+.faqs::-webkit-scrollbar-thumb {
+  background-color: #3a57af;
+  outline: 1px solid red;
+  border-radius: 25%;
+}
+
+@media screen and (max-width: 992px) {
+  .faqs {
+    overflow-y: scroll;
+  }
 }
 
 .faqs .faq {
@@ -563,8 +589,8 @@ body::-webkit-scrollbar-thumb {
   font-size: 14px;
 }
 
-#login-body, #signup-body{
-  height: 72vh;
+#login-body, #signup-body, #ftu-body{
+  height: 86vh;
 }
 
 #footer {
