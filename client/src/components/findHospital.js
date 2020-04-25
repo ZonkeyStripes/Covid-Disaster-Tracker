@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
-
 import axios from "axios";
 
 function FindHospitals(props) {
 
-    console.log("hello");
 
         const [hospital, setHospital] = useState([]);
 
@@ -22,14 +20,15 @@ function FindHospitals(props) {
         []);
 
 
+
         return (
             <div>
                 <h4>
-                    test hospital
+                    test hospital {props.test}
                 </h4>
-                <ul>
+                <ul> 
                     {hospital.filter((elem) => {
-                    return elem.attributes.COUNTY === "PIMA"
+                    return elem.attributes.COUNTY === {}
                     })
                     .map((elem, index) => {
                         return <div>
@@ -37,8 +36,8 @@ function FindHospitals(props) {
                                 Address: {elem.attributes.ADDRESS}<br />
                                 Telephone: {elem.attributes.TELEPHONE}<br />
                                 Fips Code: {elem.attributes.FIPS}
-                                {/* X: {elem.attributes.X}<br /> */}
-                                {/* Y: {elem.attributes.Y}<br /> */}
+                                X: {elem.attributes.X}<br />
+                                Y: {elem.attributes.Y}<br />
                             </li>
                         </div>
                     }) }

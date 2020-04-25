@@ -88,7 +88,13 @@ function FirstTimeUse(props) {
     }
 
     const redirectToDashboard = () => {
-        props.history.push("/dashboard");
+
+        props.history.push({
+            pathname: '/dashboard',
+            state: { test : "tester" }
+          })
+
+        // props.history.push("/dashboard");
     }
 
     // fire once to load location data

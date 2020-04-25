@@ -19,7 +19,6 @@ function News() {
     }, []);
 
     function loadNews() {
-
         API.getNews()
             .then(res => {
                 console.log(res.data.articles)
