@@ -55,6 +55,7 @@ class Signup extends Component {
           console.log("data: ");
           console.log(data);
           this.props.history.push("/ftu");
+          window.location.reload();
         });
 
         // If there's an error, handle it by throwing up a bootstrap alert
