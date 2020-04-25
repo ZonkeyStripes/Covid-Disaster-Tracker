@@ -7,14 +7,18 @@ import countyData from '../assets/nytimescounties.json';
 import * as ReactBootStrap from "react-bootstrap";
 import FindHospital from "../components/FindHospital";
 
-let todayDate = "4/12/2020";
+let todayDate = "2020-04-23";
 let countyArray = [];
+
+console.log(countyData);
 
 for(let i = 0; i < countyData.length; i++) {
 	if(countyData[i].date === todayDate) {
 		countyArray.push(countyData[i]);
 	}
 }
+
+console.log(countyArray);
 
 class Dashboard extends Component {
 
@@ -25,7 +29,7 @@ class Dashboard extends Component {
 
     this.state = {
       locations: [],
-      effective_date: "4-12-2020",
+      effective_date: "2020-04-23",
       username: ""
     };
   }
