@@ -132,30 +132,30 @@ function FirstTimeUse(props) {
     }, []);
 
     return (
-        <div className="container">
+        <div id="ftu-body" className="container">
           <div className="row mt-4">
             <div className="col-md-5 md-5 text-center mx-auto">
               <div className="card su-card">
                 <div className="card-body">
                   <h3 className="pb-2">
-                    Welcome to Disaster Tracker!
+                    Welcome to Disaster Tracker
                   </h3>
-                  <h6>Enter up to three counties to follow</h6>
-                    <form>
+                  <h6>Please enter up to three counties to follow</h6>
+                    <form onSubmit={handleSubmit}>
                       <label htmlFor="state">State</label>
                       <select onChange={handleStateChange} className="form-control mx-auto" id="FTUstateSelect">
                       {stateNames.sort().map(name => (
                         <option>{name}</option>
                       ))}
                       </select>
-                      <label htmlFor="county">County</label>
+                      <label className="mt-2" htmlFor="county">County</label>
                       <select onChange={handleCountyChange} className="form-control mx-auto" id="FTUcountySelect">
                       {countiesToShow.map(county => (
                         <option>{county}</option>
                         ))}
                       </select>
-                      <button type="submit" className="btn form-btn-outline mt-3 mr-2 d-inline">Enter Location</button>
-                      <button className="btn form-btn d-inline mt-3 ml-2" onClick={redirectToDashboard}>Finish</button>
+                      <button type="submit" className="btn form-btn-outline mt-4 mr-2 d-inline">Enter Location</button>
+                      <button className="btn form-btn d-inline mt-4 ml-2" onClick={redirectToDashboard}>Finish</button>
                       <ul>
                           {userLocations.map((item, index) => (
                               <li key={index}>{item[0]} County, {item[1]}</li>
@@ -163,9 +163,6 @@ function FirstTimeUse(props) {
                           ))}
                       </ul>
                     </form>
-                    <p className="skip">
-                      <Link className="text-muted">Skip this step <i class="fas fa-share"/></Link>
-                    </p>
                 </div>
               </div>
             </div>

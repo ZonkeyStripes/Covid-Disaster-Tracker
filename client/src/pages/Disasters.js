@@ -231,7 +231,7 @@ class Disasters extends Component {
         }
 
         return (
-            <div>
+            <div className="container">
                 <h1>Disasters</h1>
                 {resultToRender}
                 {this.state.locations.map((el, index) => (

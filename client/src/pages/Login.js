@@ -29,6 +29,7 @@ class Login extends Component {
   }
 
   handleChange(evt) {
+    $("#li-error").hide();
     const value = evt.target.value;
     console.log(evt.target.name);
     
@@ -54,15 +55,18 @@ class Login extends Component {
       // if user is a first time user, push to FTU page, otherwise to dashboard
       if(firstTime) {
         this.props.history.push("/ftu");
+        window.location.reload();
       } else {
         this.props.history.push("/dashboard");
+        window.location.reload();
       }
 
     })
     .catch(function(err) {
       console.log("Error");
       console.log(err);
-      alert(err.message);
+      $("#li-error").show().html("<strong>Error:</strong> Incorrect email or password");
+      // alert(err.message);
     });
   }
 
@@ -102,6 +106,7 @@ class Login extends Component {
                       </span>
                     </div>
                   </div>
+                  <div id="li-error" className="alert alert-danger">alert</div>
   
                   <p className="text-muted">
                     Don't have an account? Sign up <Link to={"/signup"}>here!</Link>

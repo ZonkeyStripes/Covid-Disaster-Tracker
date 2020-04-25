@@ -148,17 +148,12 @@ thead tr {
   border-radius: 40px;
 }
 
-/* #confirmPassword{
-  outline: none !important;
-} */
+#su-btn:hover{
+  background-color: #31488d;
+  border: 1px solid #31488d;
+}
 
-/* #confirmPassword:focus {
-  border-color: #28a745;
-  box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
-  box-shadow: 0 0 0 0.1rem rgb(209, 9, 9, 0.25);
-}  */
-
-#pw-error{
+#pw-error, #li-error{
   display: none;
   padding: 8px;
 }
@@ -573,8 +568,8 @@ body::-webkit-scrollbar-thumb {
   font-size: 14px;
 }
 
-#login-body, #signup-body{
-  height: 72vh;
+#login-body, #signup-body, #ftu-body{
+  height: 86vh;
 }
 
 #footer {
