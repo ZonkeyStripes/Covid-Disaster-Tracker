@@ -39,6 +39,7 @@ function FirstTimeUse(props) {
 
     // Runs whenever there's a change in the county dropdown menu
     const handleCountyChange = e => {
+        e.preventDefault();
         setSelectedCounty(e.target.value);
         //setCountyData(countiesData.filter(i => i.state === selectedState && i.county === e.target.value));
     }
@@ -136,12 +137,12 @@ function FirstTimeUse(props) {
           <div className="row mt-4">
             <div className="col-md-5 md-5 text-center mx-auto">
               <div className="card su-card">
-                <div className="card-body">
+                <div className="card-body ftu-card-body">
                   <h3 className="pb-2">
                     Welcome to Disaster Tracker
                   </h3>
                   <h6>Please enter up to three counties to follow</h6>
-                    <form onSubmit={handleSubmit}>
+                    {/* <form onSubmit={handleSubmit}> */}
                       <label htmlFor="state">State</label>
                       <select onChange={handleStateChange} className="form-control mx-auto" id="FTUstateSelect">
                       {stateNames.sort().map(name => (
@@ -154,15 +155,17 @@ function FirstTimeUse(props) {
                         <option>{county}</option>
                         ))}
                       </select>
-                      <button type="submit" className="btn form-btn-outline mt-3">Enter Location</button>
-                      <ul>
-                          {userLocations.map((item, index) => (
-                            <li key={index}>{item[0]} County, {item[1]}</li>
-                            //<li key={index}>{item}</li>
-                            ))}
-                      </ul>
-                    </form>
-                    <button className="btn form-btn" onClick={redirectToDashboard}>Finish</button>
+                      <button onClick={handleSubmit} type="submit" className="btn form-btn-outline mr-1 my-3">Enter Location</button>
+                      <button className="btn form-btn my-3 ml-1" onClick={redirectToDashboard}>Finish</button>
+                        {userLocations.map((item, index) => (
+                          <div className="alert alert-success mx-auto" key={index}>
+                            Added: {item[0]} County, {item[1]} <i class="fas fa-check-circle"/>
+                          </div>
+                          // <li key={index}>{item[0]} County, {item[1]}</li>
+                          //<li key={index}>{item}</li>
+                          ))}
+                    {/* </form> */}
+                    {/* <button className="btn form-btn" onClick={redirectToDashboard}>Finish</button> */}
                 </div>
               </div>
             </div>

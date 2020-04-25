@@ -86,34 +86,41 @@ class Kit extends Component {
         console.log(this.state)
         return (
             <>
-            <input type= "text" name= "county" onChange= {this.onInputChange} value={this.state.county}/>
-            <input type= "text" name= "state" onChange= {this.onInputChange} value={this.state.state}/>
-            <button onClick= {this.callkitAPI}>Submit</button>
-            <CardGroup>
-                <Card border="secondary" style={{ width: '18rem', textAlign: 'center', fontWeight: 'bolder',  borderBottom: '1px solid #999' }}>
-                    <Card.Header> Disaster Essentials </Card.Header>
-                    <Card.Body>
-                        <Card.Title style={{ weight: 'bold', color: 'rgb(67, 153, 67)' }}>Do You Have What You Need?</Card.Title>
-                        <Card.Text>
-                                <KitResults DisasterDeclarationsSummaries ={this.state.data}/>
-                        </Card.Text>
-                    </Card.Body>
-                </Card>
-                <Card>
-                    <div className="listed">
-                        <Card.Header style={{ textAlign: 'center', fontWeight: 'bolder', color: 'rgb(67, 153, 67)' }}>Create Your Disaster Kit </Card.Header>
-                        <header>
-                            <form id="to-do-form" onSubmit={this.addItem}>
-                                <input type="text" placeholder="Enter Text" value={this.state.currentItem.text}
-                                    onChange={this.handleInput} />
-                                <button type="submit" style={{ backgroundcolor: '#333', border: '1px solid #f6f6f6', borderradius: '40px', outline: 'none'}}>Add</button>
-                            </form>
-                        </header>
-                        <KitList items={this.state.items}
-                            deleteItem={this.deleteItem}></KitList>
-                    </div>
-                </Card>
-            </CardGroup>
+            {/* <input type= "text" name= "county" placeholder="County" onChange= {this.onInputChange} value={this.state.county}/>
+            <input type= "text" name= "state" placeholder="State" onChange= {this.onInputChange} value={this.state.state}/>
+            <button onClick= {this.callkitAPI}>Search</button> */}
+            <div className="container">
+              <CardGroup>
+                  <Card border="secondary" style={{ width: '18rem', textAlign: 'center', fontWeight: 'bolder',  borderBottom: '1px solid #999' }}>
+                      {/* <Card.Header> Disaster Essentials </Card.Header> */}
+                      <Card.Header>
+                        <input type="text" name="county" placeholder="County" onChange= {this.onInputChange} value={this.state.county}/>
+                        <input type="text" name="state" placeholder="State" onChange= {this.onInputChange} value={this.state.state}/>
+                        <button onClick={this.callkitAPI}>Search</button>
+                      </Card.Header>
+                      <Card.Body>
+                          <Card.Title style={{ weight: 'bold', color: 'rgb(67, 153, 67)' }}>Do You Have What You Need?</Card.Title>
+                          <Card.Text>
+                                  <KitResults DisasterDeclarationsSummaries ={this.state.data}/>
+                          </Card.Text>
+                      </Card.Body>
+                  </Card>
+                  <Card>
+                      <div className="listed">
+                          <Card.Header style={{ textAlign: 'center', fontWeight: 'bolder', color: 'rgb(67, 153, 67)' }}>Create Your Disaster Kit </Card.Header>
+                          <header>
+                              <form id="to-do-form" onSubmit={this.addItem}>
+                                  <input type="text" placeholder="Enter Text" value={this.state.currentItem.text}
+                                      onChange={this.handleInput} />
+                                  <button type="submit" style={{ backgroundcolor: '#333', border: '1px solid #f6f6f6', borderradius: '40px', outline: 'none'}}>Add</button>
+                              </form>
+                          </header>
+                          <KitList items={this.state.items}
+                              deleteItem={this.deleteItem}></KitList>
+                      </div>
+                  </Card>
+              </CardGroup>
+            </div>
             </>
         );
     }

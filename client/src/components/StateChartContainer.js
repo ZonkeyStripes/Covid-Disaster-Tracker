@@ -3,7 +3,8 @@ import StateBarCharts from "./StateBarCharts";
 import StateLineCharts from "./StateLineCharts";
 import $ from "jquery";
 
-const StateChartContainer = (props) => {
+const StateChartContainer = ({display, stateName, stateAbbrev, mostRecentData, nationalAvgs, stateData, nationalData}) => {
+
   const [showBarChart, setShowBarChart] = useState(true);
   const [showLineChart, setShowLineChart] = useState(true);
   const [range, setRange] = useState("4 Weeks");
@@ -41,7 +42,7 @@ const StateChartContainer = (props) => {
     setRange(e.target.value);
   }
 
-  if (props.display === "cases"){
+  if (display === "cases"){
     barTitle = "Case"
     lineTitle = "Cases"
   } else {
@@ -53,16 +54,16 @@ const StateChartContainer = (props) => {
       <div className="col-md-6 top-chart-c">
         <div className="top-chart">
           <div className="chart-title-sect">
-            <h5>{props.stateName} {barTitle} Totals</h5>
+            <h5>{stateName} {barTitle} Totals</h5>
             <i onClick={toggleBarChartDisplay} id="state-bar-collapse-icon" class="fas fa-chevron-down chart-toggle-icon"/>
           </div>
           <div id="state-bar-chart-container">
             <StateBarCharts
-              display = {props.display}
-              stateName = {props.stateName}
-              stateAbbrev = {props.stateAbbrev}
-              mostRecentData = {props.mostRecentData}
-              nationalAvgs = {props.nationalAvgs}
+              display = {display}
+              stateName = {stateName}
+              stateAbbrev = {stateAbbrev}
+              mostRecentData = {mostRecentData}
+              nationalAvgs = {nationalAvgs}
             />
           </div>
         </div>
@@ -70,7 +71,7 @@ const StateChartContainer = (props) => {
       <div className="col-md-6 top-chart-c">
         <div className="top-chart">
           <div className="chart-title-sect">
-            <h5>{props.stateName} {lineTitle} Over Time</h5>
+            <h5>{stateName} {lineTitle} Over Time</h5>
             <div id="range-container">
               <p className="text-muted" id="range-title">Range:</p>
               <select id="range-dropdown" onChange={handleRangeChange} defaultValue="4 Weeks">
@@ -82,14 +83,14 @@ const StateChartContainer = (props) => {
           </div>
           <div id="state-line-chart-container">
             <StateLineCharts
-              display = {props.display}
+              display = {display}
               range = {range}
-              stateName = {props.stateName}
-              stateAbbrev = {props.stateAbbrev}
-              stateData = {props.stateData}
-              mostRecentData = {props.mostRecentData}
-              nationalAvgs = {props.nationalAvgs}
-              nationalData = {props.nationalData}
+              stateName = {stateName}
+              stateAbbrev = {stateAbbrev}
+              stateData = {stateData}
+              mostRecentData = {mostRecentData}
+              nationalAvgs = {nationalAvgs}
+              nationalData = {nationalData}
             />
           </div>
         </div>

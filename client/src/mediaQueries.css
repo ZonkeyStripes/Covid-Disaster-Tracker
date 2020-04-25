@@ -5,6 +5,12 @@
   }
 }
 
+@media screen and (max-width: 415px){
+  .dd {
+    font-size: 16px;
+  }
+}
+
 @media screen and (max-width: 767px) { 
   .table-container {
     margin-top: 20px;
@@ -14,6 +20,9 @@
   }
   #news-link{
     margin-left: 42%;
+  }
+  #dashboard-link{
+    margin-left: 37%;
   }
   #disasters-link{
     margin-left: 39%;

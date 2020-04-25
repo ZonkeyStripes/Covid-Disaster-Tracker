@@ -1,21 +1,20 @@
 import React from 'react'
 import {Bar} from "react-chartjs-2"
 
-const StateBarCharts = (props) => {
-  console.log(props);
+const StateBarCharts = ({display, stateAbbrev, mostRecentData, nationalAvgs, stateName}) => {
   let returnVal;
-  if (props.display === "cases"){
+  if (display === "cases"){
     returnVal = (
         <Bar
           data={{
-            labels: [`${props.stateAbbrev}`, "US Median", "US Average"],
+            labels: [`${stateAbbrev}`, "US Median", "US Average"],
               datasets: [
                 {
                   label: "Cases",
                   data: [
-                    props.mostRecentData.cases,
-                    props.nationalAvgs.medianCases,
-                    props.nationalAvgs.avgCases
+                    mostRecentData.cases,
+                    nationalAvgs.medianCases,
+                    nationalAvgs.avgCases
                   ],
                   // backgroundColor: ["#3a57af", "pink", "#273a76"]
                   // backgroundColor: ["#3a57af", "#003f5c", "#6a6a6a"]
@@ -29,7 +28,7 @@ const StateBarCharts = (props) => {
           options={{
             title: {
               display: false,
-              text: `${props.stateName} Case Totals`,
+              text: `${stateName} Case Totals`,
               fontSize: 25
             },
             legend: {
@@ -51,14 +50,14 @@ const StateBarCharts = (props) => {
     returnVal = (
         <Bar
           data={{
-            labels: [`${props.stateAbbrev}`, "US Median", "US Average"],
+            labels: [`${stateAbbrev}`, "US Median", "US Average"],
               datasets: [
                 {
                   label: "Deaths",
                   data: [
-                    props.mostRecentData.deaths,
-                    props.nationalAvgs.medianDeaths,
-                    props.nationalAvgs.avgDeaths
+                    mostRecentData.deaths,
+                    nationalAvgs.medianDeaths,
+                    nationalAvgs.avgDeaths
                   ],
                   backgroundColor: ["#00589c", "#1891c3", "#666"]
                 }
@@ -68,7 +67,7 @@ const StateBarCharts = (props) => {
           options={{
             title: {
               display: false,
-              text: `${props.stateName} Death Totals`,
+              text: `${stateName} Death Totals`,
               fontSize: 25
             },
             legend: {

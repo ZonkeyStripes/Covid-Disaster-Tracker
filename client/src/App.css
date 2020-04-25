@@ -573,6 +573,16 @@ body::-webkit-scrollbar-thumb {
   height: 86vh;
 }
 
+.ftu-card-body{
+  padding-bottom: 10px;
+  max-height: 460px;
+  overflow-y: hidden;
+}
+
+.alert-success{
+  padding: 4px 0 4px 0;
+}
+
 #footer {
   display: flex;
   align-items: center;

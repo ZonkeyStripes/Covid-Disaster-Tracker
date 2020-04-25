@@ -8,7 +8,6 @@ const Header = () => {
   const [loggedIn, setLoggedIn] = useState(false);
   
   useEffect(() => {
-    console.log("header loaded");
     Axios.get("/api/user_data").then((data) => {
       setLoggedIn(true);
     }).catch((err) => {
@@ -29,7 +28,7 @@ const Header = () => {
 
   if (loggedIn){
     return (
-      <ReactBootStrap.Navbar id="header" collapseOnSelect expand="md" variant="dark sticky-nav">
+      <ReactBootStrap.Navbar id="header" collapseOnSelect expand="lg" variant="dark sticky-nav">
         <ReactBootStrap.Navbar.Brand href="#/">
           <img src={logo} alt="logo"/>
         </ReactBootStrap.Navbar.Brand>
@@ -41,6 +40,9 @@ const Header = () => {
             </ReactBootStrap.Nav.Link>
             <ReactBootStrap.Nav.Link>
               <NavLink exact={true} id="news-link" className="header-link" activeClassName="header-link-active" to={"/news"}>News</NavLink>
+            </ReactBootStrap.Nav.Link>
+            <ReactBootStrap.Nav.Link>
+              <NavLink exact={true} id="dashboard-link" className="header-link" activeClassName="header-link-active" to={"/dashboard"}>Dashboard</NavLink>
             </ReactBootStrap.Nav.Link>
             <ReactBootStrap.Nav.Link>
               <NavLink exact={true} id="disasters-link" className="header-link" activeClassName="header-link-active" to={"/disasters"}>Disasters</NavLink>
@@ -59,7 +61,7 @@ const Header = () => {
     )
   } else {
       return (
-        <ReactBootStrap.Navbar id="header" collapseOnSelect expand="md" variant="dark sticky-nav">
+        <ReactBootStrap.Navbar id="header" collapseOnSelect expand="lg" variant="dark sticky-nav">
           <ReactBootStrap.Navbar.Brand href="#/">
             <img src={logo} alt="logo"/>
           </ReactBootStrap.Navbar.Brand>
