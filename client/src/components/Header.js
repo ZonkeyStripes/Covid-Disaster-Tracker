@@ -35,23 +35,33 @@ const Header = () => {
         <ReactBootStrap.Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <ReactBootStrap.Navbar.Collapse id="responsive-navbar-nav">
           <ReactBootStrap.Nav className="ml-auto">
-            <ReactBootStrap.Nav.Link>
-              <NavLink exact={true} id="home-link" className="header-link" activeClassName="header-link-active" to={"/"}>Home</NavLink>
-            </ReactBootStrap.Nav.Link>
-            <ReactBootStrap.Nav.Link>
-              <NavLink exact={true} id="news-link" className="header-link" activeClassName="header-link-active" to={"/news"}>News</NavLink>
-            </ReactBootStrap.Nav.Link>
-            <ReactBootStrap.Nav.Link>
-              <NavLink exact={true} id="dashboard-link" className="header-link" activeClassName="header-link-active" to={"/dashboard"}>Dashboard</NavLink>
-            </ReactBootStrap.Nav.Link>
-            <ReactBootStrap.Nav.Link>
-              <NavLink exact={true} id="disasters-link" className="header-link" activeClassName="header-link-active" to={"/disasters"}>Disasters</NavLink>
-            </ReactBootStrap.Nav.Link>
-            <ReactBootStrap.Nav.Link>
-              <NavLink exact={true} id="disaster-kit-link" className="header-link" activeClassName="header-link-active" to={"/kit"}>Disaster Kit</NavLink>
-            </ReactBootStrap.Nav.Link>
+            <div className="link-container">
+              <ReactBootStrap.Nav.Link>
+                <NavLink exact={true} className="header-link" activeClassName="header-link-active" to={"/"}>Home</NavLink>
+              </ReactBootStrap.Nav.Link>
+            </div>
+            <div className="link-container">
+              <ReactBootStrap.Nav.Link>
+                <NavLink exact={true} className="header-link" activeClassName="header-link-active" to={"/news"}>News</NavLink>
+              </ReactBootStrap.Nav.Link>
+            </div>
+            <div className="link-container">
+              <ReactBootStrap.Nav.Link>
+                <NavLink exact={true} className="header-link" activeClassName="header-link-active" to={"/dashboard"}>Dashboard</NavLink>
+              </ReactBootStrap.Nav.Link>
+            </div>
+            <div className="link-container">
+              <ReactBootStrap.Nav.Link>
+                <NavLink exact={true} className="header-link" activeClassName="header-link-active" to={"/disasters"}>Disasters</NavLink>
+              </ReactBootStrap.Nav.Link>
+            </div>
+            <div className="link-container">
+              <ReactBootStrap.Nav.Link>
+                <NavLink exact={true} className="header-link" activeClassName="header-link-active" to={"/kit"}>Disaster Kit</NavLink>
+              </ReactBootStrap.Nav.Link>
+            </div>
           </ReactBootStrap.Nav>
-        <ReactBootStrap.Nav className="ml-auto">
+        <ReactBootStrap.Nav className="ml-auto header-btns-container">
           <ReactBootStrap.Nav.Link onClick={handleLogout} eventKey={4} href="#/">
             <ReactBootStrap.Button id="su-btn">Log Out</ReactBootStrap.Button>
           </ReactBootStrap.Nav.Link>
@@ -68,20 +78,28 @@ const Header = () => {
           <ReactBootStrap.Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <ReactBootStrap.Navbar.Collapse id="responsive-navbar-nav">
             <ReactBootStrap.Nav className="ml-auto">
-              <ReactBootStrap.Nav.Link>
-                <NavLink exact={true} id="home-link" className="header-link" activeClassName="header-link-active" to={"/"}>Home</NavLink>
-              </ReactBootStrap.Nav.Link>
-              <ReactBootStrap.Nav.Link>
-                <NavLink exact={true} id="news-link" className="header-link" activeClassName="header-link-active" to={"/news"}>News</NavLink>
-              </ReactBootStrap.Nav.Link>
-              <ReactBootStrap.Nav.Link>
-                <NavLink exact={true} id="disasters-link" className="header-link" activeClassName="header-link-active" to={"/disasters"}>Disasters</NavLink>
-              </ReactBootStrap.Nav.Link>
-              <ReactBootStrap.Nav.Link>
-                <NavLink exact={true} id="disaster-kit-link" className="header-link" activeClassName="header-link-active" to={"/kit"}>Disaster Kit</NavLink>
-              </ReactBootStrap.Nav.Link>
+              <div className="link-container">
+                <ReactBootStrap.Nav.Link>
+                  <NavLink exact={true} className="header-link" activeClassName="header-link-active" to={"/"}>Home</NavLink>
+                </ReactBootStrap.Nav.Link>
+              </div>
+              <div className="link-container">
+                <ReactBootStrap.Nav.Link>
+                  <NavLink exact={true} className="header-link" activeClassName="header-link-active" to={"/news"}>News</NavLink>
+                </ReactBootStrap.Nav.Link>
+              </div>
+              <div className="link-container">
+                <ReactBootStrap.Nav.Link>
+                  <NavLink exact={true} className="header-link" activeClassName="header-link-active" to={"/disasters"}>Disasters</NavLink>
+                </ReactBootStrap.Nav.Link>
+              </div>
+              <div className="link-container">
+                <ReactBootStrap.Nav.Link>
+                  <NavLink exact={true} className="header-link" activeClassName="header-link-active" to={"/kit"}>Disaster Kit</NavLink>
+                </ReactBootStrap.Nav.Link>
+              </div>
             </ReactBootStrap.Nav>
-          <ReactBootStrap.Nav className="ml-auto">
+          <ReactBootStrap.Nav className="ml-auto header-btns-container">
             <ReactBootStrap.Nav.Link eventKey={2} href="#login">
               <ReactBootStrap.Button id="li-btn">Log In</ReactBootStrap.Button>
             </ReactBootStrap.Nav.Link>
@@ -96,4 +114,3 @@ const Header = () => {
 }
   
 export default Header;
- 

@@ -15,31 +15,6 @@
   .table-container {
     margin-top: 20px;
   }
-  #home-link{
-    margin-left: 41.5%;
-  }
-  #news-link{
-    margin-left: 42%;
-  }
-  #dashboard-link{
-    margin-left: 37%;
-  }
-  #disasters-link{
-    margin-left: 39%;
-  }
-  #disaster-kit-link{
-    margin-left: 37%;
-  }
-  #li-btn{
-    margin-left: 38%;
-  }
-  #su-btn{
-    margin-left: 36.5%;
-  }
-  #ss-header-text{
-    text-align: center;
-    margin-bottom: 18px;
-  }
   #range-container{
     display: flex;
     flex-direction: column;
@@ -54,5 +29,21 @@
   }
   #range-dropdown{
     margin-left: 0px;
+  }
+}
+
+@media screen and (max-width: 995px){
+  .link-container{
+    display: flex;
+    justify-content: center;
+  }
+  #ss-header-text{
+    text-align: center;
+    margin-bottom: 18px;
+  }
+  .header-btns-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
   }
 }

@@ -21,12 +21,13 @@ function ChartContainer() {
     return Array.from(setOfCounties).sort();
   }
   
-  const [selectedState, setSelectedState] = useState(stateNames[0].state)
-  const [selectedStateAb, setSelectedStateAb] = useState(stateNames[0].code)
+  const [selectedState, setSelectedState] = useState(stateNames[0].state);
+  const [selectedStateAb, setSelectedStateAb] = useState(stateNames[0].code);
   const [stateDataObj, setStateDataObj] = useState(statesData.filter(st => st.state === stateNames[0].state));
   const [countiesToShow, setCountiesToShow] = useState(getCounties(selectedState));
   const [selectedCounty, setSelectedCounty] = useState(countiesToShow[0]);
   const [countyData, setCountyData] = useState(countiesData.filter(i => i.state === selectedState && i.county === selectedCounty));
+  const [display, setDisplay] = useState("cases");
   
   // Calculates the per-state average and median of COVID-19 data in the US
   const getNationalAvg = () => {
@@ -626,7 +627,6 @@ function ChartContainer() {
     setCountyData(countiesData.filter(i => i.state === selectedState && i.county === e.target.value));
   }
 
-  const [display, setDisplay] = useState("cases")
   const displayDeaths = () => {
     if (display === "cases"){
       setDisplay("deaths");
@@ -665,7 +665,6 @@ function ChartContainer() {
               </div>
             </div>
             <div className="col-md-4">
-              {/* <label htmlFor="state">State</label> */}
               <div className="row">
                 <div className="col-6">
                   <p className="text-muted dd-label">
