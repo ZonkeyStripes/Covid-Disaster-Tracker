@@ -75,6 +75,7 @@ const StateChartContainer = (props) => {
               <p className="text-muted" id="range-title">Range:</p>
               <select id="range-dropdown" onChange={handleRangeChange} defaultValue="4 Weeks">
                 <option value="1 Week">1 Week</option>
+                <option value="2 Weeks">2 Weeks</option>
                 <option value="4 Weeks">4 Weeks</option>
               </select>
             </div>

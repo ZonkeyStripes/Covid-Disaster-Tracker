@@ -27,6 +27,7 @@ function ChartContainer() {
   const [countiesToShow, setCountiesToShow] = useState(getCounties(selectedState));
   const [selectedCounty, setSelectedCounty] = useState(countiesToShow[0]);
   const [countyData, setCountyData] = useState(countiesData.filter(i => i.state === selectedState && i.county === selectedCounty));
+  const [display, setDisplay] = useState("cases");
   
   // Calculates the per-state average and median of COVID-19 data in the US
   const getNationalAvg = () => {
@@ -45,6 +46,23 @@ function ChartContainer() {
     let range4DeathsByStateDateThree = [];
     let range4DeathsByStateDateFour = [];
     let range4DeathsByStateDateFive = [];
+
+    let range2CasesByStateDateOne = [];
+    let range2CasesByStateDateTwo = [];
+    let range2CasesByStateDateThree = [];
+    let range2CasesByStateDateFour = [];
+    let range2CasesByStateDateFive = [];
+    let range2CasesByStateDateSix = [];
+    let range2CasesByStateDateSeven = [];
+    let range2CasesByStateDateEight = [];
+    let range2DeathsByStateDateOne = [];
+    let range2DeathsByStateDateTwo = [];
+    let range2DeathsByStateDateThree = [];
+    let range2DeathsByStateDateFour = [];
+    let range2DeathsByStateDateFive = [];
+    let range2DeathsByStateDateSix = [];
+    let range2DeathsByStateDateSeven = [];
+    let range2DeathsByStateDateEight = [];
 
     let range1CasesByStateDateOne = [];
     let range1CasesByStateDateTwo = [];
@@ -100,6 +118,24 @@ function ChartContainer() {
       range1DeathsByStateDateSix.push(loopState[loopState.length-3].deaths)
       range1DeathsByStateDateSeven.push(loopState[loopState.length-2].deaths)
       range1DeathsByStateDateEight.push(loopState[loopState.length-1].deaths)
+
+      range2CasesByStateDateOne.push(loopState[loopState.length-15].cases)
+      range2CasesByStateDateTwo.push(loopState[loopState.length-13].cases)
+      range2CasesByStateDateThree.push(loopState[loopState.length-11].cases)
+      range2CasesByStateDateFour.push(loopState[loopState.length-9].cases)
+      range2CasesByStateDateFive.push(loopState[loopState.length-7].cases)
+      range2CasesByStateDateSix.push(loopState[loopState.length-5].cases)
+      range2CasesByStateDateSeven.push(loopState[loopState.length-3].cases)
+      range2CasesByStateDateEight.push(loopState[loopState.length-1].cases)
+
+      range2DeathsByStateDateOne.push(loopState[loopState.length-15].deaths)
+      range2DeathsByStateDateTwo.push(loopState[loopState.length-13].deaths)
+      range2DeathsByStateDateThree.push(loopState[loopState.length-11].deaths)
+      range2DeathsByStateDateFour.push(loopState[loopState.length-9].deaths)
+      range2DeathsByStateDateFive.push(loopState[loopState.length-7].deaths)
+      range2DeathsByStateDateSix.push(loopState[loopState.length-5].deaths)
+      range2DeathsByStateDateSeven.push(loopState[loopState.length-3].deaths)
+      range2DeathsByStateDateEight.push(loopState[loopState.length-1].deaths)
       
     }
 
@@ -118,6 +154,24 @@ function ChartContainer() {
     range4DeathsByStateDateThree.sort(function(a, b){return a - b});
     range4DeathsByStateDateFour.sort(function(a, b){return a - b});
     range4DeathsByStateDateFive.sort(function(a, b){return a - b});
+
+    range2CasesByStateDateOne.sort(function(a, b){return a - b});
+    range2CasesByStateDateTwo.sort(function(a, b){return a - b});
+    range2CasesByStateDateThree.sort(function(a, b){return a - b});
+    range2CasesByStateDateFour.sort(function(a, b){return a - b});
+    range2CasesByStateDateFive.sort(function(a, b){return a - b});
+    range2CasesByStateDateSix.sort(function(a, b){return a - b});
+    range2CasesByStateDateSeven.sort(function(a, b){return a - b});
+    range2CasesByStateDateEight.sort(function(a, b){return a - b});
+
+    range2DeathsByStateDateOne.sort(function(a, b){return a - b});
+    range2DeathsByStateDateTwo.sort(function(a, b){return a - b});
+    range2DeathsByStateDateThree.sort(function(a, b){return a - b});
+    range2DeathsByStateDateFour.sort(function(a, b){return a - b});
+    range2DeathsByStateDateFive.sort(function(a, b){return a - b});
+    range2DeathsByStateDateSix.sort(function(a, b){return a - b});
+    range2DeathsByStateDateSeven.sort(function(a, b){return a - b});
+    range2DeathsByStateDateEight.sort(function(a, b){return a - b});
 
     range1CasesByStateDateOne.sort(function(a, b){return a - b});
     range1CasesByStateDateTwo.sort(function(a, b){return a - b});
@@ -155,6 +209,28 @@ function ChartContainer() {
             Math.round(nationalData[nationalData.length-22].deaths / 53),
             Math.round(nationalData[nationalData.length-15].deaths / 53),
             Math.round(nationalData[nationalData.length-8].deaths / 53),
+            Math.round(nationalData[nationalData.length-1].deaths / 53)
+          ]
+        },
+        twoWeekRange: {
+          cases: [
+            Math.round(nationalData[nationalData.length-15].cases / 53),
+            Math.round(nationalData[nationalData.length-13].cases / 53),
+            Math.round(nationalData[nationalData.length-11].cases / 53),
+            Math.round(nationalData[nationalData.length-9].cases / 53),
+            Math.round(nationalData[nationalData.length-7].cases / 53),
+            Math.round(nationalData[nationalData.length-5].cases / 53),
+            Math.round(nationalData[nationalData.length-3].cases / 53),
+            Math.round(nationalData[nationalData.length-1].cases / 53)
+          ],
+          deaths: [
+            Math.round(nationalData[nationalData.length-15].deaths / 53),
+            Math.round(nationalData[nationalData.length-13].deaths / 53),
+            Math.round(nationalData[nationalData.length-11].deaths / 53),
+            Math.round(nationalData[nationalData.length-9].deaths / 53),
+            Math.round(nationalData[nationalData.length-7].deaths / 53),
+            Math.round(nationalData[nationalData.length-5].deaths / 53),
+            Math.round(nationalData[nationalData.length-3].deaths / 53),
             Math.round(nationalData[nationalData.length-1].deaths / 53)
           ]
         },
@@ -198,6 +274,28 @@ function ChartContainer() {
             range4DeathsByStateDateThree[26],
             range4DeathsByStateDateFour[26],
             range4DeathsByStateDateFive[26]
+          ]
+        },
+        twoWeekRange: {
+          cases: [
+            range2CasesByStateDateOne[26],
+            range2CasesByStateDateTwo[26],
+            range2CasesByStateDateThree[26],
+            range2CasesByStateDateFour[26],
+            range2CasesByStateDateFive[26],
+            range2CasesByStateDateSix[26],
+            range2CasesByStateDateSeven[26],
+            range2CasesByStateDateEight[26]
+          ],
+          deaths: [
+            range2DeathsByStateDateOne[26],
+            range2DeathsByStateDateTwo[26],
+            range2DeathsByStateDateThree[26],
+            range2DeathsByStateDateFour[26],
+            range2DeathsByStateDateFive[26],
+            range2DeathsByStateDateSix[26],
+            range2DeathsByStateDateSeven[26],
+            range2DeathsByStateDateEight[26]
           ]
         },
         oneWeekRange: {
@@ -626,7 +724,6 @@ function ChartContainer() {
     setCountyData(countiesData.filter(i => i.state === selectedState && i.county === e.target.value));
   }
 
-  const [display, setDisplay] = useState("cases")
   const displayDeaths = () => {
     if (display === "cases"){
       setDisplay("deaths");
@@ -665,7 +762,6 @@ function ChartContainer() {
               </div>
             </div>
             <div className="col-md-4">
-              {/* <label htmlFor="state">State</label> */}
               <div className="row">
                 <div className="col-6">
                   <p className="text-muted dd-label">

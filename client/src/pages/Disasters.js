@@ -207,7 +207,7 @@ class Disasters extends Component {
             let temp = this.state.allStates.map((st) => {
                 let res = {};
                 //res.question = <div>{st[0]} {"\u2014"} {st[1].length} disasters declared</div>;
-                res.question = <div>{st[0]} {st[1].length} disasters declared</div>;
+                res.question = <div className="dd">{st[0]}: {st[1].length} disasters declared</div>;
                 res.answer = st[1].map((dis) => {
                     return <div>{dis.declaredCountyArea}: {dis.incidentType}<br />
                     {dis.title}<br />
@@ -220,7 +220,7 @@ class Disasters extends Component {
             });
             console.log(temp);
             resultToRender = <div className="col-6 faqs">
-            <h2>Disasters by State in the last Year</h2>
+            <h2 className="text-center">Disasters by State in the last Year</h2>
             <hr></hr>
             <div className="stuff">
                 <DisasterList stateDisasters={temp}/>
@@ -232,10 +232,10 @@ class Disasters extends Component {
 
         return (
             <div className="container">
-                <h1>Disasters</h1>
+                {/* <h1>Disasters</h1> */}
                 {resultToRender}
                 {this.state.locations.map((el, index) => (
-                    <div>
+                    <div className="mb-4 px-3">
                     <DisasterMap key={index} USstate={el[1]} lat={el[2]} long={el[3]} disasters={el[4]}/>
                     </div>
                 ))}

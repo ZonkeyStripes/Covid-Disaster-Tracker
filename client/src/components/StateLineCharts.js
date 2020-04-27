@@ -35,6 +35,38 @@ const StateLineCharts = ({nationalAvgs, stateData, range, display, stateName, st
     dateDeathsArr.push(stateData[stateData.length-8].deaths);
     dateDeathsArr.push(stateData[stateData.length-1].deaths);
 
+  } else if (range === "2 Weeks"){
+    ntlMedCases = nationalAvgs.dateMedians.twoWeekRange.cases;
+    ntlMedDeaths = nationalAvgs.dateMedians.twoWeekRange.deaths;
+    ntlAvgCases = nationalAvgs.dateAvgs.twoWeekRange.cases;
+    ntlAvgDeaths = nationalAvgs.dateAvgs.twoWeekRange.deaths;
+
+    datesArr.push(stateData[stateData.length-15].date);
+    datesArr.push(stateData[stateData.length-13].date);
+    datesArr.push(stateData[stateData.length-11].date);
+    datesArr.push(stateData[stateData.length-9].date);
+    datesArr.push(stateData[stateData.length-7].date);
+    datesArr.push(stateData[stateData.length-5].date);
+    datesArr.push(stateData[stateData.length-3].date);
+    datesArr.push(stateData[stateData.length-1].date);
+
+    dateCasesArr.push(stateData[stateData.length-15].cases);
+    dateCasesArr.push(stateData[stateData.length-13].cases);
+    dateCasesArr.push(stateData[stateData.length-11].cases);
+    dateCasesArr.push(stateData[stateData.length-9].cases);
+    dateCasesArr.push(stateData[stateData.length-7].cases);
+    dateCasesArr.push(stateData[stateData.length-5].cases);
+    dateCasesArr.push(stateData[stateData.length-3].cases);
+    dateCasesArr.push(stateData[stateData.length-1].cases);
+
+    dateDeathsArr.push(stateData[stateData.length-15].deaths);
+    dateDeathsArr.push(stateData[stateData.length-13].deaths);
+    dateDeathsArr.push(stateData[stateData.length-11].deaths);
+    dateDeathsArr.push(stateData[stateData.length-9].deaths);
+    dateDeathsArr.push(stateData[stateData.length-7].deaths);
+    dateDeathsArr.push(stateData[stateData.length-5].deaths);
+    dateDeathsArr.push(stateData[stateData.length-3].deaths);
+    dateDeathsArr.push(stateData[stateData.length-1].deaths);
   } else if (range === "1 Week"){
     ntlMedCases = nationalAvgs.dateMedians.oneWeekRange.cases;
     ntlMedDeaths = nationalAvgs.dateMedians.oneWeekRange.deaths;
