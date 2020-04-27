@@ -13,7 +13,7 @@
     height: 50px;
     padding: 0 20px;
     margin: 20px;
-    font-size: 18px;
+    font-size: 12px;
     border-radius: 10px;
     color: white;
    margin-left: 25%;
@@ -38,6 +38,7 @@
     cursor: pointer;
     font-weight: bolder;
     color: white;
+    font-size: 14px;
 }
 
 .listing{
@@ -45,14 +46,14 @@
     width: 300px;
     background-color: rgb(67, 153, 67);
     height: 50PX;
-    margin: 20px auto;
+    margin: 14px auto;
     border-radius: 5px;
 }
 
 .listing p{
     padding: 10px;
     position: relative;
-    font-size: 20px;
+    font-size: 14px;
 }
 
 .listing p span{
@@ -74,7 +75,7 @@
     height: 50px;
     padding: 0 20px;
     margin: 20px;
-    font-size: 18px;
+    font-size: 12px;
     border-radius: 10px;
     color: white;
 }
@@ -93,6 +94,7 @@
     cursor: pointer;
     font-weight: bolder;
     color: white;
+    font-size: 14px;
 }
 
 .survivor input::placeholder{
