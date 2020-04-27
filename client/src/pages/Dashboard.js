@@ -116,7 +116,7 @@ class Dashboard extends Component {
 
   render() {
       return (
-        <div>
+        <div className="container">
           {/* <p>{this.state.username}<span onClick={this.handleClick}>(Logout)</span></p> */}
             <h1>Dashboard</h1>
             <h2>Your tracked locations</h2>

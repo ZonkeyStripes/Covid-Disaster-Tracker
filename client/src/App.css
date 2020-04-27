@@ -337,6 +337,7 @@ thead tr {
 .btn-chart{
   background-color: #003f5c;
   color: #fff;
+  outline: none;
 }
 
 .btn-chart:hover{
@@ -386,17 +387,23 @@ thead tr {
 }
 
 /* Css for news page */
+@media only screen and (min-width: 628px) {
+  .newslist {
+    width: 30%;
+    height: 7%;
+  }
+  .faqhead {
+    width: 30%;
+    height: 7%
+  }
+}
 
 .video {  
-  padding: 25px;
-  text-align: center;
   justify-content: center;
+  text-align: center;
+  padding: 25px;
+  margin-left: 50%;
 }
-iframe {
-  width: 400px;
-  height: 250px;
-}
-
 .newshead {
   text-align: center;
   margin-top: 25px;
@@ -452,6 +459,14 @@ body::-webkit-scrollbar-thumb {
   border-radius: 30px;
 }
 
+.newslist { 
+  width: 50%;
+  max-height: 10%;
+  height: 160vh;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
 .Collapsible {
   text-emphasis: bolder;
   background-color: #777;
@@ -472,48 +487,13 @@ body::-webkit-scrollbar-thumb {
   padding: 10px;
 } 
 
-.newslist { 
-  width: 90%;
-  max-height: 10%;
-  height: 1000px;
-  overflow-x: hidden;
-  overflow-y: scroll;
-}
 
 /* Css for the Frequently asked Questions page (FAQS) */
 .faqs {
-  max-height: 10%;
-  height: 1000px;
-  width: 90%;
+  width: 100%;
   max-width: 768px;
   margin: 0 auto;
   padding: 25px;
-  overflow-y: scroll;
-  overflow-x: hidden;
-}
-
-.newscon {
-  margin: 0;
-}
-
-.faqs::-webkit-scrollbar {
-  width: 5px;
-}
-
-.faqs::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 6px black;
-}
-
-.faqs::-webkit-scrollbar-thumb {
-  background-color: #3a57af;
-  outline: 1px solid red;
-  border-radius: 25%;
-}
-
-@media screen and (max-width: 992px) {
-  .faqs {
-    overflow-y: scroll;
-  }
 }
 
 .faqs .faq {
@@ -592,6 +572,44 @@ body::-webkit-scrollbar-thumb {
 
 #login-body, #signup-body, #ftu-body{
   height: 86vh;
+}
+
+.ftu-card-body{
+  padding-bottom: 10px;
+  max-height: 460px;
+  overflow-y: hidden;
+}
+
+.alert-success{
+  padding: 4px 0 4px 0;
+}
+
+#map-btn-container{
+  display: flex;
+  justify-content: center;
+  margin: 30px 0 20px 0;
+}
+
+#map-cases-btn{
+  border-radius: 5px 0 0 5px;
+  padding: 2px 9px;
+}
+
+#map-deaths-btn{
+  border-radius: 0 5px 5px 0;
+  padding: 2px 9px;
+}
+
+.map-btn{
+  background-color: #3a57af;
+  color: #f6f6f6;
+  border: 1px solid #3a57af;
+}
+
+.map-btn-outline{
+  background-color: transparent;
+  border: 1px solid #3a57af;
+  color: #3a57af;
 }
 
 #footer {
