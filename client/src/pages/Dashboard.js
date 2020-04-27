@@ -5,7 +5,7 @@ import MiniMap from "../components/MiniMap";
 import Axios from "axios";
 import countyData from '../assets/nytimescounties.json';
 import * as ReactBootStrap from "react-bootstrap";
-import FindHospital from "../components/FindHospital";
+import FindHospital from "../components/findHospital";
 
 let todayDate = "4/12/2020";
 let countyArray = [];
