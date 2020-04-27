@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
+import {Link} from "react-router-dom";
 import "../App.css";
 import statesData from "../utils/json/us-states.json";
 import countiesData from "../utils/json/us-counties.json";
 import stateNames from "../utils/json/state-names.json";
 import Axios from "axios";
 
+let user_id;
 
 function FirstTimeUse(props) {
     //Returns array with all county names in a given state
@@ -51,6 +53,9 @@ function FirstTimeUse(props) {
             console.log("*****")
             console.log(data.data);
 
+            user_id = data.data.id;
+            console.log(user_id);
+
             let locationObj = {};
             locationObj.state = selectedState;
             locationObj.county = selectedCounty;
@@ -88,7 +93,13 @@ function FirstTimeUse(props) {
     }
 
     const redirectToDashboard = () => {
-        props.history.push("/dashboard");
+        console.log(user_id);
+        
+        Axios.put("/api/set_user_ftu", {uid: user_id, value: false})
+        .then((res) => {
+            console.log("set the ftu to false");
+            props.history.push("/dashboard");
+        });
     }
 
     // fire once to load location data
@@ -98,6 +109,7 @@ function FirstTimeUse(props) {
         .then((data) => {
             console.log("is user logged in?")
             console.log(data);
+            user_id = data.data.id;
 
             Axios.get("/api/location/" + data.data.id)
             .then((all_locations) => {
@@ -120,31 +132,65 @@ function FirstTimeUse(props) {
     }, []);
 
     return (
-        <div>
-            <h1>Welcome to Disaster Tracker</h1>
+        <div id="ftu-body" className="container">
+          <div className="row mt-4">
+            <div className="col-md-5 md-5 text-center mx-auto">
+              <div className="card su-card">
+                <div className="card-body">
+                  <h3 className="pb-2">
+                    Welcome to Disaster Tracker
+                  </h3>
+                  <h6>Please enter up to three counties to follow</h6>
+                    <form onSubmit={handleSubmit}>
+                      <label htmlFor="state">State</label>
+                      <select onChange={handleStateChange} className="form-control mx-auto" id="FTUstateSelect">
+                      {stateNames.sort().map(name => (
+                        <option>{name}</option>
+                      ))}
+                      </select>
+                      <label className="mt-2" htmlFor="county">County</label>
+                      <select onChange={handleCountyChange} className="form-control mx-auto" id="FTUcountySelect">
+                      {countiesToShow.map(county => (
+                        <option>{county}</option>
+                        ))}
+                      </select>
+                      <button type="submit" className="btn form-btn-outline mt-3">Enter Location</button>
+                      <ul>
+                          {userLocations.map((item, index) => (
+                            <li key={index}>{item[0]} County, {item[1]}</li>
+                            //<li key={index}>{item}</li>
+                            ))}
+                      </ul>
+                    </form>
+                    <button className="btn form-btn" onClick={redirectToDashboard}>Finish</button>
+                </div>
+              </div>
+            </div>
+          </div>
+            {/* <h1>Welcome to Disaster Tracker</h1>
             <h4>Enter your location and locations that you want to watch</h4>
             <form onSubmit={handleSubmit}>
-                <label htmlFor="state">State</label>
-                <select onChange={handleStateChange} className="form-control" id="FTUstateSelect">
-                {stateNames.sort().map(name => (
-                    <option>{name}</option>
+              <label htmlFor="state">State</label>
+              <select onChange={handleStateChange} className="form-control" id="FTUstateSelect">
+              {stateNames.sort().map(name => (
+                <option>{name}</option>
+              ))}
+              </select>
+              <label htmlFor="county">County</label>
+              <select onChange={handleCountyChange} className="form-control" id="FTUcountySelect">
+              {countiesToShow.map(county => (
+                <option>{county}</option>
                 ))}
-                </select>
-                <label htmlFor="county">County</label>
-                <select onChange={handleCountyChange} className="form-control" id="FTUcountySelect">
-                {countiesToShow.map(county => (
-                    <option>{county}</option>
-                    ))}
-                </select>
-                <button type="submit" className="btn form-btn">Enter Location</button>
-                </form>
+              </select>
+              <button type="submit" className="btn form-btn">Enter Location</button>
+            </form>
                 <button className="btn form-btn" onClick={redirectToDashboard}>Finish</button>
                 <ul>
                     {userLocations.map((item, index) => (
                         <li key={index}>{item[0]} County, {item[1]}</li>
                         //<li key={index}>{item}</li>
                     ))}
-                </ul>
+                </ul> */}
         </div>
       );
   }

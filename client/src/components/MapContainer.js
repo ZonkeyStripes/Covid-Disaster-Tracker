@@ -1,14 +1,10 @@
 import React, { Component } from "react";
-import { Map, Marker, Popup, TileLayer, GeoJSON, MapControl } from "react-leaflet";
-import { Icon } from "leaflet";
+import { Map, TileLayer, GeoJSON } from "react-leaflet";
 import "../App.css";
 import usstates from '../assets/gz_2010_us_040_00_5m.json';
 import stateData from '../assets/nytimesstate.json';
-import L from 'leaflet';
-import MapInfo from "./MapInfo";
 import MapLegend from "./MapLegend";
 import Tables from "./Tables";
-import DataTable from "./DataTable";
 import $ from "jquery";
 
 
@@ -20,7 +16,7 @@ const zoomLevel = 4;
 
 
 //console.log(usstates);
-let todayDate = "2020-04-08";
+let todayDate = "2020-04-23";
 
 let totalCases = 0;
 let totalDeaths = 0;
@@ -51,10 +47,8 @@ const mapColors = [
     ['#990000', '#d7301f', '#ef6548', '#fc8d59', '#fdbb84', '#fdd49e', '#fef0d9']
 ];
 
-let mapClr = mapColors[0];
-
 const thresholdData = [
-    [100000, 5000, 2000, 1000, 500, 100],
+    [200000, 10000, 5000, 1000, 500, 100],
     [2000, 1000, 500, 250, 100, 50]
 ];
 
@@ -70,6 +64,8 @@ class MapContainer extends Component {
         super(props);
         this.state = {
             displayed: "cases",
+            mapOpen: true,
+            tableOpen: true,
             colors: mapColors[0],
             limits: thresholdData[0],
             total: totalCases,
@@ -155,9 +151,9 @@ class MapContainer extends Component {
 
         for(let i = 0; i < todayArray.length; i++) {
             if(todayArray[i].state == feature.properties.NAME) {
-                if(this.state.displayed == "cases") {
+                if(this.state.displayed === "cases") {
                     dataToDisplay = todayArray[i].cases;
-                } else if (this.state.displayed == "deaths") {
+                } else if (this.state.displayed === "deaths") {
                     dataToDisplay = todayArray[i].deaths;
                 }
             }
@@ -202,18 +198,7 @@ class MapContainer extends Component {
     }
 
     resetHighlight(e) {
-        // console.log("mouseout");
-        let layer = e.target;
-
-        // layer.setStyle({
-        //     weight: 1,
-        //     color: '#666',
-        //     dashArray: '',
-        //     fillOpacity: 0.7
-        // });
         this.refs.geojson.leafletElement.resetStyle(e.target);
-        // layer.resetStyle();
-        // info.update();
     }
 
     zoomToFeature(e) {
@@ -395,56 +380,117 @@ class MapContainer extends Component {
         // }
     }
 
+    toggleMapDisplay = () => {
+      if (this.state.mapOpen){
+        $("#map-container").hide();
+        $("#map-collapse-icon").css("transform", "rotate(90deg)");
+        $("#map-header").css("padding-top", "5px");
+        $(".map-title-sect").css("padding-left", "5px");
+        $(".map-title-sect").css("border", "1px solid rgba(0, 0, 0, .125");
+        $(".map-title-sect").css("border-radius", "0.25rem");
+        this.setState({
+          mapOpen: false
+        });
+      } else {
+        $("#map-collapse-icon").css("transform", "rotate(0deg)");
+        $("#map-header").css("padding-top", "0");
+        $(".map-title-sect").css("padding-left", "0");
+        $(".map-title-sect").css("border", "none");
+        $("#map-container").show();
+        this.setState({
+          mapOpen: true
+        });
+      }
+    }
 
+    toggleTableDisplay = () => {
+      if (this.state.tableOpen){
+        $("#table-collapse-icon").css("transform", "rotate(90deg)");
+        $(".table-responsive").css("overflow-y", "hidden");
+        $(".table-responsive").css("max-height", "0px");
+        $("#cases-btn").hide();
+        $("#deaths-btn").hide();
+        $("#table-header").css("visibility", "initial");
+        $("#table-header").css("margin-right", "0");
+        $("#table-header").css("margin-left", "0");
+        $("#table-header").css("padding-top", "5px");
+        this.setState({
+          tableOpen: false
+        });
+      } else {
+        $("#table-collapse-icon").css("transform", "rotate(0deg)");
+        $(".table-responsive").css("overflow-y", "scroll");
+        $(".table-responsive").css("max-height", "460px");
+        $("#cases-btn").show();
+        $("#deaths-btn").show();
+        $("#table-header").css("visibility", "hidden");
+        $("#table-header").css("padding", "0");
+        this.setState({
+          tableOpen: true
+        });
+      }
+    }
     
     render() {
         return (
             <div id="map-stuff" className="row">
-                <div className="col-8">
+              <div className="col-md-8">
+                <div className="map-title-sect">
+                  <h5 id="map-header">COVID-19 Severity By State</h5>
+                  <i onClick={this.toggleMapDisplay} id="map-collapse-icon" class="fas fa-chevron-down chart-toggle-icon"/>
+                </div>
+                <div id="map-container">
                     <Map
-                        center={mapCenter}
-                        zoom={zoomLevel}
+                      center={mapCenter}
+                      zoom={zoomLevel}
                     >
-                        <TileLayer
-                            attribution={stamenTonerAttr}
-                            url={stamenTonerTiles}
-                        />
-                        <GeoJSON
+                      <TileLayer
+                        attribution={stamenTonerAttr}
+                        url={stamenTonerTiles}
+                      />
+                      <GeoJSON
                         data={usstates}
                         style={this.geoJSONStyle}
                         onEachFeature={this.onEachFeature}
                         onMouseOut={() => this.resetHighlight}
                         onMouseOver={() => this.highlightFeature}
                         ref="geojson"
-                        />
-                        {/* <MapInfo /> */}
-                        <MapLegend colors={this.state.colors} limits={this.state.limits}/>
-                    </Map>
+                      />
+                      {/* <MapInfo /> */}
+                      <MapLegend colors={this.state.colors} limits={this.state.limits}/>
+                  </Map>
                 </div>
+              </div>
 
-                <div className="col-4 px-2">
-                    <div className="card">
-                        <div className="d-flex my-2">
-                            <div className="input-group" id="table-btn-container">
-                            <div className="input-group-prepend">
-                                <button onClick={this.displayCases} id="cases-btn" className="btn table-btn">Cases</button>
-                            </div>
-                            <div className="input-group-append">
-                                <button onClick={this.displayDeaths} id="deaths-btn" className="btn table-btn-outline">Deaths</button>
-                            </div>
-                            </div>
-                        </div>
-                    <Tables
-                    displayed = {this.state.displayed}
-                    total = {this.state.total}
-                    displayList = {this.state.displayList}
-                    cases = {totalCases}
-                    deaths = {totalDeaths}
-                    casesArr = {casesArray}
-                    deathsArr = {deathsArray}
-                    />
+              <div className="col-md-4">
+                <div className="card table-container">
+                  <div className="chart-title-sect">
+                    <h5 id="table-header">Nationwide totals</h5>
+                    <i onClick={this.toggleTableDisplay} id="table-collapse-icon" class="fas fa-chevron-down chart-toggle-icon"/>
+                  </div>
+                  <div className="d-flex table-content">
+                    <div className="input-group" id="table-btn-container">
+                    <div className="input-group-prepend">
+                      <button onClick={this.displayCases} id="cases-btn" className="btn table-btn">Cases</button>
                     </div>
-                </div>  
+                    <div className="input-group-append">
+                      <button onClick={this.displayDeaths} id="deaths-btn" className="btn table-btn-outline">Deaths</button>
+                    </div>
+                    </div>
+                  </div>
+                  <div className="table-responsive">
+                    <Tables
+                      displayed = {this.state.displayed}
+                      total = {this.state.total}
+                      displayList = {this.state.displayList}
+                      cases = {totalCases}
+                      deaths = {totalDeaths}
+                      casesArr = {casesArray}
+                      deathsArr = {deathsArray}
+                    />
+                  </div>
+                </div>
+              </div>
             </div>
           );
         }

@@ -29,9 +29,10 @@ function News() {
     };
 
     return (
+      <div className="container newscon mx-auto">
         <div className="row">
 
-            <div className="col-6 container newslist">
+            <div className="col-lg-6 col-md-6 col-sm-6 container newslist">
                 <h2 className="newshead">COVID-19 in the United States</h2>
                 <hr></hr>
                 <ul>
@@ -53,7 +54,7 @@ function News() {
                     <br></br>
                     <p>https://newsapi.org/</p>
             </div>
-            <div className="col-6 faqs">
+            <div className="col-lg-6 col-md-6 col-sm-6 faqs">
                 <h2 className="faqhead">Frequently Asked Questions</h2>
                 <hr></hr>
                 <div className="stuff">
@@ -70,6 +71,7 @@ function News() {
             <Extras />
             </div>
         </div>
+      </div>
     )
 
 

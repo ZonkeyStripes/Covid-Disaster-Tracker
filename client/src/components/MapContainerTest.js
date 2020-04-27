@@ -48,13 +48,13 @@ const mapColors = [
 let mapClr = mapColors[0];
 
 const thresholdData = [
-    [100000, 5000, 2000, 1000, 500, 100],
+    [200000, 10000, 5000, 1000, 500, 100],
     [2000, 1000, 500, 250, 100, 50]
 ];
 
 let thresholds = thresholdData[0];
 
-console.log(todayArray);
+// console.log(todayArray);
 
 class MapContainerTest extends Component {
 
@@ -146,8 +146,8 @@ class MapContainerTest extends Component {
 
     // mouseover a specific state
     highlightFeature(e) {
-        console.log("mouseover");
-        console.log(e);
+        // console.log("mouseover");
+        // console.log(e);
 
         let layer = e.target;
 
@@ -168,7 +168,7 @@ class MapContainerTest extends Component {
     }
 
     resetHighlight(e) {
-        console.log("mouseout");
+        // console.log("mouseout");
         let layer = e.target;
 
         layer.setStyle({
@@ -177,8 +177,6 @@ class MapContainerTest extends Component {
             dashArray: '',
             fillOpacity: 0.7
         });
-        // geojson.resetStyle(e.target);
-        // info.update();
     }
 
     zoomToFeature(e) {

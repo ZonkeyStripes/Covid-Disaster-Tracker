@@ -11,7 +11,7 @@
     "seed": "node scripts/seedDB.js",
     "install": "cd client && npm install",
     "build": "cd client && npm run build",
-    "heroku-postbuild": "npm run build"
+    "heroku-postbuild": "npm run install && npm run build"
   },
   "author": "",
   "license": "ISC",
@@ -34,10 +34,8 @@
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
     "react-bootstrap": "^1.0.0",
-
     "react-bootstrap-validation": "^0.1.11",
     "react-collapsible": "^2.7.0",
-
     "sequelize": "^5.21.6"
   }
 }

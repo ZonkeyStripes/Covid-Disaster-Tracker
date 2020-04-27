@@ -29,6 +29,7 @@ class Login extends Component {
   }
 
   handleChange(evt) {
+    $("#li-error").hide();
     const value = evt.target.value;
     console.log(evt.target.name);
     
@@ -54,27 +55,30 @@ class Login extends Component {
       // if user is a first time user, push to FTU page, otherwise to dashboard
       if(firstTime) {
         this.props.history.push("/ftu");
+        window.location.reload();
       } else {
         this.props.history.push("/dashboard");
+        window.location.reload();
       }
 
     })
     .catch(function(err) {
       console.log("Error");
       console.log(err);
-      alert(err.message);
+      $("#li-error").show().html("<strong>Error:</strong> Incorrect email or password");
+      // alert(err.message);
     });
   }
 
   render() {
     console.log(this.props);
     return (
-      <div className="container">
+      <div className="container" id="login-body">
         <div className="row mt-4">
           <div className="col-md-5 text-center mx-auto">
-            <div className="card" id="su-card">
+            <div className="card su-card">
               <div className="card-body">
-                <h4 id="signup-header" className="pb-2">Log In</h4>
+                <h4 className="pb-2 signup-header">Log In</h4>
                 <form onSubmit={this.handleSubmit}>
   
                   {/* EMAIL */}
@@ -92,16 +96,17 @@ class Login extends Component {
                   <div className="input-group mb-4">
                     <div className="input-group-prepend">
                       <span className="input-group-text pre-inp">
-                        <i class="fas fa-key"></i>
+                        <i className="fas fa-key"></i>
                       </span>
                     </div>
                     <input type="password" className="form-control su-inp" id="password" name="password" value={this.state.password} onChange={this.handleChange}placeholder="Password" autoComplete="off"/>
                     <div className="input-group-append">
                       <span className="input-group-text" id="eye-cont">
-                        <i class="fas fa-eye-slash" id="eye" onClick={this.toggleEye}></i>
+                        <i className="fas fa-eye-slash" id="eye" onClick={this.toggleEye}></i>
                       </span>
                     </div>
                   </div>
+                  <div id="li-error" className="alert alert-danger">alert</div>
   
                   <p className="text-muted">
                     Don't have an account? Sign up <Link to={"/signup"}>here!</Link>

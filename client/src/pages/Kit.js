@@ -11,6 +11,7 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Card, CardGroup } from "react-bootstrap";
 //import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Axios from "axios";
 library.add(faTrash);
 
 class Kit extends Component {
@@ -24,7 +25,8 @@ class Kit extends Component {
             currentItem: {
                 text: '',
                 key: ''
-            }
+            },
+            userID: 0
         }
         //Bind items to list
         this.handleInput = this.handleInput.bind(this);
@@ -32,6 +34,7 @@ class Kit extends Component {
         this.deleteItem = this.deleteItem.bind(this);
     }
     handleInput(e) {
+
         this.setState({
             currentItem: {
                 text: e.target.value,
@@ -41,27 +44,46 @@ class Kit extends Component {
     }
     addItem(e) {
         e.preventDefault();
-        const newItem = this.state.currentItem;
+        let newItem = this.state.currentItem;
         console.log(newItem);
-        if (newItem.text !== "") {
-            //Desctructure Additions & Add them to List
-            const newItems = [...this.state.items, newItem];
-            console.log(newItems);
-            this.setState({
-                items: newItems,
-                currentItem: {
-                    text: '',
-                    key: ''
-                }
-            })
-        }
+        console.log(this.state.userID);
+        
+        Axios.post("/api/add_dkitem", {
+            text: newItem.text,
+            uid: this.state.userID
+        })
+        .then((data) => {
+            console.log(data.data.id);
+            newItem.key = data.data.id;
+            console.log(newItem);
+            
+            if (newItem.text !== "") {
+                //Desctructure Additions & Add them to List
+                const newItems = [...this.state.items, newItem];
+                console.log(newItems);
+                this.setState({
+                    items: newItems,
+                    currentItem: {
+                        text: '',
+                        key: ''
+                    }
+                })
+            }
+        })
+        
+
     }
+  
     deleteItem(key) {
-        const filteredItems = this.state.items.filter(item =>
-            item.key !== key);
-        console.log(filteredItems)
-        this.setState({
-            items: filteredItems
+        Axios.delete("/api/delete_dkitem/" + key)
+        .then((deleted_item) => {
+            console.log("successfully deleted item");
+            const filteredItems = this.state.items.filter(item =>
+                item.key !== key);
+                console.log(filteredItems)
+            this.setState({
+                items: filteredItems
+            })
         })
     }
 
@@ -78,9 +100,31 @@ class Kit extends Component {
             [name]: value
         })
     }
-    // componentDidMount(){
-    //     this.callkitAPI()
-    // }
+
+    // load item list from the database for initial render
+    componentDidMount(){
+        Axios.get("/api/user_data")
+        .then((data) => {
+            console.log("user logged in")
+            console.log(data);
+
+            Axios.get("/api/disasterkit/" + data.data.id)
+            .then((all_items) => {
+                console.log(all_items.data);
+                let item_array = [];
+
+                all_items.data.forEach(item => {
+                    let temp_item = {};
+                    temp_item.text = item.item;
+                    temp_item.key = item.id;
+                    item_array.push(temp_item);
+                })
+                console.log(item_array);
+
+                this.setState({items: item_array, userID: data.data.id});
+            });
+        });
+    }
 
     render() {
         console.log(this.state)
@@ -122,39 +166,3 @@ class Kit extends Component {
 }
 
 export default Kit;
-
-
-//style={{ textAlign: 'center', fontWeight: 'bolder', color: 'rgb(67, 153, 67)', backgroundColor: '#3a57af' }}
-   // <Card.Header style={{ textAlign: 'center', fontWeight: 'bolder', color: 'rgb(67, 153, 67)', backgroundColor: '#3a57af' }}> Disaster Essentials </Card.Header>
-// class Kit extends Component {
-
-//     render() {
-//         return (
-//             <div>
-
-//                 <Form.Group size="lg">
-//                     <InputGroup.Prepend>
-//                         <InputGroup.Checkbox aria-label="Checkbox for following text input" />
-//                     </InputGroup.Prepend>
-//                     <Form.Control action variant="primary" placeholder="Recipient's username" />
-//                     <InputGroup.Prepend>
-//                         <InputGroup.Checkbox aria-label="Checkbox for following text input" />
-//                     </InputGroup.Prepend>
-//                     <Form.Control action variant="primary" placeholder="Recipient's username" />
-//                     <InputGroup.Prepend>
-//                         <InputGroup.Checkbox aria-label="Checkbox for following text input" />
-//                     </InputGroup.Prepend>
-//                     <Form.Control action variant="primary" placeholder="Recipient's username" />
-//                     <InputGroup.Prepend>
-//                         <InputGroup.Checkbox aria-label="Checkbox for following text input" />
-//                     </InputGroup.Prepend>
-//                     <Form.Control action variant="primary" placeholder="Recipient's username" />
-//                 </Form.Group>
-
-
-//             </div>
-//         );
-//     }
-// }
-
-// export default Kit;

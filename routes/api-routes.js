@@ -5,6 +5,9 @@ let passport = require("../config/passport");
 
 module.exports = function (app) {
 
+
+  // USER LOGIN/LOGOUT/CREATE ROUTES
+
   // Using the passport.authenticate middleware with our local strategy.
   // If the user has valid login credentials, return a json object with email and id
   // Otherwise the user will be sent an error
@@ -18,7 +21,6 @@ module.exports = function (app) {
       email: req.user.email,
       id: req.user.id,
       ftu: req.user.firstTimeUse
-      // display_name: req.user.display_name
     });
   });
 
@@ -27,15 +29,15 @@ module.exports = function (app) {
   // otherwise send back an error
   app.post("/api/signup", function (req, res) {
     console.log("hit api/signup");
-    console.log(req.body);
 
     db.User.create({
       email: req.body.email,
       password: req.body.password,
     })
-      .then(function () {
+      .then(function (us) {
         res.json({
-          email: req.body.email
+          email: req.body.email,
+          id: us.dataValues.id
         })
       })
       .catch(function (err) {
@@ -44,11 +46,13 @@ module.exports = function (app) {
       });
   });
 
-  // Route for logging user out -- TEST IF THIS WORKS
-  app.get("/logout", function (req, res) {
-    console.log("/logout api route is FIRING!");
+  app.post('/logout', (req, res) => {
     req.logout();
-    res.redirect("/login");
+    req.session.destroy((err) => {
+      res.clearCookie('connect.sid');
+      // Don't redirect, just print text
+      res.send('Logged out');
+    });
   });
 
 
@@ -58,7 +62,7 @@ module.exports = function (app) {
       // The user is not logged in, send back an empty object
       // res.json({});
       console.log("user is not logged in");
-      res.status(401).json(err);
+      res.status(401).json("user is not logged in");
     } else {
       // Otherwise send back the user's email and id
       // Sending back a password, even a hashed password, isn't a good idea
@@ -99,6 +103,24 @@ app.get("/api/all_locations", function(req, res){
   })
 })
 
+app.get("/api/disasterkit/:id", function(req, res){
+  
+  console.log("/api/disasterkit/:id")
+  console.log(req.params.id);
+
+  let userId = req.params.id;
+  
+  db.DisasterKit.findAll({
+    where: {
+      UserId: userId
+    }
+  }).then(function(dbKit) {
+    console.log(dbKit);
+    res.json(dbKit);
+  })
+});
+
+
 // POST ROUTES
 
 // create new location entry for a user
@@ -123,12 +145,125 @@ app.post("/api/add_location", function (req, res) {
   });
 });
 
+// create new location entry for a user
+app.post("/api/set_user_ftu", function (req, res) {
+  console.log("hit /api/set_user_ftu");
+  console.log(req.body);
+
+  db.Location.create({
+    state: req.body.state,
+    county: req.body.county,
+    UserId: req.body.uid
+  })
+  .then(function () {
+
+    let locationObject = {
+      state: req.body.state,
+      county: req.body.county,
+      UserId: req.body.uid
+    }
+    console.log("Below is the log of the newly created locationObject");
+    console.log(locationObject);
+    res.json(locationObject);
+  });
+});
 
 
+// create default DisasterKit
+app.post("/api/default_disasterkit", function(req, res) {
+  console.log("hit /api/default_disasterkit");
+
+  let disasterItems = ["Water (three days supply)", 
+  "Food (three day supply)", 
+  "Battery-powered or hand crank radio",
+  "Flashlight",
+  "First aid kit",
+  "Extra batteries",
+  "Whistle (to signal for help)",
+  "Dust mask",
+  "Plastic sheeting and duct tape",
+  "Moist towelettes",
+  "Wrench or pliers",
+  "Manual can opener",
+  "Local maps",
+  "Cell phone with chargers"
+  ]
+
+  let itemList = [];
+
+  disasterItems.forEach(item => {
+    db.DisasterKit.create({
+      item: item,
+      UserId: req.body.uid
+    })
+    .then(function (kit) {
+  
+      // console.log("Inserted item" + kit.item);
+      itemList.push(kit);
+      if (itemList.length === disasterItems.length) {
+          res.status(200).json(itemList);
+      }
+    }).catch(function (error) {
+      res.status(500).json(error);            
+    });
+  })
+})
 
 
+// create new disaster kit item for a user
+app.post("/api/add_dkitem", function (req, res) {
+  console.log("hit /api/add_dkitem");
+  console.log(req.body);
+
+  db.DisasterKit.create({
+    item: req.body.text,
+    UserId: req.body.uid
+  })
+  .then(function (dbKit) {
+
+    let dkObject = {
+      id: dbKit.id,
+      item: dbKit.item,
+      UserId: req.body.uid
+    }
+    console.log("Below is the log of the newly created dkObject");
+    console.log(dkObject);
+    res.json(dkObject);
+  });
+});
 
 
+// PUT ROUTES
+
+app.put("/api/set_user_ftu", function (req, res) {
+
+  console.log("hit /api/set_user_ftu");
+  console.log(req.body);
+  db.User.update({ firstTimeUse: req.body.value }, {
+    where: {
+      id: req.body.uid
+    }
+  })
+  .then(function (dbMember) {
+    res.json({});
+  });
+
+});
+
+
+  // DELETE ROUTES
+
+  app.delete("/api/delete_dkitem/:id", function (req, res) {
+    console.log("Made it to delete disaster kit item function");
+
+    db.DisasterKit.destroy({
+      where: {
+        id: req.params.id
+      }
+    }).then(function (dbKit) {
+      res.json(dbKit);
+    });
+  });
 
 
 
