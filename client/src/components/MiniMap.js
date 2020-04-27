@@ -9,7 +9,7 @@ import L from 'leaflet';
 import MapInfo from "./MapInfo";
 import MapLegend from "./MapLegend";
 import newId from '../utils/newid';
-
+import HospitalAPI from "../utils/HospitalsAPI";
 
 
 
@@ -58,7 +58,8 @@ class MiniMap extends Component {
             colors: mapColors[0],
             limits: thresholdData[0],
             mapCenter: [39.82,-98.57],
-            mapZoom: 7
+            mapZoom: 7,
+            hospitalList: []
         };
 
         // ES6 React.Component doesn't auto bind methods to itself
@@ -106,6 +107,16 @@ class MiniMap extends Component {
 
         console.log(mapCtr);
 
+        if(this.props.fips) {
+            console.log("pulling hospital data, " + this.props.fips);
+            HospitalAPI.getHospitalsByFIPS(this.props.fips)
+            .then(res => {
+                console.log(res.data.feature);
+                let info = res.data.features;
+                this.setState({hospitalList: info});
+            })
+        }
+
         this.setState({mapCenter: mapCtr, mapZoom: zoom});
 
     }
@@ -131,8 +142,6 @@ class MiniMap extends Component {
             }
         }
 
-        // console.log("cases" + covidCases);
-        // console.log("deaths" +covidDeaths);
  
         if(this.state.displayed === "cases") {
             // console.log("made it to cases");
@@ -202,16 +211,6 @@ class MiniMap extends Component {
                     dataToDisplay = countyArray[j].deaths;
                 }
             }
-
-            // if(countyArray[j].fips == this.state.fips) {
-            //     console.log("Found the county!!")
-            //     console.log(countyArray[j]);
-            //     console.log(this);
-            //     let sizeMap = this.refs.map.leafletElement;
-            //     // sizeMap.fitBounds()
-            //     //this.fitBounds(this.getBounds());
-            // }
-
         }
 
         const popupContent = `<h4>COVID-19 ${this.state.displayed} data</h4>` +
@@ -267,7 +266,6 @@ class MiniMap extends Component {
     }
 
     changeView(e) {
-        let event = e;
         console.log("test function");
         console.log(e.target.value);
         console.log(this);
@@ -337,6 +335,22 @@ class MiniMap extends Component {
 
     
     render() {
+
+        console.log(this.state.hospitalList);
+        let mark = this.state.hospitalList.slice(0,5).map((hospital, index) => (<Marker key={index} position={[hospital.geometry.y, hospital.geometry.x]}>
+            <Popup>
+                <strong>{hospital.attributes.NAME}</strong>
+                <br/>
+                {hospital.attributes.ADDRESS}
+                <br />
+                {hospital.attributes.TELEPHONE}
+            </Popup>
+        </Marker>));
+
+
+        console.log(mark);
+
+
         return (
             <div>
               <div>
@@ -357,6 +371,7 @@ class MiniMap extends Component {
                       onMouseOver={() => this.highlightFeature}
                       ref="geojson"
                     />
+                    {mark}
                     {/* <MapInfo /> */}
                     <MapLegend colors={this.state.colors} limits={this.state.limits}/>
                 </Map>
