@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Map, Marker, Popup, TileLayer, GeoJSON, MapControl } from "react-leaflet";
 import { Icon } from "leaflet";
+import $ from "jquery";
 import "../App.css";
 import uscounties from '../assets/gz_2010_us_050_00_5m.json';
 import countyData from '../assets/nytimescounties.json';
@@ -29,8 +30,8 @@ for(let i = 0; i < countyData.length; i++) {
 
 const mapColors = [
     ["#034e7b", "#0570b0", "#3690c0", "#74a9cf", "#a6bddb", "#d0d1e6", "#f1eef6"],
-    ['#005824', '#238b45', '#41ae76', '#66c2a4', '#99d8c9', '#ccece6', '#edf8fb'],
-    ['#005824', '#238b45', '#41ae76', '#66c2a4', '#99d8c9', '#ccece6', '#edf8fb'],
+    ["#b10026", "#e31a1c", "#fc4e2a", "#fd8d3c", "#feb24c", "#fed976", "#ffffb2"],
+    ["#b10026", "#e31a1c", "#fc4e2a", "#fd8d3c", "#feb24c", "#fed976", "#ffffb2"],
     ['#990000', '#d7301f', '#ef6548', '#fc8d59', '#fdbb84', '#fdd49e', '#fef0d9']
 ]
 
@@ -208,6 +209,10 @@ class DashboardMap extends Component {
         // map.fitBounds(e.target.getBounds());
     }
 
+    test(e){
+      console.log(e.target.value);
+    }
+
     changeView(e) {
         // console.log("test function");
         // console.log(e.target.value);
@@ -221,6 +226,13 @@ class DashboardMap extends Component {
         } else {
             tempColor = mapColors[1];
             tempLimit = thresholdData[1];
+        }
+
+        if (e.target.className = "map-btn-outline"){
+          $("#map-deaths-btn").toggleClass("map-btn-outline");
+          $("#map-deaths-btn").toggleClass("map-btn");
+          $("#map-cases-btn").toggleClass("map-btn-outline");
+          $("#map-cases-btn").toggleClass("map-btn");
         }
 
         console.log("tempColor = " + tempColor);
@@ -278,6 +290,10 @@ class DashboardMap extends Component {
         return (
             <div>
               <div>
+                <div id="map-btn-container">
+                  <button onClick={this.changeView} value="cases" className="map-btn" id="map-cases-btn">Cases</button>
+                  <button onClick={this.changeView} value="deaths" className="map-btn-outline" id="map-deaths-btn">Deaths</button>
+                </div>
                 <Map
                     center={mapCenter}
                     zoom={zoomLevel}
@@ -299,14 +315,14 @@ class DashboardMap extends Component {
                 </Map>
             </div>
                 
-                <div className="custom-control custom-radio">
+                {/* <div className="custom-control custom-radio">
                     <input type="radio" id="customRadio1" name="customRadio" className="custom-control-input" value="cases" defaultChecked onClick={this.changeView}/>
                     <label className="custom-control-label" htmlFor="customRadio1">Cases</label>
                 </div>
                 <div className="custom-control custom-radio">
                     <input type="radio" id="customRadio2" name="customRadio" className="custom-control-input" value="deaths" onClick={this.changeView}/>
                     <label className="custom-control-label" htmlFor="customRadio2">Deaths</label>
-                </div>
+                </div> */}
                 {/* <DataTable data={countyArray}/> */}
             </div>
           );

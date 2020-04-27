@@ -1,12 +1,8 @@
-/* body{
-    background: blue;
-} */
-
 .listed {
     background-color: #3a57af;
-    min-height: 500px;
-    width: 400px;
-    margin: 40px auto;
+    min-height: 700px;
+    min-width: 100%;
+    margin: auto; 
 
 }
 
@@ -17,9 +13,11 @@
     height: 50px;
     padding: 0 20px;
     margin: 20px;
-    font-size: 18px;
+    font-size: 12px;
     border-radius: 10px;
     color: white;
+   margin-left: 25%;
+   
 }
 
 #to-do-form input::placeholder{
@@ -40,6 +38,7 @@
     cursor: pointer;
     font-weight: bolder;
     color: white;
+    font-size: 14px;
 }
 
 .listing{
@@ -47,13 +46,14 @@
     width: 300px;
     background-color: rgb(67, 153, 67);
     height: 50PX;
-    margin: 20px auto;
+    margin: 14px auto;
     border-radius: 5px;
 }
 
 .listing p{
     padding: 10px;
     position: relative;
+    font-size: 14px;
 }
 
 .listing p span{
@@ -65,4 +65,56 @@
 .faicons{
     margin: 0 5px;
     font-size: 15px;
+}
+
+
+.survivor input {
+    background-color: grey;
+    border: 0;
+    width: 200px;
+    height: 50px;
+    padding: 0 20px;
+    margin: 20px;
+    font-size: 12px;
+    border-radius: 10px;
+    color: white;
+}
+
+.survivor input::placeholder{
+    color: white;
+
+}
+
+.survivor button {
+    height: 50px;
+    width: 80px;
+    border-radius: 50px;
+    border: 0;
+    background-color: rgb(67, 153, 67);
+    cursor: pointer;
+    font-weight: bolder;
+    color: white;
+    font-size: 14px;
+}
+
+.survivor input::placeholder{
+    color: white;
+
+}
+
+.survivor input:focus, .listed button:focus{
+    outline: none;
+
+}
+
+.survivor {
+    background-color: #3a57af;
+    min-height: 700px;
+    min-width: 100%;
+    margin: auto;
+
+}
+
+#jumbo{
+    background-color: #3a57af;
 }

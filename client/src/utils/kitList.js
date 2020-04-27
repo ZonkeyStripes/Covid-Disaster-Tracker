@@ -4,27 +4,26 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 //Animation of adding item to list
 import FlipMove from 'react-flip-move';
 
-function KitList(props){
-    
-const items = props.items;
-const listItems = items.map(item =>
-    {
+function KitList(props) {
+
+    const items = props.items;
+    const listItems = items.map(item => {
         return <div className="listing" key={item.key}>
             <p>{item.text}
-            <span>
-                <FontAwesomeIcon className="faicons"  
-                onClick={ () => {props.deleteItem(item.key)}} icon="trash"/>
-            </span>
+                <span>
+                    <FontAwesomeIcon className="faicons"
+                        onClick={() => { props.deleteItem(item.key) }} icon="trash" />
+                </span>
             </p>
         </div>
 
     })
-    return(
+    return (
         <div>
-               <FlipMove duration={350} easing="ease-in-out">
-               {listItems}
-               </FlipMove>
-              </div>
+            <FlipMove duration={350} easing="ease-in-out">
+                {listItems}
+            </FlipMove>
+        </div>
     )
 }
 
@@ -44,7 +43,7 @@ export default KitList;
     //                 </span>
     //                 </p>
     //             </div>
-        
+
     //         })}
     //           </div>
     // )
@@ -57,4 +56,3 @@ export default KitList;
 //                  </FlipMove>
 //                  </div>
 // )
-                

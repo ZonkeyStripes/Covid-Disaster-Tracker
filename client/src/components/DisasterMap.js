@@ -43,8 +43,8 @@ const thresholdData = [
     [200, 100, 50, 25, 10, 5]
 ];
 
-let allMarkersMap = {};
-let currentID = 0;
+// let allMarkersMap = {};
+// let currentID = 0;
 
 
 
@@ -200,13 +200,13 @@ class DisasterMap extends Component {
 
         }
 
-        const popupContent = `<h4>COVID-19 ${this.state.displayed} data</h4>` +
-			'<b>' + feature.properties.NAME + '</b><br />' + dataToDisplay + ` ${this.state.displayed}`;
-        let marker = layer.bindPopup(popupContent);
+        // const popupContent = `<h4>COVID-19 ${this.state.displayed} data</h4>` +
+		// 	'<b>' + feature.properties.NAME + '</b><br />' + dataToDisplay + ` ${this.state.displayed}`;
+        // let marker = layer.bindPopup(popupContent);
         
-        // console.log(marker);
-        allMarkersMap[currentID] = marker;
-        currentID += 1;
+        // // console.log(marker);
+        // allMarkersMap[currentID] = marker;
+        // currentID += 1;
 
         layer.on({
             mouseover: this.highlightFeature.bind(this),
