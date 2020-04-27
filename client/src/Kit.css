@@ -27,6 +27,10 @@
     margin: 10px;
 }
 
+.lift {
+    margin-bottom: 30px;
+}
+
 #to-do-form input:focus, #to-do-form button:focus{
     outline: none;
 
@@ -115,7 +119,7 @@
     min-height: 100%;
     min-width: 100%;
     margin: auto;
-
+    margin-bottom: 3%;
 }
 
 #jumbo{

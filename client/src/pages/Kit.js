@@ -211,6 +211,7 @@ class Kit extends Component {
     render() {
         console.log(this.state)
         return (
+            <div className = "container lift">
             < Card style={{ backgroundColor: 'white', marginRight: '7px' }}>
                 <CardGroup >
                     <Card id="essentials" style={{ border: 'none' }}>
@@ -234,7 +235,7 @@ class Kit extends Component {
                         </div>
                     </Card>
 
-
+                    
                     <Card style={{ marginLeft: '7px', border: 'none' }}>
                         <div className="listed">
                             <Card.Header style={{ textAlign: 'center', fontWeight: 'bolder', color: '#f6f6f6', background: '#333' }}>Create Your Disaster Kit </Card.Header>
@@ -260,6 +261,7 @@ class Kit extends Component {
                     </Card>
                 </CardGroup>
             </Card>
+            </div>
         );
     }
 }
