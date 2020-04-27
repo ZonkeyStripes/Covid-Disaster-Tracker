@@ -12,6 +12,8 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Card, CardGroup } from "react-bootstrap";
 //import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Axios from "axios";
+import "../App.css";
+
 library.add(faTrash);
 
 class Kit extends Component {
@@ -47,30 +49,30 @@ class Kit extends Component {
         let newItem = this.state.currentItem;
         console.log(newItem);
         console.log(this.state.userID);
-        
-        if(this.state.userID !== 0) {
+
+        if (this.state.userID !== 0) {
             Axios.post("/api/add_dkitem", {
                 text: newItem.text,
                 uid: this.state.userID
             })
-            .then((data) => {
-                console.log(data.data.id);
-                newItem.key = data.data.id;
-                console.log(newItem);
-                
-                if (newItem.text !== "") {
-                    //Desctructure Additions & Add them to List
-                    const newItems = [...this.state.items, newItem];
-                    console.log(newItems);
-                    this.setState({
-                        items: newItems,
-                        currentItem: {
-                            text: '',
-                            key: ''
-                        }
-                    })
-                }
-            })
+                .then((data) => {
+                    console.log(data.data.id);
+                    newItem.key = data.data.id;
+                    console.log(newItem);
+
+                    if (newItem.text !== "") {
+                        //Desctructure Additions & Add them to List
+                        const newItems = [...this.state.items, newItem];
+                        console.log(newItems);
+                        this.setState({
+                            items: newItems,
+                            currentItem: {
+                                text: '',
+                                key: ''
+                            }
+                        })
+                    }
+                })
         } else {
             if (newItem.text !== "") {
                 //Desctructure Additions & Add them to List
@@ -83,24 +85,24 @@ class Kit extends Component {
                         key: ''
                     }
                 })
-            } 
+            }
         }
 
-        
+
 
     }
-  
+
     deleteItem(key) {
         Axios.delete("/api/delete_dkitem/" + key)
-        .then((deleted_item) => {
-            console.log("successfully deleted item");
-            const filteredItems = this.state.items.filter(item =>
-                item.key !== key);
+            .then((deleted_item) => {
+                console.log("successfully deleted item");
+                const filteredItems = this.state.items.filter(item =>
+                    item.key !== key);
                 console.log(filteredItems)
-            this.setState({
-                items: filteredItems
+                this.setState({
+                    items: filteredItems
+                })
             })
-        })
     }
 
     callkitAPI = () => {
@@ -118,92 +120,138 @@ class Kit extends Component {
     }
 
     // load item list from the database for initial render
-    componentDidMount(){
+    componentDidMount() {
         Axios.get("/api/user_data")
-        .then((data) => {
-            console.log("user logged in")
-            console.log(data);
+            .then((data) => {
+                console.log("user logged in")
+                console.log(data);
 
-            Axios.get("/api/disasterkit/" + data.data.id)
-            .then((all_items) => {
-                console.log(all_items.data);
-                let item_array = [];
+                Axios.get("/api/disasterkit/" + data.data.id)
+                    .then((all_items) => {
+                        console.log(all_items.data);
+                        let item_array = [];
 
-                all_items.data.forEach(item => {
-                    let temp_item = {};
-                    temp_item.text = item.item;
-                    temp_item.key = item.id;
-                    item_array.push(temp_item);
+                        all_items.data.forEach(item => {
+                            let temp_item = {};
+                            temp_item.text = item.item;
+                            temp_item.key = item.id;
+                            item_array.push(temp_item);
+                        })
+                        console.log(item_array);
+
+                        this.setState({ items: item_array, userID: data.data.id });
+                    });
+            })
+            .catch((err) => {
+                // user is not logged in
+                this.setState({
+                    items: [
+                        {
+                            text: "Water (3 days supply)",
+                            key: -1
+                        },
+                        {
+                            text: "Food (3 day supply)",
+                            key: -2
+                        },
+                        {
+                            text: "Battery-powered or hand crank radio",
+                            key: -3
+                        },
+                        {
+                            text: "Flashlight",
+                            key: -4
+                        },
+                        {
+                            text: "First aid kit",
+                            key: -5
+                        },
+                        {
+                            text: "Extra batteries",
+                            key: -6
+                        },
+                        {
+                            text: "Whistle (to signal for help)",
+                            key: -7
+                        },
+                        {
+                            text: "Dust mask",
+                            key: -8
+                        },
+                        {
+                            text: "Plastic sheeting and duct tape",
+                            key: -9
+                        },
+                        {
+                            text: "Moist towelettes",
+                            key: -10
+                        },
+                        {
+                            text: "Wrench or pliers",
+                            key: -11
+                        },
+                        {
+                            text: "Manual can opener",
+                            key: -12
+                        },
+                        {
+                            text: "Local maps",
+                            key: -13
+                        },
+                        {
+                            text: "Cell phone with chargers",
+                            key: -14
+                        }
+                    ]
                 })
-                console.log(item_array);
 
-                this.setState({items: item_array, userID: data.data.id});
-            });
-        })
-        .catch((err) => {
-            // user is not logged in
-            this.setState({items: [
-                {text: "Water (3 days supply)", 
-                key: -1},
-                {text: "Food (3 day supply)", 
-                key: -2},
-                {text: "Battery-powered or hand crank radio", 
-                key: -3},
-                {text: "Flashlight", 
-                key: -4},
-                {text: "First aid kit", 
-                key: -5},
-                {text: "Extra batteries", 
-                key: -6},
-                {text: "Whistle (to signal for help)", 
-                key: -7},
-                {text: "Dust mask", 
-                key: -8},
-                {text: "Plastic sheeting and duct tape", 
-                key: -9},
-                {text: "Moist towelettes", 
-                key: -10},
-                {text: "Wrench or pliers", 
-                key: -11},
-                {text: "Manual can opener", 
-                key: -12},
-                {text: "Local maps", 
-                key: -13},
-                {text: "Cell phone with chargers", 
-                key: -14}
-                ]
-        })
-
-        })
+            })
     }
 
     render() {
         console.log(this.state)
         return (
-            < Card style={{backgroundColor: 'white', marginLeft: '10px'}}>
-                <Card.Header id="jumbo" style={{ textAlign: 'center', fontWeight: 'bolder', color: 'white', fontSize: '30px',  border: '10px solid green', margin: '65px', backgroundColor: '#3a57af;' }}> Do You Have What You Need? </Card.Header>
+            < Card style={{ backgroundColor: 'white', marginRight: '7px' }}>
                 <CardGroup >
-                    <Card style={{border: '7px solid green'}}> 
-                    <div className="survivor">
-                    <Card.Header style={{ textAlign: 'center', fontWeight: 'bolder', color: 'white', fontSize: '17px'}}> Disaster Essentials </Card.Header>
-                            <header> 
-                            <input type="text" placeholder="Enter County" name="county" onChange={this.onInputChange} value={this.state.county} />
-                            <input type="text" placeholder="Enter State" name="state" onChange={this.onInputChange} value={this.state.state} />
-                            <button onClick={this.callkitAPI} style={{ backgroundcolor: '#333', border: '1px solid #f6f6f6', borderradius: '40px', outline: 'none' }}>Submit</button>
-                           </header>
-                           <Card.Text>
-                                <KitResults id="fema" DisasterDeclarationsSummaries={this.state.data} />
-                            </Card.Text>
-                            </div>
+                    <Card id="essentials" style={{ border: 'none' }}>
+                        <div className="survivor">
+                            <Card.Header style={{ textAlign: 'center', fontWeight: 'bolder', color: '#f6f6f6', background: '#333', fontSize: '17px' }}> Disaster Essentials </Card.Header>
+
+                                <header className="mx-auto kitcard">
+                                    <div className="whatever">
+                                    <input type="text" placeholder="Enter County" name="county" onChange={this.onInputChange} value={this.state.county} />
+                                    </div>
+                                    <div className="whatever">
+                                    <input type="text" placeholder="Enter State" name="state" onChange={this.onInputChange} value={this.state.state} />
+                                    </div>
+                                    <div className="whatever"> 
+                                    <button onClick={this.callkitAPI} style={{ margin: '5px', backgroundcolor: '#333', border: '1px solid #f6f6f6', borderradius: '40px', outline: 'none' }}>Submit</button>
+                                    </div>
+                                </header>
+                                <Card.Text>
+                                    <KitResults id="fema" DisasterDeclarationsSummaries={this.state.data} />
+                                </Card.Text>
+                        </div>
                     </Card>
-                    <Card style={{border: '7px solid green'}}>
+
+
+                    <Card style={{ marginLeft: '7px', border: 'none' }}>
                         <div className="listed">
-                            <Card.Header style={{ textAlign: 'center', fontWeight: 'bolder', color: 'white' }}>Create Your Disaster Kit </Card.Header>
+                            <Card.Header style={{ textAlign: 'center', fontWeight: 'bolder', color: '#f6f6f6', background: '#333' }}>Create Your Disaster Kit </Card.Header>
                             <header>
                                 <form id="to-do-form" onSubmit={this.addItem}>
+                                    <div className="test">
+
+                                <div className="whatever">
+
                                     <input type="text" placeholder="Enter Text" value={this.state.currentItem.text}
                                         onChange={this.handleInput} />
+                                        
+                                        </div>
+                                        <div className="whatever">
                                     <button type="submit" style={{ backgroundcolor: '#333', border: '1px solid #f6f6f6', borderradius: '40px', outline: 'none' }}>Add</button>
+                                    </div>
+                                        </div>
                                 </form>
                             </header>
                             <KitList items={this.state.items}

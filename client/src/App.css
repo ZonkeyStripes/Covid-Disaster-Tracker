@@ -387,22 +387,29 @@ thead tr {
 }
 
 /* Css for news page */
-@media only screen and (min-width: 628px) {
-  .newslist {
-    width: 30%;
-    height: 7%;
-  }
-  .faqhead {
-    width: 30%;
-    height: 7%
-  }
-}
 
 .video {  
+  position: relative;
+  padding: 25px;
+  /* max-width: 500px;
+  width: 100%; */
+}
+
+
+iframe {
+  width: 500px;
+  height: 300px;
+}
+        @media screen and (max-width: 767px) {
+            iframe {
+              height: 200px;
+              width: 300px;
+            }
+        }
+
+.viddiv {
   justify-content: center;
   text-align: center;
-  padding: 25px;
-  margin-left: 50%;
 }
 .newshead {
   text-align: center;
@@ -424,6 +431,20 @@ thead tr {
 }
 
 .newslist::-webkit-scrollbar-thumb {
+  background-color: #3a57af;
+  outline: 1px solid red;
+  border-radius: 25%;
+}
+
+.faqs::-webkit-scrollbar {
+  width: 5px;
+}
+
+.faqs::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px black;
+}
+
+.faqs::-webkit-scrollbar-thumb {
   background-color: #3a57af;
   outline: 1px solid red;
   border-radius: 25%;
@@ -459,12 +480,14 @@ body::-webkit-scrollbar-thumb {
   border-radius: 30px;
 }
 
-.newslist { 
-  width: 50%;
-  max-height: 10%;
-  height: 160vh;
-  overflow-x: hidden;
-  overflow-y: scroll;
+/* For the kit page */
+
+.kitcard {
+  margin-top: 20px;
+}
+.whatever {
+  display: flex;
+  justify-content: center;
 }
 
 .Collapsible {
@@ -481,7 +504,7 @@ body::-webkit-scrollbar-thumb {
 }
 
 .content {
-  background-color: #f1f1f1;
+  background-color:#f1f1f1;
   color: black;
   margin-left: 20px;
   padding: 10px;
@@ -490,10 +513,21 @@ body::-webkit-scrollbar-thumb {
 
 /* Css for the Frequently asked Questions page (FAQS) */
 .faqs {
-  width: 100%;
+  width: 90%;
   max-width: 768px;
   margin: 0 auto;
   padding: 25px;
+  height: 160vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.newslist { 
+  width: 90%;
+  max-height: 10%;
+  height: 160vh;
+  overflow-x: hidden;
+  overflow-y: scroll;
 }
 
 .faqs .faq {
