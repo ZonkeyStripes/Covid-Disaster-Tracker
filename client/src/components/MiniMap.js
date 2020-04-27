@@ -337,7 +337,7 @@ class MiniMap extends Component {
     render() {
 
         console.log(this.state.hospitalList);
-        let mark = this.state.hospitalList.slice(0,5).map((hospital, index) => (<Marker key={index} position={[hospital.geometry.y, hospital.geometry.x]}>
+        let mark = this.state.hospitalList.map((hospital, index) => (<Marker key={index} position={[hospital.geometry.y, hospital.geometry.x]}>
             <Popup>
                 <strong>{hospital.attributes.NAME}</strong>
                 <br/>

@@ -10,7 +10,7 @@ import Hospital from "../components/Hospital";
 let todayDate = "2020-04-23";
 let countyArray = [];
 
-console.log(countyData);
+// console.log(countyData);
 
 for(let i = 0; i < countyData.length; i++) {
 	if(countyData[i].date === todayDate) {
@@ -18,7 +18,7 @@ for(let i = 0; i < countyData.length; i++) {
 	}
 }
 
-console.log(countyArray);
+// console.log(countyArray);
 
 class Dashboard extends Component {
 

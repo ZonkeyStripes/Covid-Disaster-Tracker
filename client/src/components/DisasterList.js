@@ -29,7 +29,7 @@ class DisasterList extends Component{
             <div className="sum">
             <div className="other">
                 {this.state.faqs.map((faq, i) => (
-                <FAQ faq={faq} index={i} toggleFAQ={this.toggleFAQ} />
+                <FAQ faq={faq} key={i} toggleFAQ={this.toggleFAQ} />
                 ))}
             </div>
             </div>
