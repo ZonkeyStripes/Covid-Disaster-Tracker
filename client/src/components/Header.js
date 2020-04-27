@@ -61,10 +61,12 @@ const Header = () => {
               </ReactBootStrap.Nav.Link>
             </div>
           </ReactBootStrap.Nav>
-        <ReactBootStrap.Nav className="ml-auto header-btns-container">
-          <ReactBootStrap.Nav.Link onClick={handleLogout} eventKey={4} href="#/">
-            <ReactBootStrap.Button id="su-btn">Log Out</ReactBootStrap.Button>
-          </ReactBootStrap.Nav.Link>
+        <ReactBootStrap.Nav className="ml-auto">
+          <div className="link-container">
+            <ReactBootStrap.Nav.Link onClick={handleLogout} eventKey={4} href="#/">
+              <ReactBootStrap.Button id="su-btn">Log Out</ReactBootStrap.Button>
+            </ReactBootStrap.Nav.Link>
+          </div>
         </ReactBootStrap.Nav>
         </ReactBootStrap.Navbar.Collapse>
       </ReactBootStrap.Navbar>
@@ -100,12 +102,16 @@ const Header = () => {
               </div>
             </ReactBootStrap.Nav>
           <ReactBootStrap.Nav className="ml-auto header-btns-container">
-            <ReactBootStrap.Nav.Link eventKey={2} href="#login">
-              <ReactBootStrap.Button id="li-btn">Log In</ReactBootStrap.Button>
-            </ReactBootStrap.Nav.Link>
-            <ReactBootStrap.Nav.Link eventKey={3} href="#signup">
-              <ReactBootStrap.Button id="su-btn">Sign Up</ReactBootStrap.Button>
-            </ReactBootStrap.Nav.Link>
+            <div className="link-container">
+              <ReactBootStrap.Nav.Link eventKey={2} href="#login">
+                <ReactBootStrap.Button id="li-btn">Log In</ReactBootStrap.Button>
+              </ReactBootStrap.Nav.Link>
+            </div>
+            <div className="link-container">
+              <ReactBootStrap.Nav.Link eventKey={3} href="#signup">
+                <ReactBootStrap.Button id="su-btn">Sign Up</ReactBootStrap.Button>
+              </ReactBootStrap.Nav.Link>
+            </div>
           </ReactBootStrap.Nav>
           </ReactBootStrap.Navbar.Collapse>
         </ReactBootStrap.Navbar>
