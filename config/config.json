@@ -1,8 +1,8 @@
 {
     "development": {
       "username": "root",
-      "password": "OzzyIronMan!",
-      "database": "User",
+      "password": "bobo1029",
+      "database": "covidtracker",
       "host": "127.0.0.1",
       "dialect": "mysql"
     },

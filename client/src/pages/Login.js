@@ -96,13 +96,13 @@ class Login extends Component {
                   <div className="input-group mb-4">
                     <div className="input-group-prepend">
                       <span className="input-group-text pre-inp">
-                        <i class="fas fa-key"></i>
+                        <i className="fas fa-key"></i>
                       </span>
                     </div>
                     <input type="password" className="form-control su-inp" id="password" name="password" value={this.state.password} onChange={this.handleChange}placeholder="Password" autoComplete="off"/>
                     <div className="input-group-append">
                       <span className="input-group-text" id="eye-cont">
-                        <i class="fas fa-eye-slash" id="eye" onClick={this.toggleEye}></i>
+                        <i className="fas fa-eye-slash" id="eye" onClick={this.toggleEye}></i>
                       </span>
                     </div>
                   </div>
