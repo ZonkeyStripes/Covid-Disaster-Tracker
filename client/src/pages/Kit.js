@@ -73,8 +73,8 @@ class Kit extends Component {
         
 
     }
+  
     deleteItem(key) {
-        
         Axios.delete("/api/delete_dkitem/" + key)
         .then((deleted_item) => {
             console.log("successfully deleted item");
@@ -87,16 +87,16 @@ class Kit extends Component {
         })
     }
 
-    callkitAPI= () => {
+    callkitAPI = () => {
         kitAPI.getDisaster(this.state.county, this.state.state).then(res => {
-         this.setState({data: res.data.DisasterDeclarationsSummaries})
-         console.log(res.data.DisasterDeclarationsSummaries)
+            this.setState({ data: res.data.DisasterDeclarationsSummaries })
+            console.log(res.data.DisasterDeclarationsSummaries)
         })
     }
 
-    onInputChange= (e) => {
-        const {name, value} = e.target;
-        this.setState ({
+    onInputChange = (e) => {
+        const { name, value } = e.target;
+        this.setState({
             [name]: value
         })
     }
@@ -129,36 +129,38 @@ class Kit extends Component {
     render() {
         console.log(this.state)
         return (
-            <>
-            <input type= "text" name= "county" onChange= {this.onInputChange} value={this.state.county}/>
-            <input type= "text" name= "state" onChange= {this.onInputChange} value={this.state.state}/>
-            <button onClick= {this.callkitAPI}>Submit</button>
-            <CardGroup>
-                <Card border="secondary" style={{ width: '18rem', textAlign: 'center', fontWeight: 'bolder',  borderBottom: '1px solid #999' }}>
-                    <Card.Header> Disaster Essentials </Card.Header>
-                    <Card.Body>
-                        <Card.Title style={{ weight: 'bold', color: 'rgb(67, 153, 67)' }}>Do You Have What You Need?</Card.Title>
-                        <Card.Text>
-                                <KitResults DisasterDeclarationsSummaries ={this.state.data}/>
-                        </Card.Text>
-                    </Card.Body>
-                </Card>
-                <Card>
-                    <div className="listed">
-                        <Card.Header style={{ textAlign: 'center', fontWeight: 'bolder', color: 'rgb(67, 153, 67)' }}>Create Your Disaster Kit </Card.Header>
-                        <header>
-                            <form id="to-do-form" onSubmit={this.addItem}>
-                                <input type="text" placeholder="Enter Text" value={this.state.currentItem.text}
-                                    onChange={this.handleInput} />
-                                <button type="submit" style={{ backgroundcolor: '#333', border: '1px solid #f6f6f6', borderradius: '40px', outline: 'none'}}>Add</button>
-                            </form>
-                        </header>
-                        <KitList items={this.state.items}
-                            deleteItem={this.deleteItem}></KitList>
-                    </div>
-                </Card>
-            </CardGroup>
-            </>
+            < Card style={{backgroundColor: 'white', marginLeft: '10px'}}>
+                <Card.Header id="jumbo" style={{ textAlign: 'center', fontWeight: 'bolder', color: 'white', fontSize: '30px',  border: '10px solid green', margin: '65px', backgroundColor: '#3a57af;' }}> Do You Have What You Need? </Card.Header>
+                <CardGroup >
+                    <Card style={{border: '7px solid green'}}> 
+                    <div className="survivor">
+                    <Card.Header style={{ textAlign: 'center', fontWeight: 'bolder', color: 'white', fontSize: '17px'}}> Disaster Essentials </Card.Header>
+                            <header> 
+                            <input type="text" placeholder="Enter County" name="county" onChange={this.onInputChange} value={this.state.county} />
+                            <input type="text" placeholder="Enter State" name="state" onChange={this.onInputChange} value={this.state.state} />
+                            <button onClick={this.callkitAPI} style={{ backgroundcolor: '#333', border: '1px solid #f6f6f6', borderradius: '40px', outline: 'none' }}>Submit</button>
+                           </header>
+                           <Card.Text>
+                                <KitResults id="fema" DisasterDeclarationsSummaries={this.state.data} />
+                            </Card.Text>
+                            </div>
+                    </Card>
+                    <Card style={{border: '7px solid green'}}>
+                        <div className="listed">
+                            <Card.Header style={{ textAlign: 'center', fontWeight: 'bolder', color: 'white' }}>Create Your Disaster Kit </Card.Header>
+                            <header>
+                                <form id="to-do-form" onSubmit={this.addItem}>
+                                    <input type="text" placeholder="Enter Text" value={this.state.currentItem.text}
+                                        onChange={this.handleInput} />
+                                    <button type="submit" style={{ backgroundcolor: '#333', border: '1px solid #f6f6f6', borderradius: '40px', outline: 'none' }}>Add</button>
+                                </form>
+                            </header>
+                            <KitList items={this.state.items}
+                                deleteItem={this.deleteItem}></KitList>
+                        </div>
+                    </Card>
+                </CardGroup>
+            </Card>
         );
     }
 }
