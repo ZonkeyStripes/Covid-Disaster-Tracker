@@ -48,15 +48,30 @@ class Kit extends Component {
         console.log(newItem);
         console.log(this.state.userID);
         
-        Axios.post("/api/add_dkitem", {
-            text: newItem.text,
-            uid: this.state.userID
-        })
-        .then((data) => {
-            console.log(data.data.id);
-            newItem.key = data.data.id;
-            console.log(newItem);
-            
+        if(this.state.userID !== 0) {
+            Axios.post("/api/add_dkitem", {
+                text: newItem.text,
+                uid: this.state.userID
+            })
+            .then((data) => {
+                console.log(data.data.id);
+                newItem.key = data.data.id;
+                console.log(newItem);
+                
+                if (newItem.text !== "") {
+                    //Desctructure Additions & Add them to List
+                    const newItems = [...this.state.items, newItem];
+                    console.log(newItems);
+                    this.setState({
+                        items: newItems,
+                        currentItem: {
+                            text: '',
+                            key: ''
+                        }
+                    })
+                }
+            })
+        } else {
             if (newItem.text !== "") {
                 //Desctructure Additions & Add them to List
                 const newItems = [...this.state.items, newItem];
@@ -68,8 +83,9 @@ class Kit extends Component {
                         key: ''
                     }
                 })
-            }
-        })
+            } 
+        }
+
         
 
     }
@@ -123,7 +139,42 @@ class Kit extends Component {
 
                 this.setState({items: item_array, userID: data.data.id});
             });
-        });
+        })
+        .catch((err) => {
+            // user is not logged in
+            this.setState({items: [
+                {text: "Water (3 days supply)", 
+                key: -1},
+                {text: "Food (3 day supply)", 
+                key: -2},
+                {text: "Battery-powered or hand crank radio", 
+                key: -3},
+                {text: "Flashlight", 
+                key: -4},
+                {text: "First aid kit", 
+                key: -5},
+                {text: "Extra batteries", 
+                key: -6},
+                {text: "Whistle (to signal for help)", 
+                key: -7},
+                {text: "Dust mask", 
+                key: -8},
+                {text: "Plastic sheeting and duct tape", 
+                key: -9},
+                {text: "Moist towelettes", 
+                key: -10},
+                {text: "Wrench or pliers", 
+                key: -11},
+                {text: "Manual can opener", 
+                key: -12},
+                {text: "Local maps", 
+                key: -13},
+                {text: "Cell phone with chargers", 
+                key: -14}
+                ]
+        })
+
+        })
     }
 
     render() {
