@@ -6,6 +6,8 @@
 
 }
 
+
+
 #to-do-form input {
     background-color: grey;
     border: 0;
@@ -109,7 +111,7 @@
 
 .survivor {
     background-color: #3a57af;
-    min-height: 700px;
+    min-height: 100%;
     min-width: 100%;
     margin: auto;
 

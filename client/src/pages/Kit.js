@@ -183,7 +183,7 @@ class Kit extends Component {
             < Card style={{backgroundColor: 'white', marginLeft: '10px'}}>
                 <Card.Header id="jumbo" style={{ textAlign: 'center', fontWeight: 'bolder', color: 'white', fontSize: '30px',  border: '10px solid green', margin: '65px', backgroundColor: '#3a57af;' }}> Do You Have What You Need? </Card.Header>
                 <CardGroup >
-                    <Card style={{border: '7px solid green'}}> 
+                    <Card id="essentials" style={{border: '7px solid green'}}> 
                     <div className="survivor">
                     <Card.Header style={{ textAlign: 'center', fontWeight: 'bolder', color: 'white', fontSize: '17px'}}> Disaster Essentials </Card.Header>
                             <header> 
