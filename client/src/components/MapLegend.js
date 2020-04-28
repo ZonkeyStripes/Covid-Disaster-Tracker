@@ -20,12 +20,14 @@ class MapLegend extends MapControl {
     // console.log("componentDidUpdate ran");
     // console.log(this.props.colors[0]);
     // console.log(this.getColor(1));
-
-    this.panelDiv.innerHTML = "";
+    this.panelDiv.innerHTML = '<i style="background:' + this.getColor(this.props.limits[0] + 1) + '"></i> ' +
+    this.props.limits[0] + "+" + "<br>";
 
     for(let i = 0; i < this.props.limits.length; i++) {
-      this.panelDiv.innerHTML += '<i style="background:' + this.getColor(this.props.limits[i] + 1) + '"></i> ' +
-      this.props.limits[i] + (this.props.limits[i + 1] ? '&ndash;' + this.props.limits[i + 1] + '<br>' : '&ndash;0');
+      // console.log("i = " + i);
+      // console.log("this.getColor(this.props.limits[i] + 1) = " + this.getColor(this.props.limits[i] + 1));
+      this.panelDiv.innerHTML += '<i style="background:' + this.getColor(this.props.limits[i]) + '"></i> ' +
+      this.props.limits[i] + (this.props.limits[i + 1] ? '&ndash;' + this.props.limits[i + 1] + '<br>' : '&ndash;0<br>');
     }
 
   }
@@ -37,11 +39,15 @@ class MapLegend extends MapControl {
         
         let grades = this.props.limits;
 
-        for(let i = 0; i < grades.length; i++) {
-            this.panelDiv.innerHTML += '<i style="background:' + this.getColor(grades[i] + 1) + '"></i> ' +
-            grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '&ndash;0');
+        this.panelDiv.innerHTML = '<i style="background:' + this.getColor(this.props.limits[0] + 1) + '"></i> ' +
+        this.props.limits[0] + "+" + "<br>";
+    
+        for(let i = 0; i < this.props.limits.length; i++) {
+          // console.log("i = " + i);
+          // console.log("this.getColor(this.props.limits[i] + 1) = " + this.getColor(this.props.limits[i] + 1));
+          this.panelDiv.innerHTML += '<i style="background:' + this.getColor(this.props.limits[i]) + '"></i> ' +
+          this.props.limits[i] + (this.props.limits[i + 1] ? '&ndash;' + this.props.limits[i + 1] + '<br>' : '&ndash;0<br>');
         }
-        
         
         return this.panelDiv;
       }
@@ -50,6 +56,8 @@ class MapLegend extends MapControl {
   }
 
   getColor(d) {
+
+    console.log("d = " + d);
     return d > this.props.limits[0] ? this.props.colors[0] :
            d > this.props.limits[1]  ? this.props.colors[1] :
            d > this.props.limits[2]  ? this.props.colors[2] :
