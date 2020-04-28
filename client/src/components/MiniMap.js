@@ -19,7 +19,7 @@ const mapCenter = [39.82,-98.57];
 let zoomLevel = 7;
 
 // console.log(countyData);
-let todayDate = "2020-04-23";
+let todayDate = "2020-04-26";
 
 let countyArray = [];
 for(let i = 0; i < countyData.length; i++) {
