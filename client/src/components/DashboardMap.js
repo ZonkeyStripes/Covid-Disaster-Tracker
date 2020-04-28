@@ -273,7 +273,7 @@ class DashboardMap extends Component {
                 }
     
                 // console.log(`this.state.displayed = ${this.state.displayed}`);
-                console.log("dataToDisplay is " + dataToDisplay);
+                //console.log("dataToDisplay is " + dataToDisplay);
     
     
                 let mark = markers[i].getPopup();
