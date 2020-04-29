@@ -1,4 +1,4 @@
-DROP DATABASE IF EXISTS User;
+DROP DATABASE IF EXISTS covidtracker;
 
-CREATE DATABASE User;
-USE User;
+CREATE DATABASE covidtracker;
+USE covidtracker;

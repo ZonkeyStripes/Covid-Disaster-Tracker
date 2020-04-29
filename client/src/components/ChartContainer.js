@@ -23,6 +23,7 @@ function ChartContainer() {
   
   const [selectedState, setSelectedState] = useState(stateNames[0].state)
   const [selectedStateAb, setSelectedStateAb] = useState(stateNames[0].code)
+  const [selectedStatePop, setSelectedStatePop] = useState(stateNames[0].population)
   const [stateDataObj, setStateDataObj] = useState(statesData.filter(st => st.state === stateNames[0].state));
   const [countiesToShow, setCountiesToShow] = useState(getCounties(selectedState));
   const [selectedCounty, setSelectedCounty] = useState(countiesToShow[0]);
@@ -707,6 +708,7 @@ function ChartContainer() {
     for (let i = 0; i < stateNames.length; i++){
       if (stateNames[i].state === e.target.value){
         setSelectedStateAb(stateNames[i].code);
+        setSelectedStatePop(stateNames[i].population);
       }
     }
     setStateDataObj(statesData.filter(st => st.state === e.target.value))
@@ -791,6 +793,7 @@ function ChartContainer() {
             display = {display}
             stateName = {selectedState}
             stateAbbrev = {selectedStateAb}
+            statePopulation = {selectedStatePop}
             stateData = {stateDataObj}
             mostRecentData = {stateDataObj[stateDataObj.length-1]}
             nationalAvgs = {getNationalAvg()}

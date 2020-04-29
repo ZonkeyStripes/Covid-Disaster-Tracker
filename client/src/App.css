@@ -369,13 +369,13 @@ thead tr {
   padding-right: 5px;
 }
 
-#range-container{
+#range-container, #view-by-container{
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-#range-title{
+#range-title, #view-by-title{
   margin-bottom: 4px;
   margin-right: 6px;
 }

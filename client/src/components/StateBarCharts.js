@@ -17,11 +17,7 @@ const StateBarCharts = (props) => {
                     props.nationalAvgs.medianCases,
                     props.nationalAvgs.avgCases
                   ],
-                  // backgroundColor: ["#3a57af", "pink", "#273a76"]
-                  // backgroundColor: ["#3a57af", "#003f5c", "#6a6a6a"]
                   backgroundColor: ["#00589c", "#1891c3", "#666"]
-
-                  // backgroundColor: ["#003f5c", "#bc5090", "#ffa600"]
                 }
               ]
           }}

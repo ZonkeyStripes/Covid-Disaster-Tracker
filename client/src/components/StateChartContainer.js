@@ -4,9 +4,11 @@ import StateLineCharts from "./StateLineCharts";
 import $ from "jquery";
 
 const StateChartContainer = (props) => {
+
   const [showBarChart, setShowBarChart] = useState(true);
   const [showLineChart, setShowLineChart] = useState(true);
   const [range, setRange] = useState("4 Weeks");
+  const [viewBy, setViewBy] = useState("Totals");
 
   let barTitle;
   let lineTitle;
@@ -41,6 +43,10 @@ const StateChartContainer = (props) => {
     setRange(e.target.value);
   }
 
+  const handleViewByChange = e => {    
+    setViewBy(e.target.value);
+  }
+
   if (props.display === "cases"){
     barTitle = "Case"
     lineTitle = "Cases"
@@ -54,11 +60,19 @@ const StateChartContainer = (props) => {
         <div className="top-chart">
           <div className="chart-title-sect">
             <h5>{props.stateName} {barTitle} Totals</h5>
+            <div id="view-by-container">
+              <p className="text-muted" id="view-by-title">View by:</p>
+              <select id="view-by-dropdown" onChange={handleViewByChange} defaultValue="Totals">
+                <option value="Totals">Totals</option>
+                <option value="Per Thousand Residents">Per Thousand Residents</option>
+              </select>
+            </div>
             <i onClick={toggleBarChartDisplay} id="state-bar-collapse-icon" class="fas fa-chevron-down chart-toggle-icon"/>
           </div>
           <div id="state-bar-chart-container">
             <StateBarCharts
               display = {props.display}
+              viewBy = {viewBy}
               stateName = {props.stateName}
               stateAbbrev = {props.stateAbbrev}
               mostRecentData = {props.mostRecentData}
