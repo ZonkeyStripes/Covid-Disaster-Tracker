@@ -21,13 +21,13 @@ class MapLegend extends MapControl {
     // console.log(this.props.colors[0]);
     // console.log(this.getColor(1));
     this.panelDiv.innerHTML = '<i style="background:' + this.getColor(this.props.limits[0] + 1) + '"></i> ' +
-    this.props.limits[0] + "+" + "<br>";
+    this.props.limits[0].toLocaleString() + "+" + "<br>";
 
     for(let i = 0; i < this.props.limits.length; i++) {
       // console.log("i = " + i);
       // console.log("this.getColor(this.props.limits[i] + 1) = " + this.getColor(this.props.limits[i] + 1));
       this.panelDiv.innerHTML += '<i style="background:' + this.getColor(this.props.limits[i]) + '"></i> ' +
-      this.props.limits[i] + (this.props.limits[i + 1] ? '&ndash;' + this.props.limits[i + 1] + '<br>' : '&ndash;0<br>');
+      this.props.limits[i].toLocaleString() + (this.props.limits[i + 1] ? '&ndash;' + this.props.limits[i + 1].toLocaleString() + '<br>' : '&ndash;0<br>');
     }
 
   }
@@ -40,13 +40,13 @@ class MapLegend extends MapControl {
         let grades = this.props.limits;
 
         this.panelDiv.innerHTML = '<i style="background:' + this.getColor(this.props.limits[0] + 1) + '"></i> ' +
-        this.props.limits[0] + "+" + "<br>";
+        this.props.limits[0].toLocaleString() + "+" + "<br>";
     
         for(let i = 0; i < this.props.limits.length; i++) {
           // console.log("i = " + i);
           // console.log("this.getColor(this.props.limits[i] + 1) = " + this.getColor(this.props.limits[i] + 1));
           this.panelDiv.innerHTML += '<i style="background:' + this.getColor(this.props.limits[i]) + '"></i> ' +
-          this.props.limits[i] + (this.props.limits[i + 1] ? '&ndash;' + this.props.limits[i + 1] + '<br>' : '&ndash;0<br>');
+          this.props.limits[i].toLocaleString() + (this.props.limits[i + 1] ? '&ndash;' + this.props.limits[i + 1].toLocaleString() + '<br>' : '&ndash;0<br>');
         }
         
         return this.panelDiv;

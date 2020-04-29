@@ -157,8 +157,22 @@ class DashboardMap extends Component {
             }
         }
 
-        const popupContent = `<h4>COVID-19 ${this.state.displayed} data</h4>` +
-			'<b>' + feature.properties.NAME + '</b><br />' + dataToDisplay + ` ${this.state.displayed}`;
+        let popupContent;
+
+        // look into why this is sometimes undefined
+        if(dataToDisplay) {
+            popupContent = `<h4>COVID-19 ${this.state.displayed} data</h4>` +
+            '<b>' + feature.properties.NAME + '</b><br />' + dataToDisplay.toLocaleString() + ` ${this.state.displayed}`;
+        } else {
+            popupContent = `<h4>COVID-19 ${this.state.displayed} data</h4>` +
+            '<b>' + feature.properties.NAME + '</b><br />' + dataToDisplay + ` ${this.state.displayed}`;
+        }
+
+
+        // const popupContent = `<h4>COVID-19 ${this.state.displayed} data</h4>` +
+		// 	'<b>' + feature.properties.NAME + '</b><br />' + dataToDisplay + ` ${this.state.displayed}`;
+        
+        
         let marker = layer.bindPopup(popupContent);
         
         // console.log(marker);
@@ -278,8 +292,18 @@ class DashboardMap extends Component {
     
                 let mark = markers[i].getPopup();
                 // console.log(markers[i].feature);
-                const popupContent = `<h4>COVID-19 ${this.state.displayed} data</h4>` +
-                '<b>' + markers[i].feature.properties.NAME + '</b><br />' + dataToDisplay + ` ${this.state.displayed}`;
+
+                let popupContent;
+
+                // look into why this is sometimes undefined
+                if(dataToDisplay) {
+                    popupContent = `<h4>COVID-19 ${this.state.displayed} data</h4>` +
+                    '<b>' + markers[i].feature.properties.NAME + '</b><br />' + dataToDisplay.toLocaleString() + ` ${this.state.displayed}`;
+                } else {
+                    popupContent = `<h4>COVID-19 ${this.state.displayed} data</h4>` +
+                    '<b>' + markers[i].feature.properties.NAME + '</b><br />' + dataToDisplay + ` ${this.state.displayed}`;
+                }
+
                 mark.setContent(popupContent);
             }
         });

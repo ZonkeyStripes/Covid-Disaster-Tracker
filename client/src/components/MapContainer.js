@@ -74,7 +74,6 @@ class MapContainer extends Component {
 
         // ES6 React.Component doesn't auto bind methods to itself
         // Need to bind them manually in constructor
-        this.changeView = this.changeView.bind(this);
         this.geoJSONStyle = this.geoJSONStyle.bind(this);
         this.onEachFeature = this.onEachFeature.bind(this);
         //this.highlightFeature.bind(this)
@@ -161,7 +160,7 @@ class MapContainer extends Component {
 
 
         const popupContent = `<h4>COVID-19 ${this.state.displayed} data</h4>` +
-			'<b>' + feature.properties.NAME + '</b><br />' + dataToDisplay + ` ${this.state.displayed}`;
+			'<b>' + feature.properties.NAME + '</b><br />' + dataToDisplay.toLocaleString() + ` ${this.state.displayed}`;
         let marker = layer.bindPopup(popupContent);
         
         // console.log(marker);
@@ -205,65 +204,6 @@ class MapContainer extends Component {
         // map.fitBounds(e.target.getBounds());
     }
 
-    changeView(e) {
-        // console.log("test function");
-        // console.log(e.target.value);
-        // console.log(this);
-
-        let tempColor, tempLimit;
-
-        if(e.target.value === "cases") {
-            tempColor = mapColors[0];
-            tempLimit = thresholdData[0];
-        } else {
-            tempColor = mapColors[1];
-            tempLimit = thresholdData[1];
-        }
-
-        // console.log("tempColor = " + tempColor);
-
-        this.setState({
-            displayed: e.target.value,
-            colors: tempColor,
-            limits: tempLimit
-        }, function() {
-            // console.log(this.state);
-            
-
-            // convert values of the allMarkersMap object to an array
-            let markers = Object.values(allMarkersMap);
-            // console.log("********* in testFunction");
-            // console.log(markers);
-    
-            for(let i = 0; i < markers.length; i++) {
-    
-                let dataToDisplay;
-    
-                for(let j = 0; j < todayArray.length; j++) {
-                    // console.log(todayArray[j].state);
-                    // console.log(markers[i].feature.properties.NAME);
-                    if(todayArray[j].state == markers[i].feature.properties.NAME) {
-                        if(this.state.displayed === "cases") {
-                            dataToDisplay = todayArray[j].cases;
-                        } else if (this.state.displayed === "deaths") {
-                            dataToDisplay = todayArray[j].deaths;
-                        }
-                    }
-                }
-    
-                // console.log(`this.state.displayed = ${this.state.displayed}`);
-                // console.log("dataToDisplay is " + dataToDisplay);
-    
-   
-                let mark = markers[i].getPopup();
-                // console.log(markers[i].feature);
-                const popupContent = `<h4>COVID-19 ${this.state.displayed} data</h4>` +
-                '<b>' + markers[i].feature.properties.NAME + '</b><br />' + dataToDisplay + ` ${this.state.displayed}`;
-                mark.setContent(popupContent);
-            }
-        });
-    }
-
     displayCases = () => {
         if(this.state.displayed == "deaths") {
 
@@ -304,7 +244,7 @@ class MapContainer extends Component {
                     let mark = markers[i].getPopup();
                     // console.log(markers[i].feature);
                     const popupContent = `<h4>COVID-19 ${this.state.displayed} data</h4>` +
-                    '<b>' + markers[i].feature.properties.NAME + '</b><br />' + dataToDisplay + ` ${this.state.displayed}`;
+                    '<b>' + markers[i].feature.properties.NAME + '</b><br />' + dataToDisplay.toLocaleString() + ` ${this.state.displayed}`;
                     mark.setContent(popupContent);
                 }
 
@@ -363,21 +303,11 @@ class MapContainer extends Component {
                     let mark = markers[i].getPopup();
                     // console.log(markers[i].feature);
                     const popupContent = `<h4>COVID-19 ${this.state.displayed} data</h4>` +
-                    '<b>' + markers[i].feature.properties.NAME + '</b><br />' + dataToDisplay + ` ${this.state.displayed}`;
+                    '<b>' + markers[i].feature.properties.NAME + '</b><br />' + dataToDisplay.toLocaleString() + ` ${this.state.displayed}`;
                     mark.setContent(popupContent);
                 }
             });
         }
-    
-        // if (display === "Cases"){
-        //   $("#deaths-btn").toggleClass("table-btn");
-        //   $("#deaths-btn").toggleClass("table-btn-outline");
-        //   $("#cases-btn").toggleClass("table-btn");
-        //   $("#cases-btn").toggleClass("table-btn-outline");
-        //   setDisplay("Deaths");
-        //   setTotal(props.deaths);
-        //   setDisplayData(props.deathsArr);
-        // }
     }
 
     toggleMapDisplay = () => {
