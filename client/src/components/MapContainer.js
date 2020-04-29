@@ -16,7 +16,7 @@ const zoomLevel = 4;
 
 
 //console.log(usstates);
-let todayDate = "2020-04-26";
+let todayDate = "2020-04-28";
 
 let totalCases = 0;
 let totalDeaths = 0;
