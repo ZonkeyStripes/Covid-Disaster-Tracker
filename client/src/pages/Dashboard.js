@@ -128,8 +128,8 @@ class Dashboard extends Component {
                   <h3>{item[0]} County, {item[1]}</h3>
                   <p><strong>Covid-19 Data</strong></p>
                   <ul>
-                    <li>{item[2]} Cases</li>
-                    <li>{item[3]} Deaths</li>
+                    <li>{item[2].toLocaleString()} Cases</li>
+                    <li>{item[3].toLocaleString()} Deaths</li>
                   </ul>
                   <Hospital fips={item[4]}/>
                 </ReactBootStrap.Col>

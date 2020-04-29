@@ -13,14 +13,12 @@ class DisasterList extends Component{
     }
 
     toggleFAQ = index => {
-        console.log("toggleFAQ index = " + index);
         this.setState({faqs: this.state.faqs.map((faq, i) => {
             if(i === index) {
                 faq.open = !faq.open
             } else {
                 faq.open = false;
             }
-            console.log(faq);
             return faq;
         })})
     }
