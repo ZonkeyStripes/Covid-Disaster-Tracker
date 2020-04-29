@@ -17,7 +17,7 @@ let zoomLevel = 4;
 
 
 // console.log(countyData);
-let todayDate = "2020-04-23";
+let todayDate = "2020-04-28";
 
 let countyArray = [];
 for(let i = 0; i < countyData.length; i++) {
@@ -70,8 +70,13 @@ class DashboardMap extends Component {
         let covidDeaths = 0;
         let displayData;
     
-        //console.log("feature.properties looks like:");
+        // console.log("feature.properties looks like:");
         // console.log(feature.properties);
+
+        // figure out how to deal with irregularities in NYC data
+        // if(feature.properties.STATE == 36 && (
+
+        // ))
         let geo_id = feature.properties.GEO_ID;
         geo_id = geo_id.substring(geo_id.length - 5);
         //console.log(geo_id);
