@@ -7,7 +7,7 @@ import countyData from '../assets/nytimescounties.json';
 import * as ReactBootStrap from "react-bootstrap";
 import Hospital from "../components/Hospital";
 
-let todayDate = "2020-04-28";
+let todayDate = "2020-04-29";
 let countyArray = [];
 
 // console.log(countyData);
@@ -29,7 +29,7 @@ class Dashboard extends Component {
 
     this.state = {
       locations: [],
-      effective_date: "04-28-2020",
+      effective_date: "04-29-2020",
       username: ""
     };
   }
