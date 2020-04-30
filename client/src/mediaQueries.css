@@ -15,6 +15,7 @@
   .table-container {
     margin-top: 20px;
   }
+
   #range-container{
     display: flex;
     flex-direction: column;
@@ -22,13 +23,32 @@
     align-items: flex-start;
     margin-right: 8px;
   }
+
+  #view-by-container{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-right: 4px;
+  }
   
   #range-title{
     margin-bottom: 0px;
     margin-right: 0px;
   }
+  
+  #view-by-title{
+    margin-bottom: 0px;
+    margin-right: 0px;
+    font-size: 14px;
+  }
+
   #range-dropdown{
     margin-left: 0px;
+  }
+
+  #view-by-dropdown{
+    margin-left: 0px;
+    font-size: 12px;
   }
 }
 

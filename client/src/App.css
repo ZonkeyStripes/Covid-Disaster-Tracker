@@ -380,7 +380,7 @@ thead tr {
   margin-right: 6px;
 }
 
-#range-dropdown{
+#range-dropdown, #view-by-dropdown{
   margin-left: 6px;
   font-size: 14px;
   border-radius: 3px;
