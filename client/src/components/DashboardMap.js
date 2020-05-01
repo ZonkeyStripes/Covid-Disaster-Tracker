@@ -17,7 +17,7 @@ let zoomLevel = 4;
 
 
 // console.log(countyData);
-let todayDate = "2020-04-28";
+let todayDate = "2020-04-29";
 
 let countyArray = [];
 for(let i = 0; i < countyData.length; i++) {
