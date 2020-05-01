@@ -8,25 +8,25 @@ const StateBarCharts = (props) => {
   let chartData;
   let stateBarTitle;
 
-  if (props.display === "cases" && props.viewBy === "Totals"){
+  if (props.display === "cases" && props.barView === "Totals"){
     chartLabels = [`${props.stateAbbrev}`, "US Median", "US Average"];
     chartLabel = "Cases";
     chartData = [props.mostRecentData.cases, props.nationalAvgs.medianCases, props.nationalAvgs.avgCases];
     stateBarTitle = `${props.stateName} Case Totals`;
 
-  } else if (props.display === "deaths" && props.viewBy === "Totals") {
+  } else if (props.display === "deaths" && props.barView === "Totals") {
     chartLabels = [`${props.stateAbbrev}`, "US Median", "US Average"];
     chartLabel = "Deaths";
     chartData = [props.mostRecentData.deaths, props.nationalAvgs.medianDeaths, props.nationalAvgs.avgDeaths];
     stateBarTitle = `${props.stateName} Death Totals`;
 
-  } else if (props.display === "cases" && props.viewBy === "Per Thousand Residents"){
+  } else if (props.display === "cases" && props.barView === "Per Thousand Residents"){
     chartLabels = [`${props.stateAbbrev}`, "US"];
     chartLabel = "Cases Per 1000 Residents";
     chartData = props.perData.map(item => item.toFixed(1));
     stateBarTitle = `${props.stateName} Cases Per 1000 Residents`;
 
-  } else if (props.display === "deaths" && props.viewBy === "Per Hundred Thousand Residents"){
+  } else if (props.display === "deaths" && props.barView === "Per Hundred Thousand Residents"){
     chartLabels = [`${props.stateAbbrev}`, "US"];
     chartLabel = "Deaths Per 100,000 Residents";
     chartData = props.perData.map(item => item.toFixed(1));

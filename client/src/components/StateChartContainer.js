@@ -8,7 +8,7 @@ const StateChartContainer = (props) => {
   const [showBarChart, setShowBarChart] = useState(true);
   const [showLineChart, setShowLineChart] = useState(true);
   const [range, setRange] = useState("4 Weeks");
-  const [viewBy, setViewBy] = useState("Totals");
+  const [barView, setBarView] = useState("Totals");
   let perData = [
     (props.mostRecentData.cases/props.statePopulation) * 1000,
     (props.nationalData[props.nationalData.length-1].cases/328239523) * 1000
@@ -49,8 +49,8 @@ const StateChartContainer = (props) => {
     setRange(e.target.value);
   }
 
-  const handleViewByChange = e => {    
-    setViewBy(e.target.value);
+  const handleviewChange = e => {    
+    setBarView(e.target.value);
     if (e.target.value === "Per Hundred Thousand Residents"){
       perData = [
         (props.mostRecentData.deaths/props.statePopulation) * 100000,
@@ -65,8 +65,8 @@ const StateChartContainer = (props) => {
   }
 
   if (props.display === "cases"){
-    if (viewBy === "Per Hundred Thousand Residents"){
-      setViewBy("Per Thousand Residents");
+    if (barView === "Per Hundred Thousand Residents"){
+      setBarView("Per Thousand Residents");
     }
     perData = [
       (props.mostRecentData.cases/props.statePopulation) * 1000,
@@ -75,8 +75,8 @@ const StateChartContainer = (props) => {
     barTitle = "Case"
     lineTitle = "Cases"
   } else {
-    if (viewBy === "Per Thousand Residents"){
-      setViewBy("Per Hundred Thousand Residents");
+    if (barView === "Per Thousand Residents"){
+      setBarView("Per Hundred Thousand Residents");
     }
     perData = [
       (props.mostRecentData.deaths/props.statePopulation) * 100000,
@@ -93,7 +93,7 @@ const StateChartContainer = (props) => {
             <h5>{barTitle} Totals</h5>
             <div id="view-by-container">
               <p className="text-muted" id="view-by-title">View:</p>
-              <select id="view-by-dropdown" onChange={handleViewByChange} defaultValue="Totals">
+              <select id="view-by-dropdown" onChange={handleviewChange} defaultValue="Totals">
                 <option value="Totals">Totals</option>
                 <option value={props.ddOptionVal}>{props.ddOptionText}</option>
               </select>
@@ -103,7 +103,7 @@ const StateChartContainer = (props) => {
           <div id="state-bar-chart-container">
             <StateBarCharts
               display = {props.display}
-              viewBy = {viewBy}
+              barView = {barView}
               stateName = {props.stateName}
               stateAbbrev = {props.stateAbbrev}
               statePopulation = {props.statePopulation}

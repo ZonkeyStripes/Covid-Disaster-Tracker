@@ -610,7 +610,7 @@ body::-webkit-scrollbar-thumb {
 
 .ftu-card-body{
   padding-bottom: 10px;
-  max-height: 460px;
+  max-height: 510px;
   overflow-y: hidden;
 }
 
