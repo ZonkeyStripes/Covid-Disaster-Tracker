@@ -50,7 +50,7 @@ const CountyChartContainer = ({display, countyName, countyData, counties, stateN
 
   if (stateName === "District of Columbia" || stateName === "Guam" || stateName === "Virgin Islands"){
     returnVal = <div className="col-12">
-      <h3 className="text-center">County data unavailable for {stateName}</h3>
+      <h3 className="text-center mt-3">County data unavailable for {stateName}</h3>
     </div>
   } else {
     returnVal = (

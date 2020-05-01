@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import {Link} from "react-router-dom";
 import "../App.css";
 import statesData from "../utils/json/us-states.json";
 import countiesData from "../utils/json/us-counties.json";

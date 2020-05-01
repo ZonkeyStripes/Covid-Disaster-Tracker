@@ -369,18 +369,18 @@ thead tr {
   padding-right: 5px;
 }
 
-#range-container{
+#range-container, #view-by-container{
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-#range-title{
+#range-title, #view-by-title{
   margin-bottom: 4px;
   margin-right: 6px;
 }
 
-#range-dropdown{
+#range-dropdown, #view-by-dropdown{
   margin-left: 6px;
   font-size: 14px;
   border-radius: 3px;
@@ -610,7 +610,7 @@ body::-webkit-scrollbar-thumb {
 
 .ftu-card-body{
   padding-bottom: 10px;
-  max-height: 460px;
+  max-height: 510px;
   overflow-y: hidden;
 }
 

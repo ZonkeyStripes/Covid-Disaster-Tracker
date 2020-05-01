@@ -23,11 +23,15 @@ function ChartContainer() {
   
   const [selectedState, setSelectedState] = useState(stateNames[0].state)
   const [selectedStateAb, setSelectedStateAb] = useState(stateNames[0].code)
+  const [selectedStatePop, setSelectedStatePop] = useState(stateNames[0].population)
   const [stateDataObj, setStateDataObj] = useState(statesData.filter(st => st.state === stateNames[0].state));
   const [countiesToShow, setCountiesToShow] = useState(getCounties(selectedState));
   const [selectedCounty, setSelectedCounty] = useState(countiesToShow[0]);
   const [countyData, setCountyData] = useState(countiesData.filter(i => i.state === selectedState && i.county === selectedCounty));
   const [display, setDisplay] = useState("cases");
+  const [chartLabel, setChartLabel] = useState("Cases");
+  const [ddOptionVal, setDdOptionVal] = useState("Per Thousand Residents");
+  const [ddOptionText, setDdOptionText] = useState("Per 1000 Residents");
   
   // Calculates the per-state average and median of COVID-19 data in the US
   const getNationalAvg = () => {
@@ -707,6 +711,7 @@ function ChartContainer() {
     for (let i = 0; i < stateNames.length; i++){
       if (stateNames[i].state === e.target.value){
         setSelectedStateAb(stateNames[i].code);
+        setSelectedStatePop(stateNames[i].population);
       }
     }
     setStateDataObj(statesData.filter(st => st.state === e.target.value))
@@ -727,16 +732,22 @@ function ChartContainer() {
   const displayDeaths = () => {
     if (display === "cases"){
       setDisplay("deaths");
+      setChartLabel("Deaths");
+      setDdOptionVal("Per Hundred Thousand Residents");
+      setDdOptionText("Per 100,000 Residents");
       $("#btn-cases").toggleClass("btn-chart");
       $("#btn-cases").toggleClass("btn-chart-outline");
       $("#btn-deaths").toggleClass("btn-chart");
       $("#btn-deaths").toggleClass("btn-chart-outline");
     }
   }
-
+  
   const displayCases = () => {
     if (display === "deaths"){
       setDisplay("cases");
+      setChartLabel("Cases");
+      setDdOptionVal("Per Thousand Residents");
+      setDdOptionText("Per 1000 Residents");
       $("#btn-cases").toggleClass("btn-chart");
       $("#btn-cases").toggleClass("btn-chart-outline");
       $("#btn-deaths").toggleClass("btn-chart");
@@ -789,8 +800,12 @@ function ChartContainer() {
         <div id="chart-stuff-top">
           <StateChartContainer
             display = {display}
+            chartLabel = {chartLabel}
+            ddOptionVal={ddOptionVal}
+            ddOptionText={ddOptionText}
             stateName = {selectedState}
             stateAbbrev = {selectedStateAb}
+            statePopulation = {selectedStatePop}
             stateData = {stateDataObj}
             mostRecentData = {stateDataObj[stateDataObj.length-1]}
             nationalAvgs = {getNationalAvg()}
