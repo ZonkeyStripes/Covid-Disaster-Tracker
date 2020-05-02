@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import HospitalAPI from "../utils/HospitalsAPI";
 
 function Hospital(props) {
