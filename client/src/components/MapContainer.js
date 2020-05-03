@@ -6,6 +6,8 @@ import stateData from '../assets/nytimesstate.json';
 import MapLegend from "./MapLegend";
 import Tables from "./Tables";
 import $ from "jquery";
+import Axios from "axios";
+import stateAbbr from "../utils/stateAbbr";
 
 
 const stamenTonerTiles = 'http://stamen-tiles-{s}.a.ssl.fastly.net/toner-background/{z}/{x}/{y}.png';
@@ -16,27 +18,29 @@ const zoomLevel = 4;
 
 
 //console.log(usstates);
-let todayDate = "2020-04-30";
+// let todayDate = "2020-04-30";
 
-let totalCases = 0;
-let totalDeaths = 0;
+// let totalCases = 0;
+// let totalDeaths = 0;
 
-let todayArray = [];
-for(let i = 0; i < stateData.length; i++) {
-	if(stateData[i].date === todayDate) {
-    todayArray.push(stateData[i]);
-    totalCases += stateData[i].cases;
-    totalDeaths += stateData[i].deaths;
-	}
-}
+// let todayArray = [];
+// for(let i = 0; i < stateData.length; i++) {
+// 	if(stateData[i].date === todayDate) {
+//     todayArray.push(stateData[i]);
+//     totalCases += stateData[i].cases;
+//     totalDeaths += stateData[i].deaths;
+// 	}
+// }
+
+// console.log(todayArray);
+// let casesArray = [];
+// let deathsArray = [];
+// for(let i = 0; i < todayArray.length; i++) {
+// 	casesArray.push({state: todayArray[i].state, data: todayArray[i].cases})
+// 	deathsArray.push({state: todayArray[i].state, data: todayArray[i].deaths})
+// };
 
 
-let casesArray = [];
-let deathsArray = [];
-for(let i = 0; i < todayArray.length; i++) {
-	casesArray.push({state: todayArray[i].state, data: todayArray[i].cases})
-	deathsArray.push({state: todayArray[i].state, data: todayArray[i].deaths})
-};
 
 // let dataDisplayed = "cases";
 
@@ -55,13 +59,37 @@ const thresholdData = [
 let allMarkersMap = {};
 let currentID = 0;
 
-
 //console.log(todayArray);
 
 class MapContainer extends Component {
 
     constructor(props) {
         super(props);
+
+        let todayDate = "2020-04-30";
+
+        let totalCases = 0;
+        let totalDeaths = 0;
+        
+        let todayArray = [];
+        for(let i = 0; i < stateData.length; i++) {
+          if(stateData[i].date === todayDate) {
+            todayArray.push(stateData[i]);
+            totalCases += stateData[i].cases;
+            totalDeaths += stateData[i].deaths;
+          }
+        }
+        
+        console.log(todayArray);
+
+        let casesArray = [];
+        let deathsArray = [];
+        for(let i = 0; i < todayArray.length; i++) {
+          casesArray.push({state: todayArray[i].state, data: todayArray[i].cases})
+          deathsArray.push({state: todayArray[i].state, data: todayArray[i].deaths})
+        };
+
+
         this.state = {
             displayed: "cases",
             mapOpen: true,
@@ -69,27 +97,123 @@ class MapContainer extends Component {
             colors: mapColors[0],
             limits: thresholdData[0],
             total: totalCases,
-            displayList: casesArray
+            displayList: casesArray,
+            todayDate: "2020-04-30",
+            todayArray: todayArray,
+            totalCases: totalCases,
+            totalDeaths: totalDeaths,
+            casesArray: casesArray,
+            deathsArray: deathsArray
         };
 
         // ES6 React.Component doesn't auto bind methods to itself
         // Need to bind them manually in constructor
         this.geoJSONStyle = this.geoJSONStyle.bind(this);
         this.onEachFeature = this.onEachFeature.bind(this);
+        this.componentDidMount = this.componentDidMount(this);
         //this.highlightFeature.bind(this)
 
     }
     
+    componentDidMount() {
+
+      Axios.get("https://covidtracking.com/api/v1/states/current.json")
+      .then(res => {
+        console.log(res);
+        let newTodayArray = [];
+
+        let totalCases = 0;
+        let totalDeaths = 0;
+
+        res.data.forEach(state => {
+          let newObj = {};
+          console.log(state);
+          newObj.cases = state.positive;
+          newObj.deaths = state.death;
+          newObj.fips = state.fips;
+          newObj.state = stateAbbr.convertRegion(state.state, 1);
+          newObj.date = this.state.todayDate;
+          newTodayArray.push(newObj);
+          totalCases += state.positive;
+          totalDeaths += state.death;
+        })
+        console.log(newTodayArray);
+
+        let casesArray = [];
+        let deathsArray = [];
+        for(let i = 0; i < newTodayArray.length; i++) {
+          casesArray.push({state: newTodayArray[i].state, data: newTodayArray[i].cases})
+          deathsArray.push({state: newTodayArray[i].state, data: newTodayArray[i].deaths})
+        };
+
+        this.setState({
+          todayArray: newTodayArray,
+          casesArray: casesArray,
+          deathsArray: deathsArray,
+          totalCases: totalCases,
+          totalDeaths: totalDeaths
+        }, function() { 
+          console.log(this.state.todayArray);
+          this.setState({ state: this.state });
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+    }
+
+
+    componentDidUpdate() {
+      if(this.state.displayed === "cases" && 
+      this.state.total !== this.state.totalCases) {
+        console.log("total isn't matching correctly");
+        this.setState({ 
+          total: this.state.totalCases,
+          displayList: this.state.casesArray
+         }, () => {
+          let markers = Object.values(allMarkersMap);
+        
+          for(let i = 0; i < markers.length; i++) {
+            let dataToDisplay;
+
+            for(let j = 0; j < this.state.todayArray.length; j++) {
+                // console.log(todayArray[j].state);
+                // console.log(markers[i].feature.properties.NAME);
+                if(this.state.todayArray[j].state == markers[i].feature.properties.NAME) {
+                    if(this.state.displayed === "cases") {
+                        dataToDisplay = this.state.todayArray[j].cases;
+                    } else if (this.state.displayed === "deaths") {
+                        dataToDisplay = this.state.todayArray[j].deaths;
+                    }
+                }
+            }
+
+            console.log(`this.state.displayed = ${this.state.displayed}`);
+            console.log("dataToDisplay is " + dataToDisplay);
+
+
+            let mark = markers[i].getPopup();
+            // console.log(markers[i].feature);
+            if(dataToDisplay) {
+              const popupContent = `<h4>COVID-19 ${this.state.displayed} data</h4>` +
+              '<b>' + markers[i].feature.properties.NAME + '</b><br />' + dataToDisplay.toLocaleString() + ` ${this.state.displayed}`;
+              mark.setContent(popupContent);
+            }
+        }
+      })
+      console.log(this.state.todayArray);
+    }
+  }
 
     geoJSONStyle(feature) {
         let covidCases = 0;
         let covidDeaths = 0;
         let displayData;
     
-        for(let i = 0; i < todayArray.length; i++) {
-            if(parseInt(todayArray[i].fips) === parseInt(feature.properties.STATE)) {
-                covidCases = todayArray[i].cases;
-                covidDeaths = todayArray[i].deaths;
+        for(let i = 0; i < this.state.todayArray.length; i++) {
+            if(parseInt(this.state.todayArray[i].fips) === parseInt(feature.properties.STATE)) {
+                covidCases = this.state.todayArray[i].cases;
+                covidDeaths = this.state.todayArray[i].deaths;
             }
         }
 
@@ -142,30 +266,35 @@ class MapContainer extends Component {
     
 
     
-      onEachFeature(feature: Object, layer: Object) {
-        // console.log("onEachFeature");
+      onEachFeature(feature, layer) {
+        console.log("onEachFeature");
         // console.log(feature.properties);
         // console.log(this.state.displayed)
         let dataToDisplay;
 
-        for(let i = 0; i < todayArray.length; i++) {
-            if(todayArray[i].state == feature.properties.NAME) {
+        for(let i = 0; i < this.state.todayArray.length; i++) {
+            if(this.state.todayArray[i].state === feature.properties.NAME) {
                 if(this.state.displayed === "cases") {
-                    dataToDisplay = todayArray[i].cases;
+                    dataToDisplay = this.state.todayArray[i].cases;
                 } else if (this.state.displayed === "deaths") {
-                    dataToDisplay = todayArray[i].deaths;
+                    dataToDisplay = this.state.todayArray[i].deaths;
                 }
             }
         }
 
-
+      console.log(dataToDisplay);
+      if(dataToDisplay) {
         const popupContent = `<h4>COVID-19 ${this.state.displayed} data</h4>` +
-			'<b>' + feature.properties.NAME + '</b><br />' + dataToDisplay.toLocaleString() + ` ${this.state.displayed}`;
-        let marker = layer.bindPopup(popupContent);
-        
-        // console.log(marker);
+        '<b>' + feature.properties.NAME + '</b><br />' + dataToDisplay.toLocaleString() + ` ${this.state.displayed}`;
+          let marker = layer.bindPopup(popupContent);
+
+                  // console.log(marker);
         allMarkersMap[currentID] = marker;
         currentID += 1;
+      }
+
+        
+
 
         layer.on({
             mouseover: this.highlightFeature.bind(this),
@@ -186,14 +315,6 @@ class MapContainer extends Component {
             dashArray: '',
             fillOpacity: 0.7
         });
-
-        // if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
-        //     layer.bringToFront();
-        // }
-
-        // console.log("layer.feature is");
-        // console.log(layer.feature);
-        // info.update(layer.feature.properties);
     }
 
     resetHighlight(e) {
@@ -216,8 +337,8 @@ class MapContainer extends Component {
                 displayed: "cases",
                 colors: mapColors[0],
                 limits: thresholdData[0],
-                total: totalCases,
-                displayList: casesArray
+                total: this.state.totalCases,
+                displayList: this.state.casesArray
             }, function() {            
                 // convert values of the allMarkersMap object to an array
                 let markers = Object.values(allMarkersMap);
@@ -225,14 +346,14 @@ class MapContainer extends Component {
                 for(let i = 0; i < markers.length; i++) {
                     let dataToDisplay;
         
-                    for(let j = 0; j < todayArray.length; j++) {
+                    for(let j = 0; j < this.state.todayArray.length; j++) {
                         // console.log(todayArray[j].state);
                         // console.log(markers[i].feature.properties.NAME);
-                        if(todayArray[j].state == markers[i].feature.properties.NAME) {
+                        if(this.state.todayArray[j].state == markers[i].feature.properties.NAME) {
                             if(this.state.displayed === "cases") {
-                                dataToDisplay = todayArray[j].cases;
+                                dataToDisplay = this.state.todayArray[j].cases;
                             } else if (this.state.displayed === "deaths") {
-                                dataToDisplay = todayArray[j].deaths;
+                                dataToDisplay = this.state.todayArray[j].deaths;
                             }
                         }
                     }
@@ -243,9 +364,14 @@ class MapContainer extends Component {
     
                     let mark = markers[i].getPopup();
                     // console.log(markers[i].feature);
-                    const popupContent = `<h4>COVID-19 ${this.state.displayed} data</h4>` +
-                    '<b>' + markers[i].feature.properties.NAME + '</b><br />' + dataToDisplay.toLocaleString() + ` ${this.state.displayed}`;
-                    mark.setContent(popupContent);
+
+                    if(dataToDisplay) {
+                      const popupContent = `<h4>COVID-19 ${this.state.displayed} data</h4>` +
+                      '<b>' + markers[i].feature.properties.NAME + '</b><br />' + dataToDisplay.toLocaleString() + ` ${this.state.displayed}`;
+                      mark.setContent(popupContent);
+                    }
+
+                    
                 }
 
                 // if (display === "Deaths"){
@@ -275,8 +401,8 @@ class MapContainer extends Component {
                 displayed: "deaths",
                 colors: mapColors[2],
                 limits: thresholdData[1],
-                total: totalDeaths,
-                displayList: deathsArray
+                total: this.state.totalDeaths,
+                displayList: this.state.deathsArray
             }, function() {            
                 // convert values of the allMarkersMap object to an array
                 let markers = Object.values(allMarkersMap);
@@ -284,27 +410,31 @@ class MapContainer extends Component {
                 for(let i = 0; i < markers.length; i++) {
                     let dataToDisplay;
         
-                    for(let j = 0; j < todayArray.length; j++) {
+                    for(let j = 0; j < this.state.todayArray.length; j++) {
                         // console.log(todayArray[j].state);
                         // console.log(markers[i].feature.properties.NAME);
-                        if(todayArray[j].state == markers[i].feature.properties.NAME) {
+                        if(this.state.todayArray[j].state == markers[i].feature.properties.NAME) {
                             if(this.state.displayed === "cases") {
-                                dataToDisplay = todayArray[j].cases;
+                                dataToDisplay = this.state.todayArray[j].cases;
                             } else if (this.state.displayed === "deaths") {
-                                dataToDisplay = todayArray[j].deaths;
+                                dataToDisplay = this.state.todayArray[j].deaths;
                             }
                         }
                     }
         
-                    // console.log(`this.state.displayed = ${this.state.displayed}`);
-                    // console.log("dataToDisplay is " + dataToDisplay);
+                    console.log(`this.state.displayed = ${this.state.displayed}`);
+                    console.log("dataToDisplay is " + dataToDisplay);
         
     
                     let mark = markers[i].getPopup();
                     // console.log(markers[i].feature);
-                    const popupContent = `<h4>COVID-19 ${this.state.displayed} data</h4>` +
-                    '<b>' + markers[i].feature.properties.NAME + '</b><br />' + dataToDisplay.toLocaleString() + ` ${this.state.displayed}`;
-                    mark.setContent(popupContent);
+                    if(dataToDisplay) {
+                      const popupContent = `<h4>COVID-19 ${this.state.displayed} data</h4>` +
+                      '<b>' + markers[i].feature.properties.NAME + '</b><br />' + dataToDisplay.toLocaleString() + ` ${this.state.displayed}`;
+                      mark.setContent(popupContent);
+                    }
+
+                    
                 }
             });
         }
@@ -362,12 +492,14 @@ class MapContainer extends Component {
     }
     
     render() {
+
+      console.log("render map");
         return (
             <div id="map-stuff" className="row">
               <div className="col-md-8">
                 <div className="map-title-sect">
                   <h5 id="map-header">COVID-19 Severity By State</h5>
-                  <i onClick={this.toggleMapDisplay} id="map-collapse-icon" class="fas fa-chevron-down chart-toggle-icon"/>
+                  <i onClick={this.toggleMapDisplay} id="map-collapse-icon" className="fas fa-chevron-down chart-toggle-icon"/>
                 </div>
                 <div id="map-container">
                     <Map
@@ -413,10 +545,10 @@ class MapContainer extends Component {
                       displayed = {this.state.displayed}
                       total = {this.state.total}
                       displayList = {this.state.displayList}
-                      cases = {totalCases}
-                      deaths = {totalDeaths}
-                      casesArr = {casesArray}
-                      deathsArr = {deathsArray}
+                      cases = {this.state.totalCases}
+                      deaths = {this.state.totalDeaths}
+                      casesArr = {this.state.casesArray}
+                      deathsArr = {this.state.deathsArray}
                     />
                   </div>
                 </div>

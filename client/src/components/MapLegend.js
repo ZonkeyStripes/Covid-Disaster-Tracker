@@ -57,7 +57,6 @@ class MapLegend extends MapControl {
 
   getColor(d) {
 
-    console.log("d = " + d);
     return d > this.props.limits[0] ? this.props.colors[0] :
            d > this.props.limits[1]  ? this.props.colors[1] :
            d > this.props.limits[2]  ? this.props.colors[2] :

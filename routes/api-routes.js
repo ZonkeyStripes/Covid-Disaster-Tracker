@@ -191,6 +191,7 @@ app.post("/api/default_disasterkit", function(req, res) {
 
   let itemList = [];
 
+
   disasterItems.forEach(item => {
     db.DisasterKit.create({
       item: item,
