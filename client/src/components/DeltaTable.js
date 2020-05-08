@@ -12,18 +12,6 @@ class DeltaTable extends Component {
         }
     }
 
-    // componentDidUpdate() {
-    //     let temp = [];
-    //     if(this.props.displayed === "cases") {
-    //         temp = this.props.deltaArray.sort((a, b) => (a.deltaCases < b.deltaCases) ? 1 : (a.deltaCases === b.deltaCases) ? ((a.state > b.state) ? 1 : -1) : -1 );
-    //     } else {
-    //         temp = this.props.deltaArray.sort((a, b) => (a.deltaDeaths < b.deltaDeaths) ? 1 : (a.deltaDeaths === b.deltaDeaths) ? ((a.state > b.state) ? 1 : -1) : -1 );            
-    //     }
-
-    //     console.log(temp);
-    //     this.setState({deltaArray: temp});
-    // }
-
     render() {
 
         let tableBody = "";
@@ -60,11 +48,6 @@ class DeltaTable extends Component {
             <div>
                 <p className="text-center table-top-text mt-2">Total {this.props.displayed}</p>
                 <h2 className="text-center">{this.props.total.toLocaleString()}</h2>
-                {/* {this.props.displayList.map((el, index) => (
-                <div key={index} className="state-sect p-2 d-flex">
-                {el.data.toLocaleString()} <span className="text-muted"> - {el.state}</span>
-                </div>
-                ))} */}
                 <table class="table">
                     <tbody>
                         <tr>

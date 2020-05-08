@@ -37,8 +37,8 @@ class MapContainer extends Component {
     constructor(props) {
         super(props);
 
-        let todayDate = "2020-04-30";
-        let yesterdayDate = "2020-04-29";
+        let todayDate = "2020-05-07";
+        let yesterdayDate = "2020-05-06";
 
         let totalCases = 0;
         let totalDeaths = 0;
@@ -105,8 +105,8 @@ class MapContainer extends Component {
             limits: thresholdData[0],
             total: totalCases,
             displayList: casesArray,
-            todayDate: "2020-04-30",
-            prevDate: "2020-04-29",
+            todayDate: todayDate,
+            prevDate: yesterdayDate,
             todayArray: todayArray,
             prevArray: yesterdayArray,
             totalCases: totalCases,
