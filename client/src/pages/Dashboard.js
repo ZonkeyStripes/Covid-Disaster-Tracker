@@ -101,7 +101,6 @@ class Dashboard extends Component {
   }
 
   handleClick(e) {
-    console.log("logging out perhaps?");
     e.preventDefault();
     Axios.post("/logout")
     .then(() => {
