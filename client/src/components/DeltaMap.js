@@ -6,8 +6,8 @@ import stateData from '../assets/nytimesstate.json';
 import MapLegend from "./MapLegend";
 import DeltaTable from "./DeltaTable";
 import $ from "jquery";
-import Axios from "axios";
 import stateAbbr from "../utils/stateAbbr";
+import * as Constants from "../constants";
 
 
 const stamenTonerTiles = 'http://stamen-tiles-{s}.a.ssl.fastly.net/toner-background/{z}/{x}/{y}.png';
@@ -37,8 +37,8 @@ class MapContainer extends Component {
     constructor(props) {
         super(props);
 
-        let todayDate = "2020-05-07";
-        let yesterdayDate = "2020-05-06";
+        let todayDate = Constants.LASTUPDATED;
+        let yesterdayDate = Constants.PREVFORDELTAS;
 
         let totalCases = 0;
         let totalDeaths = 0;
@@ -88,8 +88,6 @@ class MapContainer extends Component {
 
         let casesArray = [];
         let deathsArray = [];
-        let caseDeltaArray = [];
-        let deathDeltaArray = [];
 
         for(let i = 0; i < todayArray.length; i++) {
           casesArray.push({state: todayArray[i].state, data: todayArray[i].cases})

@@ -13,17 +13,26 @@ import { Card, CardGroup } from "react-bootstrap";
 //import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Axios from "axios";
 import "../App.css";
+import countiesData from "../utils/json/us-counties.json";
+import stateNames from "../utils/json/state-names.json";
+import stateAbbr from "../utils/stateAbbr";
+
 
 library.add(faTrash);
 
 class Kit extends Component {
     constructor(props) {
         super(props);
+
+        let initialState = stateNames.sort()[0];
+        let counties = this.getCounties(initialState);
+
         this.state = {
             items: [],
             data: [],
-            county: "",
-            state: "",
+            state: initialState,
+            countyList: counties,
+            selectedCounty: counties[0],
             currentItem: {
                 text: '',
                 key: ''
@@ -35,6 +44,39 @@ class Kit extends Component {
         this.addItem = this.addItem.bind(this);
         this.deleteItem = this.deleteItem.bind(this);
     }
+
+    //Returns array with all county names in a given state
+    getCounties = (state) => {
+        let setOfCounties = new Set();
+        for (let i = 0; i < countiesData.length; i++){
+            if (countiesData[i].state === state && countiesData[i].county !== "Unknown"){
+                setOfCounties.add(countiesData[i].county);
+            }
+        }
+        return Array.from(setOfCounties).sort();
+    }
+
+    // Runs whenever there's a change in the state dropdown menu
+    handleStateChange = e => {
+        let counties = this.getCounties(e.target.value);
+
+        this.setState({
+            countyList: counties,
+            state: e.target.value,
+            selectedCounty: counties.sort()[0]
+        }, function() {      
+            console.log("callback function");
+        });    
+    }
+
+    handleCountyChange = e => {
+        console.log(e.target.value);
+        this.setState({
+            selectedCounty: e.target.value
+        })
+    }
+
+
     handleInput(e) {
 
         this.setState({
@@ -87,9 +129,6 @@ class Kit extends Component {
                 })
             }
         }
-
-
-
     }
 
     deleteItem(key) {
@@ -106,7 +145,9 @@ class Kit extends Component {
     }
 
     callkitAPI = () => {
-        kitAPI.getDisaster(this.state.county, this.state.state).then(res => {
+        let stateAb = stateAbbr.convertRegion(this.state.state, 2);
+        console.log(stateAb);
+        kitAPI.getDisaster(this.state.selectedCounty, stateAb).then(res => {
             this.setState({ data: res.data.DisasterDeclarationsSummaries })
             console.log(res.data.DisasterDeclarationsSummaries)
         })
@@ -216,18 +257,31 @@ class Kit extends Component {
                 <CardGroup >
                     <Card id="essentials" style={{ border: 'none' }}>
                         <div className="survivor">
-                            <Card.Header style={{ textAlign: 'center', fontWeight: 'bolder', color: '#f6f6f6', background: '#333', fontSize: '17px' }}> Disaster Essentials </Card.Header>
+                            <Card.Header style={{ textAlign: 'center', fontWeight: 'bolder', color: '#f6f6f6', background: '#333', fontSize: '17px' }}> Recent Disasters </Card.Header>
 
                                 <header className="mx-auto kitcard">
-                                    <div className="whatever">
-                                    <input type="text" placeholder="Enter County" name="county" onChange={this.onInputChange} value={this.state.county} />
-                                    </div>
-                                    <div className="whatever">
-                                    <input type="text" placeholder="Enter State" name="state" onChange={this.onInputChange} value={this.state.state} />
-                                    </div>
+                                <div className="row">
+                                    <div className="col-10 offset-1">
+
+
+                                <label htmlFor="state">State</label>
+                                <select onChange={this.handleStateChange} className="form-control mx-auto" id="FTUstateSelect">
+                                {stateNames.sort().map((name, index) => (
+                                    <option key={index}>{name}</option>
+                                ))}
+                                </select>
+                                <label className="mt-2" htmlFor="county">County</label>
+                                <select onChange={this.handleCountyChange} className="form-control mx-auto" id="FTUcountySelect">
+                                {this.state.countyList.sort().map(county => (
+                                    <option>{county}</option>
+                                    ))}
+                                </select>
                                     <div className="whatever"> 
                                     <button onClick={this.callkitAPI} style={{ margin: '5px', backgroundcolor: '#333', border: '1px solid #f6f6f6', borderradius: '40px', outline: 'none' }}>Submit</button>
                                     </div>
+
+                                    </div>
+                                </div>
                                 </header>
                                 <Card.Text>
                                     <KitResults id="fema" DisasterDeclarationsSummaries={this.state.data} />
@@ -245,7 +299,7 @@ class Kit extends Component {
 
                                 <div className="whatever">
 
-                                    <input type="text" placeholder="Enter Text" value={this.state.currentItem.text}
+                                    <input type="text" placeholder="Enter Item" value={this.state.currentItem.text}
                                         onChange={this.handleInput} />
                                         
                                         </div>
