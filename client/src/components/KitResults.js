@@ -9,11 +9,11 @@ function KitResults (props) {
       {props.DisasterDeclarationsSummaries.map(result => 
         <div> 
           <FlipMove duration={1500} easing="ease-in-out">
-          <h3 style={{textAlign:'center', textSizeAdjust: '15px', color: 'white'}}>{result.title}</h3>
-          <p style={{textAlign:'center', backgroundColor: 'green', margin: 'auto', marginLeft: '10px', marginRight: '10px', color: 'white'}}>Declared Disaster: {result.incidentType}</p>
-          <p style={{textAlign:'center', backgroundColor: 'green', margin: 'auto', marginLeft: '10px', marginRight: '10px', color: 'white'}}>Declared Year: {result.fyDeclared}</p>
-          <p style={{textAlign:'center', backgroundColor: 'green', margin: 'auto', marginLeft: '10px', marginRight: '10px', color: 'white'}}>Declared County: {result.declaredCountyArea}</p>
-          <p style={{textAlign:'center', backgroundColor: 'green', margin: 'auto', marginLeft: '10px', marginRight: '10px', color: 'white'}}>Declared State: {result.state}</p>
+          <h3 style={{textAlign:'center', textSizeAdjust: '15px', color: 'black'}}>{result.title}</h3>
+          <p style={{textAlign:'center', margin: 'auto', marginLeft: '10px', marginRight: '10px', color: 'black'}}>Declared Disaster: {result.incidentType}</p>
+          <p style={{textAlign:'center', margin: 'auto', marginLeft: '10px', marginRight: '10px', color: 'black'}}>Declared Year: {result.fyDeclared}</p>
+          <p style={{textAlign:'center', margin: 'auto', marginLeft: '10px', marginRight: '10px', color: 'black'}}>Declared County: {result.declaredCountyArea}</p>
+          <p style={{textAlign:'center', margin: 'auto', marginLeft: '10px', marginRight: '10px', color: 'black'}}>Declared State: {result.state}</p>
           </FlipMove>
         </div>
       )}
