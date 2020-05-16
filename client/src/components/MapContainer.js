@@ -8,6 +8,7 @@ import Tables from "./Tables";
 import $ from "jquery";
 import Axios from "axios";
 import stateAbbr from "../utils/stateAbbr";
+import * as Constants from "../constants";
 
 
 const stamenTonerTiles = 'http://stamen-tiles-{s}.a.ssl.fastly.net/toner-background/{z}/{x}/{y}.png';
@@ -15,34 +16,6 @@ const stamenTonerAttr = 'Map tiles by <a href="http://stamen.com">Stamen Design<
 const mapCenter = [39.82,-98.57];
 const zoomLevel = 4;
 
-
-
-//console.log(usstates);
-// let todayDate = "2020-04-30";
-
-// let totalCases = 0;
-// let totalDeaths = 0;
-
-// let todayArray = [];
-// for(let i = 0; i < stateData.length; i++) {
-// 	if(stateData[i].date === todayDate) {
-//     todayArray.push(stateData[i]);
-//     totalCases += stateData[i].cases;
-//     totalDeaths += stateData[i].deaths;
-// 	}
-// }
-
-// console.log(todayArray);
-// let casesArray = [];
-// let deathsArray = [];
-// for(let i = 0; i < todayArray.length; i++) {
-// 	casesArray.push({state: todayArray[i].state, data: todayArray[i].cases})
-// 	deathsArray.push({state: todayArray[i].state, data: todayArray[i].deaths})
-// };
-
-
-
-// let dataDisplayed = "cases";
 
 const mapColors = [
     ["#034e7b", "#0570b0", "#3690c0", "#74a9cf", "#a6bddb", "#d0d1e6", "#f1eef6"],
@@ -66,7 +39,7 @@ class MapContainer extends Component {
     constructor(props) {
         super(props);
 
-        let todayDate = "2020-04-30";
+        let todayDate = Constants.LASTUPDATED;
 
         let totalCases = 0;
         let totalDeaths = 0;
@@ -98,7 +71,7 @@ class MapContainer extends Component {
             limits: thresholdData[0],
             total: totalCases,
             displayList: casesArray,
-            todayDate: "2020-04-30",
+            todayDate: Constants.LASTUPDATED,
             todayArray: todayArray,
             totalCases: totalCases,
             totalDeaths: totalDeaths,
@@ -127,7 +100,7 @@ class MapContainer extends Component {
 
         res.data.forEach(state => {
           let newObj = {};
-          console.log(state);
+          // console.log(state);
           newObj.cases = state.positive;
           newObj.deaths = state.death;
           newObj.fips = state.fips;
@@ -188,8 +161,8 @@ class MapContainer extends Component {
                 }
             }
 
-            console.log(`this.state.displayed = ${this.state.displayed}`);
-            console.log("dataToDisplay is " + dataToDisplay);
+            // console.log(`this.state.displayed = ${this.state.displayed}`);
+            // console.log("dataToDisplay is " + dataToDisplay);
 
 
             let mark = markers[i].getPopup();
@@ -267,7 +240,7 @@ class MapContainer extends Component {
 
     
       onEachFeature(feature, layer) {
-        console.log("onEachFeature");
+        //console.log("onEachFeature");
         // console.log(feature.properties);
         // console.log(this.state.displayed)
         let dataToDisplay;
@@ -282,7 +255,7 @@ class MapContainer extends Component {
             }
         }
 
-      console.log(dataToDisplay);
+      // console.log(dataToDisplay);
       if(dataToDisplay) {
         const popupContent = `<h4>COVID-19 ${this.state.displayed} data</h4>` +
         '<b>' + feature.properties.NAME + '</b><br />' + dataToDisplay.toLocaleString() + ` ${this.state.displayed}`;
@@ -492,8 +465,6 @@ class MapContainer extends Component {
     }
     
     render() {
-
-      console.log("render map");
         return (
             <div id="map-stuff" className="row">
               <div className="col-md-8">

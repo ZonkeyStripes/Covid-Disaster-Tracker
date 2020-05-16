@@ -6,8 +6,9 @@ import Axios from "axios";
 import countyData from '../assets/nytimescounties.json';
 import * as ReactBootStrap from "react-bootstrap";
 import Hospital from "../components/Hospital";
+import * as Constants from "../constants";
 
-let todayDate = "2020-04-30";
+let todayDate = Constants.LASTUPDATED;
 let countyArray = [];
 
 // console.log(countyData);
@@ -29,7 +30,7 @@ class Dashboard extends Component {
 
     this.state = {
       locations: [],
-      effective_date: "04-30-2020",
+      effective_date: Constants.LASTUPDATED,
       username: ""
     };
   }

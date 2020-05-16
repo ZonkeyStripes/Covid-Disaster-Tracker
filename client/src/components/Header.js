@@ -42,6 +42,11 @@ const Header = () => {
             </div>
             <div className="link-container">
               <ReactBootStrap.Nav.Link>
+                <NavLink exact={true} className="header-link" activeClassName="header-link-active" to={"/change"}>COVID Spread</NavLink>
+              </ReactBootStrap.Nav.Link>
+            </div>
+            <div className="link-container">
+              <ReactBootStrap.Nav.Link>
                 <NavLink exact={true} className="header-link" activeClassName="header-link-active" to={"/news"}>News</NavLink>
               </ReactBootStrap.Nav.Link>
             </div>
@@ -83,6 +88,11 @@ const Header = () => {
               <div className="link-container">
                 <ReactBootStrap.Nav.Link>
                   <NavLink exact={true} className="header-link" activeClassName="header-link-active" to={"/"}>Home</NavLink>
+                </ReactBootStrap.Nav.Link>
+              </div>
+              <div className="link-container">
+                <ReactBootStrap.Nav.Link>
+                  <NavLink exact={true} className="header-link" activeClassName="header-link-active" to={"/change"}>COVID Spread</NavLink>
                 </ReactBootStrap.Nav.Link>
               </div>
               <div className="link-container">

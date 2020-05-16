@@ -14,6 +14,7 @@ import PrivateRoute from "./components/PrivateRoute";
 import FirstTimeUse from "./pages/FirstTimeUse";
 import Footer from "./components/Footer";
 import Disasters from "./pages/Disasters";
+import Change from "./pages/Change";
 
 class App extends Component {
   render() {
@@ -23,6 +24,7 @@ class App extends Component {
         <Switch>
           <Route exact path={"/signup"} component={Signup} />
           <Route exact path={"/login"} component={Login} />
+          <Route exact path={"/change"} component={Change} />
           <Route exact path={"/news"} component={News} />
           <Route exact path={"/kit"} component={Kit} />
           <PrivateRoute exact path={"/dashboard"} component={Dashboard} />
