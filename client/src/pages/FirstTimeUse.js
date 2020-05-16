@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "../App.css";
-import statesData from "../utils/json/us-states.json";
-import countiesData from "../utils/json/us-counties.json";
+import statesData from "../assets/nytimesstate.json";
+import countiesData from "../assets/nytimescounties.json";
 import stateNames from "../utils/json/state-names.json";
 import Axios from "axios";
 
