@@ -2,6 +2,7 @@
 
 let db = require("../models");
 let passport = require("../config/passport");
+const nodemailer = require("nodemailer");
 
 module.exports = function (app) {
 
@@ -233,6 +234,46 @@ app.post("/api/add_dkitem", function (req, res) {
   });
 });
 
+//Send Email Confirmation
+app.post("/api/Signup", function (req, res) {
+  const output = `
+  <h3>Welcome To COVID-19 Tracker</h3>
+  <ul>
+  <li>Name: ${req.body.username}</li>
+  </ul>
+  <p>Are you ready to start Tracking?</p>
+  `;
+    // create reusable transporter object using the default SMTP transport with Mikayla Treutel Ethereal Fake Account 
+    let transporter = nodemailer.createTransport({
+      host: "smtp.ethereal.email",
+      port: 587,
+      secure: false, // true for 465, false for other ports
+      auth: {
+        user: 'mikayla.treutel29@ethereal.email', // generated ethereal user
+        pass: 'YjdpT98kKFCbaATWGF' // generated ethereal password
+      }
+    });
+  
+    // send mail with defined transport object
+    let mailOptions = await transporter.sendMail({
+      from: '"COVID-19 Tracker" <mikayla.treutel29@ethereal.email>', // sender address
+      to: 'mikayla.treutel29@ethereal.email', // list of receivers
+      subject: "Welcome To COVID-19 Tracker", // Subject line
+      text: "Welcome To COVID-19 Tracker", // plain text body
+      html: output // html body
+    });
+
+  // send mail with defined transport object
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+        return console.log(error);
+    }
+    console.log('Message sent: %s', info.messageId);   
+    console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+    //Message to notify that email has been sent 
+    //res.render('contact', {msg:'Email has been sent'});
+});
+});
 
 // PUT ROUTES
 
@@ -588,6 +629,7 @@ app.get("/api/getallgroups/:uid", function(req, res) {
       res.json(dbResult);
     });
   });
+
 
 
   // DELETE ROUTES
