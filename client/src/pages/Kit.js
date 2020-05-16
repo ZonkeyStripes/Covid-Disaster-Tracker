@@ -13,8 +13,8 @@ import { Card, CardGroup } from "react-bootstrap";
 //import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Axios from "axios";
 import "../App.css";
-import countiesData from "../utils/json/us-counties.json";
-import stateNames from "../utils/json/state-names.json";
+import countiesData from "../assets/nytimescounties.json";
+import stateNames from "../assets/nytimesstate.json";
 import stateAbbr from "../utils/stateAbbr";
 
 
