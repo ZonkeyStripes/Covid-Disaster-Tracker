@@ -14,7 +14,7 @@ import { Card, CardGroup } from "react-bootstrap";
 import Axios from "axios";
 import "../App.css";
 import countiesData from "../assets/nytimescounties.json";
-import stateNames from "../assets/nytimesstate.json";
+import stateNames from "../utils/json/state-names.json";
 import stateAbbr from "../utils/stateAbbr";
 
 
