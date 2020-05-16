@@ -5,7 +5,7 @@
   "engines": {
     "node": "13.5.0",
     "npm": "6.13.4"
-  }
+  },
   "main": "server.js",
   "scripts": {
     "start": "if-env NODE_ENV=production && npm run start:prod || npm run start:dev",
