@@ -37,6 +37,9 @@ function ChartContainer() {
   const getNationalAvg = () => {
     let totalCases = nationalData[nationalData.length-1].cases;
     let totalDeaths = nationalData[nationalData.length-1].deaths;
+
+    console.log(totalCases);
+    console.log(totalDeaths);
     let casesByStateRecent = [];
     let deathsByStateRecent = [];
 
@@ -391,8 +394,10 @@ function ChartContainer() {
 
     for (let i = 0; i < countiesToShow.length; i++){
       loopCounty = countiesData.filter(item => item.state === selectedState && item.county === countiesToShow[i]);
-      totalCases += loopCounty[loopCounty.length-1].cases;
-      totalDeaths += loopCounty[loopCounty.length-1].deaths;
+      console.log(loopCounty[loopCounty.length-1].cases);
+      totalCases += parseInt(loopCounty[loopCounty.length-1].cases);
+      totalDeaths += parseInt(loopCounty[loopCounty.length-1].deaths);
+      console.log(totalCases);
 
       let d1cases;
       let d2cases;
@@ -650,6 +655,59 @@ function ChartContainer() {
 
       mdnDeathsDateSeven = (deathsByCountyDateSeven[(deathsByCountyDateSeven.length / 2)-1] + deathsByCountyDateSeven[deathsByCountyDateSeven.length / 2]) / 2;
     }
+
+
+    console.log(totalCases);
+    console.log(totalDeaths);
+    console.log(countiesToShow.length);
+    console.log({
+      casesByCountyWithNames,
+      deathsByCountyWithNames,
+      avgCases: Math.round(totalCases / countiesToShow.length),
+      avgDeaths: Math.round(totalDeaths / countiesToShow.length),
+      dateAvgs: {
+        cases: [
+          Math.round(stateWideCasesDateOne / countiesToShow.length),
+          Math.round(stateWideCasesDateTwo / countiesToShow.length),
+          Math.round(stateWideCasesDateThree / countiesToShow.length),
+          Math.round(stateWideCasesDateFour / countiesToShow.length),
+          Math.round(stateWideCasesDateFive / countiesToShow.length),
+          Math.round(stateWideCasesDateSix / countiesToShow.length),
+          Math.round(stateWideCasesDateSeven / countiesToShow.length)
+        ],
+        deaths: [
+          Math.round(stateWideDeathsDateOne / countiesToShow.length),
+          Math.round(stateWideDeathsDateTwo / countiesToShow.length),
+          Math.round(stateWideDeathsDateThree / countiesToShow.length),
+          Math.round(stateWideDeathsDateFour / countiesToShow.length),
+          Math.round(stateWideDeathsDateFive / countiesToShow.length),
+          Math.round(stateWideDeathsDateSix / countiesToShow.length),
+          Math.round(stateWideDeathsDateSeven / countiesToShow.length)
+        ]
+      },
+      medianCases: mdnCases,
+      medianDeaths: mdnDeaths,
+      dateMedians: {
+        cases: [
+          mdnCasesDateOne,
+          mdnCasesDateTwo,
+          mdnCasesDateThree,
+          mdnCasesDateFour,
+          mdnCasesDateFive,
+          mdnCasesDateSix,
+          mdnCasesDateSeven
+        ],
+        deaths: [
+          mdnDeathsDateOne,
+          mdnDeathsDateTwo,
+          mdnDeathsDateThree,
+          mdnDeathsDateFour,
+          mdnDeathsDateFive,
+          mdnDeathsDateSix,
+          mdnDeathsDateSeven
+        ]
+      }
+    });
 
     return {
       casesByCountyWithNames,

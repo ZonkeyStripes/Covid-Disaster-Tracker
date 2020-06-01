@@ -5,9 +5,8 @@ import $ from "jquery";
 import "../App.css";
 import uscounties from '../assets/gz_2010_us_050_00_5m.json';
 import countyData from '../assets/nytimescounties.json';
-import L from 'leaflet';
-import MapInfo from "./MapInfo";
 import MapLegend from "./MapLegend";
+import * as Constants from "../constants";
 
 
 const stamenTonerTiles = 'http://stamen-tiles-{s}.a.ssl.fastly.net/toner-background/{z}/{x}/{y}.png';
@@ -16,8 +15,9 @@ const mapCenter = [39.82,-98.57];
 let zoomLevel = 4;
 
 
-// console.log(countyData);
-let todayDate = "2020-05-07";
+console.log(countyData);
+
+let todayDate = Constants.LASTUPDATED;
 
 let countyArray = [];
 for(let i = 0; i < countyData.length; i++) {
