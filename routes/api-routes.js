@@ -121,6 +121,19 @@ app.get("/api/disasterkit/:id", function(req, res){
 });
 
 
+app.get("/api/state_latest_date/", function(req, res) {
+  console.log("GET /api/state_latest_date/");
+  db.StateData.findAll({
+    order: [
+      ['id', 'DESC']
+    ],
+    limit: 1
+  }).then(function(result) {
+    res.json(result);
+  })
+})
+
+
 // POST ROUTES
 
 // create new location entry for a user
@@ -232,6 +245,45 @@ app.post("/api/add_dkitem", function (req, res) {
     res.json(dkObject);
   });
 });
+
+
+// add new state_data
+app.post("/api/state_data/", function(req, res) {
+  console.log("hit /api/state_data");
+
+  console.log(req.body);
+
+  let newStateData = req.body;
+  console.log("***************");
+  // console.log(newStateData);
+
+  let dataList = [];
+
+  newStateData.forEach(item => {
+    console.log(item);
+    db.StateData.create({
+      date: item.date,
+      state: item.state,
+      fips: item.fips,
+      cases: item.cases,
+      deaths: item.deaths
+    })
+    .then(function (response) {
+  
+      dataList.push(response);
+      if (dataList.length === newStateData.length) {
+        res.status(200).json(dataList);
+      }
+    }).catch(function (error) {
+      res.status(500).json(error);            
+    });
+  })
+})
+
+
+
+
+
 
 
 // PUT ROUTES

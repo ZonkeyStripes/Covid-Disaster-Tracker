@@ -33,7 +33,6 @@ app.get("*", function(req, res) {
 
 // Syncing our database and logging a message to the user upon success
 db.sequelize.sync().then(function() {
-
   app.listen(PORT, function() {
     console.log(`🌎 ==> API server now on port ${PORT}!`);
   });
