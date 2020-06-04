@@ -128,7 +128,37 @@ app.get("/api/state_latest_date/", function(req, res) {
       ['id', 'DESC']
     ],
     limit: 1
-  }).then(function(result) {
+  })
+  .then(function(result) {
+    res.json(result);
+  })
+})
+
+app.get("/api/county_latest_date/", function(req, res) {
+  console.log("GET /api/county_latest_date/");
+  db.CountyData.findAll({
+    order: [
+      ['id', 'DESC']
+    ],
+    limit: 1
+  })
+  .then(function(result) {
+    res.json(result);
+  })
+})
+
+
+
+// route that gets all state data for one date, matching the data passed as a parameter
+app.get("/api/state_data/:todaydate", function(req, res) {
+  console.log("GET /api/state_data/");
+  console.log(req.params.todaydate);
+  db.StateData.findAll({
+    where: {
+      date: req.params.todaydate
+    }
+  })
+  .then(function(result) {
     res.json(result);
   })
 })
@@ -254,7 +284,7 @@ app.post("/api/state_data/", function(req, res) {
   console.log(req.body);
 
   let newStateData = req.body;
-  console.log("***************");
+  // console.log("***************");
   // console.log(newStateData);
 
   let dataList = [];
@@ -272,6 +302,40 @@ app.post("/api/state_data/", function(req, res) {
   
       dataList.push(response);
       if (dataList.length === newStateData.length) {
+        res.status(200).json(dataList);
+      }
+    }).catch(function (error) {
+      res.status(500).json(error);            
+    });
+  })
+})
+
+
+// add new county data
+app.post("/api/county_data/", function(req, res) {
+  console.log("POST /api/county_data");
+
+  let newCountyData = req.body;
+
+  let dataList = [];
+
+  // iterate through each new county and add to DB
+  newCountyData.forEach(item => {
+    console.log(item);
+    db.CountyData.create({
+      date: item.date,
+      county: item.county,
+      state: item.state,
+      fips: item.fips,
+      cases: item.cases,
+      deaths: item.deaths
+    })
+    .then(function (response) {
+  
+      dataList.push(response);
+
+      // if all items added successfully, return status 200
+      if (dataList.length === newCountyData.length) {
         res.status(200).json(dataList);
       }
     }).catch(function (error) {

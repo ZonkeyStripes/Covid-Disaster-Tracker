@@ -3,4 +3,3 @@ const states = require("./stateScrape");
 
 // counties();
 states();
-

@@ -13,11 +13,11 @@ module.exports = function(sequelize, DataTypes) {
             allowNull: false,
         },
         cases: {
-            type: DataTypes.STRING,
+            type: DataTypes.INTEGER,
             allowNull: false,
         },
         deaths: {
-            type: DataTypes.STRING,
+            type: DataTypes.INTEGER,
             allowNull: false,
         }
     });

@@ -27,6 +27,7 @@ function stateScrape() {
                 let i = stateInfo.length - 1;
                 let date = stateInfo[i].date;
 
+                // if the latests day's data doesn't match the database data, add to DB
                 if(lastDateInDB != date) {
                     console.log("new data exists");
                     let newData = [];
@@ -48,8 +49,6 @@ function stateScrape() {
                 else {
                     console.log("the dates match, no need to update");
                 }
-
-            
             })
 
 

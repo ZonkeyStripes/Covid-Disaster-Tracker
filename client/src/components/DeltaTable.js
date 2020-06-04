@@ -7,12 +7,38 @@ class DeltaTable extends Component {
 
         props.deltaArray.sort((a, b) => (a.deltaCases < b.deltaCases) ? 1 : (a.deltaCases === b.deltaCases) ? ((a.state > b.state) ? 1 : -1) : -1 );
 
+        console.log(props.deltaArray);
+
         this.state = {
             deltaArray: props.deltaArray
         }
+
+        this.componentDidUpdate = this.componentDidUpdate(this);
+    }
+
+    componentDidUpdate() {
+
+        console.log(this.props.displayed);
+
+        if(this.props.displayed === "deaths") {
+            console.log("deaths");
+            this.props.deltaArray.sort((a, b) => (a.deltaDeaths < b.deltaDeaths) ? 1 : (a.deltaDeaths === b.deltaDeaths) ? ((a.state > b.state) ? 1 : -1) : -1 );
+        } else {
+            this.props.deltaArray.sort((a, b) => (a.deltaCases < b.deltaCases) ? 1 : (a.deltaCases === b.deltaCases) ? ((a.state > b.state) ? 1 : -1) : -1 );
+        }
+
+
+        this.setState({deltaArray: this.props.deltaArray});
     }
 
     render() {
+
+        if(this.props.displayed === "deaths") {
+            console.log("deaths");
+            this.props.deltaArray.sort((a, b) => (a.deltaDeaths < b.deltaDeaths) ? 1 : (a.deltaDeaths === b.deltaDeaths) ? ((a.state > b.state) ? 1 : -1) : -1 );
+        } else {
+            this.props.deltaArray.sort((a, b) => (a.deltaCases < b.deltaCases) ? 1 : (a.deltaCases === b.deltaCases) ? ((a.state > b.state) ? 1 : -1) : -1 );
+        }
 
         let tableBody = "";
         if(this.props.displayed === "cases") {

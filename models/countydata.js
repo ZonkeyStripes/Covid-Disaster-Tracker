@@ -14,14 +14,14 @@ module.exports = function(sequelize, DataTypes) {
         },
         fips: {
             type: DataTypes.STRING,
-            allowNull: false,
+            allowNull: true,
         },
         cases: {
-            type: DataTypes.STRING,
+            type: DataTypes.INTEGER,
             allowNull: false,
         },
         deaths: {
-            type: DataTypes.STRING,
+            type: DataTypes.INTEGER,
             allowNull: false,
         }
     });
