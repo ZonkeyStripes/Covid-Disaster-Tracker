@@ -36,8 +36,8 @@ function countyScrape() {
         
                     // get one day's worth of data -- might change this later to get more
                     // if more exists?
-                    while(countyInfo[i].date === date) {
-                        newData.push(countyInfo[i]);
+                    while(countyInfo[i].date !== lastDateInDB) {
+                        newData.unshift(countyInfo[i]);
                         i--;
                     }
                     

@@ -26,7 +26,7 @@ for(let i = 0; i < countyData.length; i++) {
 	}
 }
 
-// console.log(countyArray);
+console.log(countyArray);
 
 const mapColors = [
     ["#034e7b", "#0570b0", "#3690c0", "#74a9cf", "#a6bddb", "#d0d1e6", "#f1eef6"],
@@ -52,7 +52,8 @@ class DashboardMap extends Component {
         this.state = {
             displayed: "cases",
             colors: mapColors[0],
-            limits: thresholdData[0]
+            limits: thresholdData[0],
+            effective_date: this.props.date
         };
 
         // ES6 React.Component doesn't auto bind methods to itself
@@ -60,8 +61,6 @@ class DashboardMap extends Component {
         this.changeView = this.changeView.bind(this);
         this.geoJSONStyle = this.geoJSONStyle.bind(this);
         this.onEachFeature = this.onEachFeature.bind(this);
-        //this.highlightFeature.bind(this)
-
     }
     
 
@@ -76,7 +75,6 @@ class DashboardMap extends Component {
         // figure out how to deal with irregularities in NYC data
         // if(feature.properties.STATE == 36 && (
 
-        // ))
         let geo_id = feature.properties.GEO_ID;
         geo_id = geo_id.substring(geo_id.length - 5);
         //console.log(geo_id);
@@ -233,9 +231,6 @@ class DashboardMap extends Component {
     }
 
     changeView(e) {
-        // console.log("test function");
-        // console.log(e.target.value);
-        // console.log(this);
 
         let tempColor, tempLimit;
 
@@ -318,7 +313,6 @@ class DashboardMap extends Component {
     render() {
         return (
             <div>
-              <div>
                 <div id="map-btn-container">
                   <button onClick={this.changeView} value="cases" className="map-btn" id="map-cases-btn">Cases</button>
                   <button onClick={this.changeView} value="deaths" className="map-btn-outline" id="map-deaths-btn">Deaths</button>
@@ -342,17 +336,6 @@ class DashboardMap extends Component {
                     />
                     <MapLegend colors={this.state.colors} limits={this.state.limits}/>
                 </Map>
-            </div>
-                
-                {/* <div className="custom-control custom-radio">
-                    <input type="radio" id="customRadio1" name="customRadio" className="custom-control-input" value="cases" defaultChecked onClick={this.changeView}/>
-                    <label className="custom-control-label" htmlFor="customRadio1">Cases</label>
-                </div>
-                <div className="custom-control custom-radio">
-                    <input type="radio" id="customRadio2" name="customRadio" className="custom-control-input" value="deaths" onClick={this.changeView}/>
-                    <label className="custom-control-label" htmlFor="customRadio2">Deaths</label>
-                </div> */}
-                {/* <DataTable data={countyArray}/> */}
             </div>
           );
         }

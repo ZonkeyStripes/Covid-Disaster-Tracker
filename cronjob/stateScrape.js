@@ -32,8 +32,8 @@ function stateScrape() {
                     console.log("new data exists");
                     let newData = [];
         
-                    while(stateInfo[i].date === date) {
-                        newData.push(stateInfo[i]);
+                    while(stateInfo[i].date !== lastDateInDB) {
+                        newData.unshift(stateInfo[i]);
                         i--;
                     }
         

@@ -92,6 +92,25 @@ app.get("/api/location/:id", function(req, res){
   })
 })
 
+
+// gets the most recent data for a specific county/state combo
+app.get("/api/get_most_recent_data/:county/:state", function(req, res) {
+
+  db.CountyData.findOne({
+      order: [
+        ['id', 'DESC']
+      ],
+      // limit: 1,
+    where: {
+      county: req.params.county,
+      state: req.params.state
+    }
+  }).then(function(dbRecentCounty) {
+    console.log(dbRecentCounty);
+    res.json(dbRecentCounty);
+  })
+})
+
 app.get("/api/all_locations", function(req, res){
   
   console.log("api/all_locations")
@@ -163,6 +182,20 @@ app.get("/api/state_data/:todaydate", function(req, res) {
   })
 })
 
+
+// route that gets all county data for one date, matching the data passed as a parameter
+app.get("/api/county_data/:todaydate", function(req, res) {
+  console.log("GET /api/county_data/");
+  console.log(req.params.todaydate);
+  db.CountyData.findAll({
+    where: {
+      date: req.params.todaydate
+    }
+  })
+  .then(function(result) {
+    res.json(result);
+  })
+})
 
 // POST ROUTES
 

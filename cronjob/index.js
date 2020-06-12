@@ -1,5 +1,5 @@
-const counties = require("./scrapeCounties");
+const counties = require("./getCountyData");
 const states = require("./stateScrape");
 
-// counties();
-states();
+counties();
+// states();
