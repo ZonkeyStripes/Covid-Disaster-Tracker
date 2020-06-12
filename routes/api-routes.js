@@ -100,13 +100,12 @@ app.get("/api/get_most_recent_data/:county/:state", function(req, res) {
       order: [
         ['id', 'DESC']
       ],
-      // limit: 1,
     where: {
       county: req.params.county,
       state: req.params.state
     }
   }).then(function(dbRecentCounty) {
-    console.log(dbRecentCounty);
+    // console.log(dbRecentCounty);
     res.json(dbRecentCounty);
   })
 })
@@ -117,7 +116,7 @@ app.get("/api/all_locations", function(req, res){
 
   db.Location.findAll({})
   .then(function(dbLocation) {
-    console.log(dbLocation);
+    // console.log(dbLocation);
     res.json(dbLocation);
   })
 })

@@ -29,7 +29,8 @@ class Dashboard extends Component {
     this.state = {
       locations: [],
       effective_date: "",
-      username: ""
+      username: "",
+      allCountyData: []
     };
 
     // ES6 React.Component doesn't auto bind methods to itself
@@ -90,11 +91,12 @@ class Dashboard extends Component {
 
             Axios.get("/api/county_data/" + latestDate)
             .then(resultArray => {
-              console.log(resultArray);
-              
+              console.log(resultArray.data);
+
               this.setState({
                 locations: arrayOfLocations,
-                effective_date: latestDate
+                effective_date: latestDate,
+                allCountyData: resultArray.data
               });
             })
 
@@ -115,21 +117,18 @@ class Dashboard extends Component {
     return Promise.all(promises);
 }
 
-  // handleClick(e) {
-  //   e.preventDefault();
-  //   Axios.post("/logout")
-  //   .then(() => {
-  //     console.log("logout route success");
-  //     this.props.history.push("/");
-  //   })
-  //   .catch(() => {
-  //     console.log("logout route failed, push to home");
-  //     this.props.history.push("/");
-  //   })
-  // }
-
-
   render() {
+    // let mapRenderDecision;
+
+    // if(this.state.allCountyData.length > 0) {
+    //   console.log("allCountyData generated, pass to MiniMap");
+    //   mapRenderDecision = <MiniMap fips={item[4]} countyData={this.state.allCountyData}/>;
+    // } else {
+    //   console.log("allCountyData not generated yet");
+    //   mapRenderDecision = "";
+    // }
+
+
       return (
         <div className="container">
           {/* <p>{this.state.username}<span onClick={this.handleClick}>(Logout)</span></p> */}
@@ -149,7 +148,12 @@ class Dashboard extends Component {
                   <Hospital fips={item[4]}/>
                 </ReactBootStrap.Col>
                 <ReactBootStrap.Col xs={12} md={6}>
-                  <MiniMap fips={item[4]}/>
+                  {(this.state.allCountyData.length > 0) ? <MiniMap
+                    fips={item[4]}
+                    countyData={this.state.allCountyData}
+                    date={this.state.effective_date}
+                   /> : ""}
+                  {/* {mapRenderDecision} */}
                 </ReactBootStrap.Col>
               </ReactBootStrap.Row>              
             ))}
