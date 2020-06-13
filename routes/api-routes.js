@@ -196,6 +196,22 @@ app.get("/api/county_data/:todaydate", function(req, res) {
   })
 })
 
+// get all state data for all dates
+app.get("/api/state_data/", function(req, res) {
+  db.StateData.findAll({})
+  .then(function(result) {
+    res.json(result);
+  })
+})
+
+// get all county data for all dates
+app.get("/api/county_data/", function(req, res) {
+  db.CountyData.findAll({})
+  .then(function(result) {
+    res.json(result);
+  })
+})
+
 // POST ROUTES
 
 // create new location entry for a user

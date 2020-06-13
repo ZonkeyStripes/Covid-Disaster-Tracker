@@ -499,7 +499,7 @@ class MapContainer extends Component {
                 <div className="card table-container">
                   <div className="chart-title-sect">
                     <h5 id="table-header">Nationwide totals</h5>
-                    <i onClick={this.toggleTableDisplay} id="table-collapse-icon" class="fas fa-chevron-down chart-toggle-icon"/>
+                    <i onClick={this.toggleTableDisplay} id="table-collapse-icon" className="fas fa-chevron-down chart-toggle-icon"/>
                   </div>
                   <div className="d-flex table-content">
                     <div className="input-group" id="table-btn-container">

@@ -8,18 +8,6 @@ import * as ReactBootStrap from "react-bootstrap";
 import Hospital from "../components/Hospital";
 import * as Constants from "../constants";
 
-//let todayDate = Constants.LASTUPDATED;
-//let countyArray = [];
-
-// console.log(countyData);
-
-// for(let i = 0; i < countyData.length; i++) {
-// 	if(countyData[i].date === todayDate) {
-// 		countyArray.push(countyData[i]);
-// 	}
-// }
-
-// console.log(countyArray);
 
 class Dashboard extends Component {
 
