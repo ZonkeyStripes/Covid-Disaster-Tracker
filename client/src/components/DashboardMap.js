@@ -94,7 +94,7 @@ class DashboardMap extends Component {
             for(let j = 0; j < this.state.countyData.length; j++) {
                 if(parseInt(this.state.countyData[j].fips) == geo_id) {
                     if(this.state.displayed === "cases") {
-                        console.log(this.state.countyData[j].cases);
+                        // console.log(this.state.countyData[j].cases);
                         dataToDisplay = this.state.countyData[j].cases;
                     } else if (this.state.displayed === "deaths") {
                         dataToDisplay = this.state.countyData[j].deaths;

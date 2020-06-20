@@ -79,6 +79,8 @@ class Dashboard extends Component {
 
             Axios.get("/api/county_data/" + latestDate)
             .then(resultArray => {
+              console.log(arrayOfLocations);
+              console.log(latestDate);
               console.log(resultArray.data);
 
               this.setState({

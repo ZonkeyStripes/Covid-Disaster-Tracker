@@ -75,15 +75,19 @@ class MiniMap extends Component {
 
         // if we have a fips code for county, get the Lat and Long for that county
         if(this.props.fips) {
+            console.log("fips passed in");
             for(let index = 0; index < countyLatLong.length; index++) {
                 if(countyLatLong[index].FIPS == this.props.fips) {
-                    console.log("found " + countyLatLong[index].COUNTYNAME + "county");
-                    mapCtr.push(countyLatLong[index].LAT);
-                    mapCtr.push(countyLatLong[index].LON);
+                    if(mapCtr.length == 0) {
+                        console.log("found " + countyLatLong[index].COUNTYNAME + " county");
+                        mapCtr.push(countyLatLong[index].LAT);
+                        mapCtr.push(countyLatLong[index].LON);
+                    }
                 }
             }
         } else if (this.props.lat) {
             // else if we have a lat and long passed in (from a state), use that
+            console.log("lat passed in");
             console.log(this.props.lat);
             mapCtr.push(this.props.lat);
             mapCtr.push(this.props.long);
@@ -344,8 +348,11 @@ class MiniMap extends Component {
             </Popup>
         </Marker>));
 
-
-        console.log(mark);
+        // console.log(mark.length);
+        // if(mark.length == 0) {
+        //     mark = "";
+        // }
+        // console.log(mark);
 
 
         return (

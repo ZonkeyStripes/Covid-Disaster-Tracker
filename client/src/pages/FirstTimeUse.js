@@ -1,23 +1,32 @@
 import React, { useState, useEffect } from "react";
 import "../App.css";
 import statesData from "../assets/nytimesstate.json";
-import countiesData from "../assets/nytimescounties.json";
+import countiesData from "../assets/county_latlong.json";
 import stateNames from "../utils/json/state-names.json";
 import Axios from "axios";
+import stateAbbr from "../utils/stateAbbr";
 
 let user_id;
+
+
 
 function FirstTimeUse(props) {
     //Returns array with all county names in a given state
     const getCounties = (state) => {
-        let setOfCounties = new Set();
-        for (let i = 0; i < countiesData.length; i++){
-            if (countiesData[i].state === state && countiesData[i].county !== "Unknown"){
-            setOfCounties.add(countiesData[i].county);
-            }
-        }
-        return Array.from(setOfCounties).sort();
-    }
+
+      let stateAb = stateAbbr.convertRegion(state, 2);
+      // console.log(stateAb);
+
+      let setOfCounties = new Set();
+      for (let i = 0; i < countiesData.length; i++) {
+          // console.log(countiesData[i].STATE);
+
+          if (countiesData[i].STATE === stateAb && countiesData[i].COUNTYNAME !== "Unknown") {
+              setOfCounties.add(countiesData[i].COUNTYNAME);
+          }
+      }
+      return Array.from(setOfCounties).sort();
+  }
 
     const [selectedState, setSelectedState] = useState(stateNames.sort()[0])
     const [countiesToShow, setCountiesToShow] = useState(getCounties(selectedState));

@@ -4,7 +4,7 @@ import StateChartContainer from "./StateChartContainer";
 
 import nationalData from "../utils/json/us.json";
 import statesData from "../assets/nytimesstate.json";
-import countiesData from "../assets/nytimescounties.json";
+// import countiesData from "../assets/nytimescounties.json";
 import stateNames from "../utils/json/state-names-&-abbrevs.json";
 import $ from "jquery";
 
