@@ -1,7 +1,7 @@
 {
     "development": {
       "username": "root",
-      "password": "OzzyIronMan!",
+      "password": "bobo1029",
       "database": "covidtracker",
       "host": "127.0.0.1",
       "dialect": "mysql"
@@ -14,10 +14,10 @@
       "dialect": "mysql"
     },
     "production": {
-      "username": "x3kk2xahi4xapd35",
-      "password": "i4twcjpiz18j02vl",
-      "database": "fd6n5btpwn9u1wgs",
-      "host": "qbct6vwi8q648mrn.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
+      "username": "rm5gtyh0xdlqjq2o",
+      "password": "gpoqzhww06ihxmko",
+      "database": "fwqomhbd8b4gz5rn",
+      "host": "qbhol6k6vexd5qjs.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
       "dialect": "mysql"
     }
   }

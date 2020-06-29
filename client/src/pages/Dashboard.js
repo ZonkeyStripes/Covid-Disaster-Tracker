@@ -3,118 +3,122 @@ import "../App.css";
 import DashboardMap from "../components/DashboardMap";
 import MiniMap from "../components/MiniMap";
 import Axios from "axios";
-import countyData from '../assets/nytimescounties.json';
+// import countyData from '../assets/nytimescounties.json';
 import * as ReactBootStrap from "react-bootstrap";
 import Hospital from "../components/Hospital";
 import * as Constants from "../constants";
 
-let todayDate = Constants.LASTUPDATED;
-let countyArray = [];
-
-// console.log(countyData);
-
-for(let i = 0; i < countyData.length; i++) {
-	if(countyData[i].date === todayDate) {
-		countyArray.push(countyData[i]);
-	}
-}
-
-// console.log(countyArray);
 
 class Dashboard extends Component {
 
   constructor(props) {
     super(props);
 
-    this.handleClick = this.handleClick.bind(this);
-
     this.state = {
       locations: [],
-      effective_date: Constants.LASTUPDATED,
-      username: ""
+      effective_date: "",
+      username: "",
+      allCountyData: []
     };
+
+    // ES6 React.Component doesn't auto bind methods to itself
+    // Need to bind them manually in constructor
+    //this.changeView = this.changeView.bind(this);
+
   }
 
   componentDidMount() {
     console.log('mounted');
+
+    // get user data - check if user is logged in
     Axios.get("/api/user_data")
     .then((data) => {
-        console.log("user logged in")
-        console.log(data);
-        this.setState({username: data.data.email});
+      console.log("user logged in")
+      console.log(data);
+      this.setState({username: data.data.email});
 
-        Axios.get("/api/location/" + data.data.id)
-        .then((all_locations) => {
-            // update the state with all current locations belonging to user
-            console.log(all_locations.data);
-            let arrayOfLocations = [];
-            for(let i = 0; i < all_locations.data.length; i++) {
-                let tempArray = [];
-                tempArray.push(all_locations.data[i].county);
-                tempArray.push(all_locations.data[i].state);
-                console.log(tempArray);
-                arrayOfLocations.push(tempArray);
-            }
+      Axios.get("/api/location/" + data.data.id)
+      .then((all_locations) => {
+          // update the state with all current locations belonging to user
 
-            // set state
-            console.log(arrayOfLocations);
+          let arrayOfLocations = [];
+          // for(let i = 0; i < all_locations.data.length; i++) {
+              
+          this.getCountyData(all_locations).then(results => {
+            // array of results in order here
+            console.log(results);
 
-            for(let i = 0; i < countyArray.length; i++) {
-              let tempCounty = countyArray[i].county;
-              let tempState = countyArray[i].state;
+            let latestDate = results[0].data.date;
 
-              for(let k = 0; k < arrayOfLocations.length; k++) {
-                // console.log(k);
-                // console.log(arrayOfLocations[k][0]);
-                if(tempCounty == arrayOfLocations[k][0]) {
-                  // console.log("county match");
-                  if(tempState == arrayOfLocations[k][1]) {
-                    // console.log("and state match");
-                    arrayOfLocations[k].push(countyArray[i].cases);
-                    arrayOfLocations[k].push(countyArray[i].deaths);
-                    
+            for(let i = 0; i < results.length; i++) {
+              let tempArray = [];
+              tempArray.push(results[i].data.county);
+              tempArray.push(results[i].data.state);
+              tempArray.push(results[i].data.cases);
+              tempArray.push(results[i].data.deaths);
 
-                    let tempStr = countyArray[i].fips.toString();
-                    console.log(tempStr);
-                    console.log(tempStr.length);
+              let tempStr = results[i].data.fips.toString();
+              console.log(tempStr);
+              console.log(tempStr.length);
 
-                    if(tempStr.length == 4) {
-                      console.log("tempStr = " + tempStr);
-                      tempStr = "0" + tempStr;
-                      console.log("now it's " + tempStr);
-                      
-                      arrayOfLocations[k].push(tempStr);
-                    } else {
-                      console.log("fips is 5 characters hopefully");
-                      arrayOfLocations[k].push(tempStr);
-                    }
-                  }
-                }
+              if(tempStr.length == 4) {
+                console.log("tempStr = " + tempStr);
+                tempStr = "0" + tempStr;
+                console.log("now it's " + tempStr);
+              } else {
+                console.log("fips is 5 characters hopefully");
               }
+
+              tempArray.push(tempStr);
+
+              console.log(tempArray);
+              arrayOfLocations.push(tempArray);
             }
 
             console.log(arrayOfLocations);
 
-            this.setState({locations: arrayOfLocations});
-        })
+            Axios.get("/api/county_data/" + latestDate)
+            .then(resultArray => {
+              console.log(arrayOfLocations);
+              console.log(latestDate);
+              console.log(resultArray.data);
+
+              this.setState({
+                locations: arrayOfLocations,
+                effective_date: latestDate,
+                allCountyData: resultArray.data
+              });
+            })
+
+
+
+          }).catch(err => {
+              console.log(err);
+          });
+      })
     });
   }
 
-  handleClick(e) {
-    e.preventDefault();
-    Axios.post("/logout")
-    .then(() => {
-      console.log("logout route success");
-      this.props.history.push("/");
-    })
-    .catch(() => {
-      console.log("logout route failed, push to home");
-      this.props.history.push("/");
-    })
+  getCountyData(all_locations) {
+    let promises = [];
+    for (let i = 0; i < all_locations.data.length; i++) {
+         promises.push(Axios.get("/api/get_most_recent_data/" + all_locations.data[i].county + "/" + all_locations.data[i].state));
+    }
+    return Promise.all(promises);
   }
 
-
   render() {
+    // let mapRenderDecision;
+
+    // if(this.state.allCountyData.length > 0) {
+    //   console.log("allCountyData generated, pass to MiniMap");
+    //   mapRenderDecision = <MiniMap fips={item[4]} countyData={this.state.allCountyData}/>;
+    // } else {
+    //   console.log("allCountyData not generated yet");
+    //   mapRenderDecision = "";
+    // }
+
+
       return (
         <div className="container">
           {/* <p>{this.state.username}<span onClick={this.handleClick}>(Logout)</span></p> */}
@@ -134,12 +138,17 @@ class Dashboard extends Component {
                   <Hospital fips={item[4]}/>
                 </ReactBootStrap.Col>
                 <ReactBootStrap.Col xs={12} md={6}>
-                  <MiniMap fips={item[4]}/>
+                  {(this.state.allCountyData.length > 0) ? <MiniMap
+                    fips={item[4]}
+                    countyData={this.state.allCountyData}
+                    date={this.state.effective_date}
+                   /> : ""}
+                  {/* {mapRenderDecision} */}
                 </ReactBootStrap.Col>
               </ReactBootStrap.Row>              
             ))}
             </ReactBootStrap.Container>
-            <DashboardMap />
+            <DashboardMap date={this.state.effective_date}/>
         </div>
       );
     }

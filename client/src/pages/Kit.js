@@ -13,7 +13,7 @@ import { Card, CardGroup } from "react-bootstrap";
 //import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Axios from "axios";
 import "../App.css";
-import countiesData from "../assets/nytimescounties.json";
+import countiesData from "../assets/county_latlong.json";
 import stateNames from "../utils/json/state-names.json";
 import stateAbbr from "../utils/stateAbbr";
 
@@ -43,14 +43,20 @@ class Kit extends Component {
         this.handleInput = this.handleInput.bind(this);
         this.addItem = this.addItem.bind(this);
         this.deleteItem = this.deleteItem.bind(this);
+        this.callbackFunction = this.callbackFunction.bind(this);
     }
 
     //Returns array with all county names in a given state
     getCounties = (state) => {
+
+        let stateAb = stateAbbr.convertRegion(state, 2);
+
         let setOfCounties = new Set();
-        for (let i = 0; i < countiesData.length; i++){
-            if (countiesData[i].state === state && countiesData[i].county !== "Unknown"){
-                setOfCounties.add(countiesData[i].county);
+        for (let i = 0; i < countiesData.length; i++) {
+            // console.log(countiesData[i].STATE);
+
+            if (countiesData[i].STATE === stateAb && countiesData[i].COUNTYNAME !== "Unknown") {
+                setOfCounties.add(countiesData[i].COUNTYNAME);
             }
         }
         return Array.from(setOfCounties).sort();
@@ -86,12 +92,14 @@ class Kit extends Component {
             }
         })
     }
+
     addItem(e) {
         e.preventDefault();
         let newItem = this.state.currentItem;
         console.log(newItem);
         console.log(this.state.userID);
 
+        // if user is logged in, add to database
         if (this.state.userID !== 0) {
             Axios.post("/api/add_dkitem", {
                 text: newItem.text,
@@ -103,7 +111,7 @@ class Kit extends Component {
                     console.log(newItem);
 
                     if (newItem.text !== "") {
-                        //Desctructure Additions & Add them to List
+                        //Destructure Additions & Add them to List
                         const newItems = [...this.state.items, newItem];
                         console.log(newItems);
                         this.setState({
@@ -116,6 +124,7 @@ class Kit extends Component {
                     }
                 })
         } else {
+            // otherwise just add to state
             if (newItem.text !== "") {
                 //Desctructure Additions & Add them to List
                 const newItems = [...this.state.items, newItem];
@@ -159,6 +168,73 @@ class Kit extends Component {
             [name]: value
         })
     }
+
+    addDisasterTypeItems = (e) => {
+        console.log(e.target);
+    }
+
+
+    callbackFunction(childData) {
+        console.log(childData);
+
+        if (this.state.userID !== 0) {
+            Axios.post("/api/add_multiple_dkitems", {
+                list: childData,
+                uid: this.state.userID
+            })
+                .then((data) => {
+                    console.log(data.data);
+
+                    let objList = [];
+                    data.data.forEach(el => {
+
+                        let newObj = {
+                            text: el.item,
+                            key: el.id
+                        }
+                        objList.push(newObj);
+                    })
+
+                    console.log(objList);
+
+                    //Destructure Additions & Add them to List
+                    const newItems = [...this.state.items, ...objList];
+                    console.log(newItems);
+                    this.setState({
+                        items: newItems
+                    })
+                })
+        } else {
+            // otherwise just add to state
+            if (childData.length > 0) {
+
+                let objList = [];
+                childData.forEach(el => {
+                    let keySalt = Math.floor(Math.random() * 10000);
+                    console.log(keySalt);
+                    console.log(typeof(keySalt));
+                    let newObj = {
+                        text: el,
+                        key: Date.now() + keySalt
+                    }
+                    objList.push(newObj);
+                })
+
+                console.log(objList);
+
+                //Destructure Additions & Add them to List
+                const newItems = [...this.state.items, ...objList];
+                console.log(newItems);
+                this.setState({
+                    items: newItems
+                })
+            }
+        }
+
+
+    }
+
+
 
     // load item list from the database for initial render
     componentDidMount() {
@@ -284,7 +360,7 @@ class Kit extends Component {
                                 </div>
                                 </header>
                                 <Card.Text>
-                                    <KitResults id="fema" DisasterDeclarationsSummaries={this.state.data} />
+                                    <KitResults id="fema" DisasterDeclarationsSummaries={this.state.data} parentCallback = {this.callbackFunction}/>
                                 </Card.Text>
                         </div>
                     </Card>
