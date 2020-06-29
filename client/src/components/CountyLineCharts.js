@@ -11,6 +11,8 @@ const CountyLineCharts = ({display, countyName, countyData, stateAbbrev, stateAv
   let medianCasesArr;
   let medianDeathsArr;
 
+  console.log({display, countyName, countyData, stateAbbrev, stateAvgs});
+
   if (countyData.length < 7){
     returnVal = <h3 className="text-center">Unable to display chart due to lack of data</h3>
   } else {

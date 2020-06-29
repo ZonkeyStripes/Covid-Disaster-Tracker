@@ -3,7 +3,7 @@ import { Map, Marker, Popup, TileLayer, GeoJSON, MapControl } from "react-leafle
 import { Icon } from "leaflet";
 import "../App.css";
 import uscounties from '../assets/gz_2010_us_050_00_5m.json';
-import countyData from '../assets/nytimescounties.json';
+// import countyData from '../assets/nytimescounties.json';
 import countyLatLong from '../assets/county_latlong.json';
 import L from 'leaflet';
 import MapInfo from "./MapInfo";
@@ -15,20 +15,6 @@ import HospitalAPI from "../utils/HospitalsAPI";
 
 const stamenTonerTiles = 'http://stamen-tiles-{s}.a.ssl.fastly.net/toner-background/{z}/{x}/{y}.png';
 const stamenTonerAttr = 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>';
-const mapCenter = [39.82,-98.57];
-let zoomLevel = 7;
-
-// console.log(countyData);
-let todayDate = "2020-05-07";
-
-let countyArray = [];
-for(let i = 0; i < countyData.length; i++) {
-	if(countyData[i].date === todayDate) {
-		countyArray.push(countyData[i]);
-	}
-}
-
-// console.log(countyArray);
 
 const mapColors = [
     ["#034e7b", "#0570b0", "#3690c0", "#74a9cf", "#a6bddb", "#d0d1e6", "#f1eef6"],
@@ -51,15 +37,19 @@ class MiniMap extends Component {
 
     constructor(props) {
 
+        console.log(props);
+
         super(props);
         this.state = {
             fips: props.fips,
+            countyData: props.countyData,
             displayed: "cases",
             colors: mapColors[0],
             limits: thresholdData[0],
             mapCenter: [39.82,-98.57],
             mapZoom: 7,
-            hospitalList: []
+            hospitalList: [],
+            effectiveDate: props.date
         };
 
         // ES6 React.Component doesn't auto bind methods to itself
@@ -85,15 +75,19 @@ class MiniMap extends Component {
 
         // if we have a fips code for county, get the Lat and Long for that county
         if(this.props.fips) {
+            console.log("fips passed in");
             for(let index = 0; index < countyLatLong.length; index++) {
                 if(countyLatLong[index].FIPS == this.props.fips) {
-                    console.log("found " + countyLatLong[index].COUNTYNAME + "county");
-                    mapCtr.push(countyLatLong[index].LAT);
-                    mapCtr.push(countyLatLong[index].LON);
+                    if(mapCtr.length == 0) {
+                        console.log("found " + countyLatLong[index].COUNTYNAME + " county");
+                        mapCtr.push(countyLatLong[index].LAT);
+                        mapCtr.push(countyLatLong[index].LON);
+                    }
                 }
             }
         } else if (this.props.lat) {
             // else if we have a lat and long passed in (from a state), use that
+            console.log("lat passed in");
             console.log(this.props.lat);
             mapCtr.push(this.props.lat);
             mapCtr.push(this.props.long);
@@ -134,11 +128,11 @@ class MiniMap extends Component {
         geo_id = parseInt(geo_id);
 
 
-
-        for(let i = 0; i < countyArray.length; i++) {
-            if(parseInt(countyArray[i].fips) === geo_id) {
-                covidCases = countyArray[i].cases;
-                covidDeaths = countyArray[i].deaths;
+        // iterate through countyData - if it matches fips, store the cases and deaths
+        for(let i = 0; i < this.state.countyData.length; i++) {
+            if(parseInt(this.state.countyData[i].fips) === geo_id) {
+                covidCases = this.state.countyData[i].cases;
+                covidDeaths = this.state.countyData[i].deaths;
             }
         }
 
@@ -154,8 +148,6 @@ class MiniMap extends Component {
             // mapClr = mapColors[1];
             displayData = covidDeaths;
         }
-        // console.log("***")
-        // console.log(thresholds);
  
         // console.log(feature.properties);
 
@@ -201,14 +193,14 @@ class MiniMap extends Component {
 
         // console.log("this.state.fips = " + this.state.fips);
 
-        for(let j = 0; j < countyArray.length; j++) {
-            // console.log(countyArray[j].state);
+        for(let j = 0; j < this.state.countyData.length; j++) {
+            // console.log(this.state.countyData[j].state);
             // console.log(markers[i].feature.properties.NAME);
-            if(parseInt(countyArray[j].fips) == geo_id) {
+            if(parseInt(this.state.countyData[j].fips) == geo_id) {
                 if(this.state.displayed === "cases") {
-                    dataToDisplay = countyArray[j].cases;
+                    dataToDisplay = this.state.countyData[j].cases;
                 } else if (this.state.displayed === "deaths") {
-                    dataToDisplay = countyArray[j].deaths;
+                    dataToDisplay = this.state.countyData[j].deaths;
                 }
             }
         }
@@ -313,15 +305,15 @@ class MiniMap extends Component {
                 // console.log(geo_id);
                 geo_id = parseInt(geo_id);
 
-                for(let j = 0; j < countyArray.length; j++) {
-                    // console.log(countyArray[j].state);
+                for(let j = 0; j < this.state.countyData.length; j++) {
+                    // console.log(this.state.countyData[j].state);
                     // console.log(markers[i].feature.properties.NAME);
-                    if(parseInt(countyArray[j].fips) == geo_id) {
+                    if(parseInt(this.state.countyData[j].fips) == geo_id) {
                         if(this.state.displayed === "cases") {
-                            console.log(countyArray[j].cases);
-                            dataToDisplay = countyArray[j].cases;
+                            console.log(this.state.countyData[j].cases);
+                            dataToDisplay = this.state.countyData[j].cases;
                         } else if (this.state.displayed === "deaths") {
-                            dataToDisplay = countyArray[j].deaths;
+                            dataToDisplay = this.state.countyData[j].deaths;
                         }
                     }
                 }
@@ -356,8 +348,11 @@ class MiniMap extends Component {
             </Popup>
         </Marker>));
 
-
-        console.log(mark);
+        // console.log(mark.length);
+        // if(mark.length == 0) {
+        //     mark = "";
+        // }
+        // console.log(mark);
 
 
         return (

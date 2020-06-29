@@ -3,7 +3,7 @@ import { Map, Marker, Popup, TileLayer, GeoJSON, MapControl } from "react-leafle
 import { Icon } from "leaflet";
 import "../App.css";
 import uscounties from '../assets/gz_2010_us_050_00_5m.json';
-import countyData from '../assets/nytimescounties.json';
+// import countyData from '../assets/nytimescounties.json';
 import countyLatLong from '../assets/county_latlong.json';
 import statefips from "../assets/statefips.json";
 import L from 'leaflet';
@@ -20,14 +20,14 @@ const mapCenter = [39.82,-98.57];
 let zoomLevel = 5;
 
 // console.log(countyData);
-let todayDate = "2020-04-26";
+// let todayDate = "2020-04-26";
 
-let countyArray = [];
-for(let i = 0; i < countyData.length; i++) {
-	if(countyData[i].date === todayDate) {
-		countyArray.push(countyData[i]);
-	}
-}
+// let countyArray = [];
+// for(let i = 0; i < countyData.length; i++) {
+// 	if(countyData[i].date === todayDate) {
+// 		countyArray.push(countyData[i]);
+// 	}
+// }
 
 // console.log(countyArray);
 
@@ -170,24 +170,24 @@ class DisasterMap extends Component {
         // console.log("onEachFeature");
         // console.log(feature.properties);
         // console.log(this.state.displayed)
-        let dataToDisplay;
+        // let dataToDisplay;
     
-        let geo_id = feature.properties.GEO_ID;
-        geo_id = geo_id.substring(geo_id.length - 5);
-        geo_id = parseInt(geo_id);
+        // let geo_id = feature.properties.GEO_ID;
+        // geo_id = geo_id.substring(geo_id.length - 5);
+        // geo_id = parseInt(geo_id);
 
-        // console.log("this.state.fips = " + this.state.fips);
+        // // console.log("this.state.fips = " + this.state.fips);
 
-        for(let j = 0; j < countyArray.length; j++) {
-            // console.log(countyArray[j].state);
-            // console.log(markers[i].feature.properties.NAME);
-            if(parseInt(countyArray[j].fips) == geo_id) {
-                if(this.state.displayed === "cases") {
-                    dataToDisplay = countyArray[j].cases;
-                } else if (this.state.displayed === "deaths") {
-                    dataToDisplay = countyArray[j].deaths;
-                }
-            }
+        // for(let j = 0; j < countyArray.length; j++) {
+        //     // console.log(countyArray[j].state);
+        //     // console.log(markers[i].feature.properties.NAME);
+        //     if(parseInt(countyArray[j].fips) == geo_id) {
+        //         if(this.state.displayed === "cases") {
+        //             dataToDisplay = countyArray[j].cases;
+        //         } else if (this.state.displayed === "deaths") {
+        //             dataToDisplay = countyArray[j].deaths;
+        //         }
+        //     }
 
             // if(countyArray[j].fips == this.state.fips) {
             //     console.log("Found the county!!")
@@ -198,7 +198,7 @@ class DisasterMap extends Component {
             //     //this.fitBounds(this.getBounds());
             // }
 
-        }
+        // }
 
         // const popupContent = `<h4>COVID-19 ${this.state.displayed} data</h4>` +
 		// 	'<b>' + feature.properties.NAME + '</b><br />' + dataToDisplay + ` ${this.state.displayed}`;

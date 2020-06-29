@@ -1,21 +1,20 @@
 import React, {useState} from 'react';
 import CountyChartContainer from "./CountyChartContainer";
 import StateChartContainer from "./StateChartContainer";
-
-import nationalData from "../utils/json/us.json";
-import statesData from "../assets/nytimesstate.json";
-import countiesData from "../assets/nytimescounties.json";
+import nationalData from "../assets/us.json";
 import stateNames from "../utils/json/state-names-&-abbrevs.json";
 import $ from "jquery";
 
-function ChartContainer() {
+function ChartContainer(props) {
+
+  console.log(props);
 
   //Returns array all county names in a given state
   const getCounties = (state) => {
     let setOfCounties = new Set(); //Using a set to ensure that duplicate counties aren't added
-    for (let i = 0; i < countiesData.length; i++){
-      if (countiesData[i].state === state && countiesData[i].county !== "Unknown"){
-        setOfCounties.add(countiesData[i].county);
+    for (let i = 0; i < props.countyData.length; i++){
+      if (props.countyData[i].state === state && props.countyData[i].county !== "Unknown"){
+        setOfCounties.add(props.countyData[i].county);
       }
     }
     return Array.from(setOfCounties).sort();
@@ -24,19 +23,24 @@ function ChartContainer() {
   const [selectedState, setSelectedState] = useState(stateNames[0].state)
   const [selectedStateAb, setSelectedStateAb] = useState(stateNames[0].code)
   const [selectedStatePop, setSelectedStatePop] = useState(stateNames[0].population)
-  const [stateDataObj, setStateDataObj] = useState(statesData.filter(st => st.state === stateNames[0].state));
+  const [stateDataObj, setStateDataObj] = useState(props.stateData.filter(st => st.state === stateNames[0].state));
   const [countiesToShow, setCountiesToShow] = useState(getCounties(selectedState));
   const [selectedCounty, setSelectedCounty] = useState(countiesToShow[0]);
-  const [countyData, setCountyData] = useState(countiesData.filter(i => i.state === selectedState && i.county === selectedCounty));
+  const [countyData, setCountyData] = useState(props.countyData.filter(i => i.state === selectedState && i.county === selectedCounty));
   const [display, setDisplay] = useState("cases");
   const [chartLabel, setChartLabel] = useState("Cases");
   const [ddOptionVal, setDdOptionVal] = useState("Per Thousand Residents");
   const [ddOptionText, setDdOptionText] = useState("Per 1000 Residents");
   
+
+
   // Calculates the per-state average and median of COVID-19 data in the US
   const getNationalAvg = () => {
     let totalCases = nationalData[nationalData.length-1].cases;
     let totalDeaths = nationalData[nationalData.length-1].deaths;
+
+    console.log(totalCases);
+    console.log(totalDeaths);
     let casesByStateRecent = [];
     let deathsByStateRecent = [];
 
@@ -88,7 +92,7 @@ function ChartContainer() {
     let loopState;
 
     for (let i = 0; i < stateNames.length; i++){
-      loopState = statesData.filter(st => st.state === stateNames[i].state);
+      loopState = props.stateData.filter(st => st.state === stateNames[i].state);
 
       casesByStateRecent.push(loopState[loopState.length-1].cases);
       deathsByStateRecent.push(loopState[loopState.length-1].deaths);
@@ -390,9 +394,11 @@ function ChartContainer() {
     let mdnDeathsDateSeven;
 
     for (let i = 0; i < countiesToShow.length; i++){
-      loopCounty = countiesData.filter(item => item.state === selectedState && item.county === countiesToShow[i]);
-      totalCases += loopCounty[loopCounty.length-1].cases;
-      totalDeaths += loopCounty[loopCounty.length-1].deaths;
+      loopCounty = props.countyData.filter(item => item.state === selectedState && item.county === countiesToShow[i]);
+      // console.log(loopCounty[loopCounty.length-1].cases);
+      totalCases += parseInt(loopCounty[loopCounty.length-1].cases);
+      totalDeaths += parseInt(loopCounty[loopCounty.length-1].deaths);
+      // console.log(totalCases);
 
       let d1cases;
       let d2cases;
@@ -651,6 +657,59 @@ function ChartContainer() {
       mdnDeathsDateSeven = (deathsByCountyDateSeven[(deathsByCountyDateSeven.length / 2)-1] + deathsByCountyDateSeven[deathsByCountyDateSeven.length / 2]) / 2;
     }
 
+
+    console.log(totalCases);
+    console.log(totalDeaths);
+    console.log(countiesToShow.length);
+    console.log({
+      casesByCountyWithNames,
+      deathsByCountyWithNames,
+      avgCases: Math.round(totalCases / countiesToShow.length),
+      avgDeaths: Math.round(totalDeaths / countiesToShow.length),
+      dateAvgs: {
+        cases: [
+          Math.round(stateWideCasesDateOne / countiesToShow.length),
+          Math.round(stateWideCasesDateTwo / countiesToShow.length),
+          Math.round(stateWideCasesDateThree / countiesToShow.length),
+          Math.round(stateWideCasesDateFour / countiesToShow.length),
+          Math.round(stateWideCasesDateFive / countiesToShow.length),
+          Math.round(stateWideCasesDateSix / countiesToShow.length),
+          Math.round(stateWideCasesDateSeven / countiesToShow.length)
+        ],
+        deaths: [
+          Math.round(stateWideDeathsDateOne / countiesToShow.length),
+          Math.round(stateWideDeathsDateTwo / countiesToShow.length),
+          Math.round(stateWideDeathsDateThree / countiesToShow.length),
+          Math.round(stateWideDeathsDateFour / countiesToShow.length),
+          Math.round(stateWideDeathsDateFive / countiesToShow.length),
+          Math.round(stateWideDeathsDateSix / countiesToShow.length),
+          Math.round(stateWideDeathsDateSeven / countiesToShow.length)
+        ]
+      },
+      medianCases: mdnCases,
+      medianDeaths: mdnDeaths,
+      dateMedians: {
+        cases: [
+          mdnCasesDateOne,
+          mdnCasesDateTwo,
+          mdnCasesDateThree,
+          mdnCasesDateFour,
+          mdnCasesDateFive,
+          mdnCasesDateSix,
+          mdnCasesDateSeven
+        ],
+        deaths: [
+          mdnDeathsDateOne,
+          mdnDeathsDateTwo,
+          mdnDeathsDateThree,
+          mdnDeathsDateFour,
+          mdnDeathsDateFive,
+          mdnDeathsDateSix,
+          mdnDeathsDateSeven
+        ]
+      }
+    });
+
     return {
       casesByCountyWithNames,
       deathsByCountyWithNames,
@@ -714,19 +773,19 @@ function ChartContainer() {
         setSelectedStatePop(stateNames[i].population);
       }
     }
-    setStateDataObj(statesData.filter(st => st.state === e.target.value))
+    setStateDataObj(props.stateData.filter(st => st.state === e.target.value))
     setCountiesToShow(counties);
     if (indexToRender === -1 || indexToRender > counties.length-1){
       indexToRender = 0;
     }
     setSelectedCounty(counties[indexToRender]);
-    setCountyData(countiesData.filter(i => i.state === e.target.value && i.county === counties[indexToRender]));
+    setCountyData(props.countyData.filter(i => i.state === e.target.value && i.county === counties[indexToRender]));
   }
   
   // Runs whenever there's a change in the county dropdown menu
   const handleCountyChange = e => {
     setSelectedCounty(e.target.value);
-    setCountyData(countiesData.filter(i => i.state === selectedState && i.county === e.target.value));
+    setCountyData(props.countyData.filter(i => i.state === selectedState && i.county === e.target.value));
   }
 
   const displayDeaths = () => {

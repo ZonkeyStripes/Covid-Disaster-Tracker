@@ -139,7 +139,7 @@ class MapContainer extends Component {
     componentDidUpdate() {
       if(this.state.displayed === "cases" && 
       this.state.total !== this.state.totalCases) {
-        console.log("total isn't matching correctly");
+        // console.log("total isn't matching correctly");
         this.setState({ 
           total: this.state.totalCases,
           displayList: this.state.casesArray
@@ -395,8 +395,8 @@ class MapContainer extends Component {
                         }
                     }
         
-                    console.log(`this.state.displayed = ${this.state.displayed}`);
-                    console.log("dataToDisplay is " + dataToDisplay);
+                    // console.log(`this.state.displayed = ${this.state.displayed}`);
+                    // console.log("dataToDisplay is " + dataToDisplay);
         
     
                     let mark = markers[i].getPopup();
@@ -499,7 +499,7 @@ class MapContainer extends Component {
                 <div className="card table-container">
                   <div className="chart-title-sect">
                     <h5 id="table-header">Nationwide totals</h5>
-                    <i onClick={this.toggleTableDisplay} id="table-collapse-icon" class="fas fa-chevron-down chart-toggle-icon"/>
+                    <i onClick={this.toggleTableDisplay} id="table-collapse-icon" className="fas fa-chevron-down chart-toggle-icon"/>
                   </div>
                   <div className="d-flex table-content">
                     <div className="input-group" id="table-btn-container">

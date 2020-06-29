@@ -655,3 +655,9 @@ body::-webkit-scrollbar-thumb {
   color: #ebebeb;
   background-color: #333;
 }
+
+.spinner-border {
+  width: 5rem;
+  height: 5rem;
+  color: #333;
+}

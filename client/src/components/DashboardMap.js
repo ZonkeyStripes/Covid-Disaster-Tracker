@@ -4,10 +4,10 @@ import { Icon } from "leaflet";
 import $ from "jquery";
 import "../App.css";
 import uscounties from '../assets/gz_2010_us_050_00_5m.json';
-import countyData from '../assets/nytimescounties.json';
-import L from 'leaflet';
-import MapInfo from "./MapInfo";
+// import countyData from '../assets/nytimescounties.json';
 import MapLegend from "./MapLegend";
+import * as Constants from "../constants";
+import Axios from "axios";
 
 
 const stamenTonerTiles = 'http://stamen-tiles-{s}.a.ssl.fastly.net/toner-background/{z}/{x}/{y}.png';
@@ -15,18 +15,6 @@ const stamenTonerAttr = 'Map tiles by <a href="http://stamen.com">Stamen Design<
 const mapCenter = [39.82,-98.57];
 let zoomLevel = 4;
 
-
-// console.log(countyData);
-let todayDate = "2020-05-07";
-
-let countyArray = [];
-for(let i = 0; i < countyData.length; i++) {
-	if(countyData[i].date === todayDate) {
-		countyArray.push(countyData[i]);
-	}
-}
-
-// console.log(countyArray);
 
 const mapColors = [
     ["#034e7b", "#0570b0", "#3690c0", "#74a9cf", "#a6bddb", "#d0d1e6", "#f1eef6"],
@@ -49,10 +37,15 @@ class DashboardMap extends Component {
 
     constructor(props) {
         super(props);
+
+        console.log(this.props);
+
         this.state = {
             displayed: "cases",
             colors: mapColors[0],
-            limits: thresholdData[0]
+            limits: thresholdData[0],
+            effective_date: props.date,
+            countyData: []
         };
 
         // ES6 React.Component doesn't auto bind methods to itself
@@ -60,23 +53,82 @@ class DashboardMap extends Component {
         this.changeView = this.changeView.bind(this);
         this.geoJSONStyle = this.geoJSONStyle.bind(this);
         this.onEachFeature = this.onEachFeature.bind(this);
-        //this.highlightFeature.bind(this)
-
     }
     
+    componentDidMount() {
+
+        Axios.get("/api/county_latest_date/")
+        .then(dateResult => {
+            console.log(dateResult);
+            let latestDate = dateResult.data[0].date;
+            console.log(latestDate);
+
+            Axios.get("/api/county_data/" + latestDate)
+            .then(countyD => {
+
+                this.setState({
+                    effective_date: this.props.date,
+                    countyData: countyD.data
+                },
+                this.setPopUps);
+            })
+        })
+    }
+
+    setPopUps() {
+        // convert values of the allMarkersMap object to an array
+        let markers = Object.values(allMarkersMap);
+
+        // iterate through the markers array
+        for(let i = 0; i < markers.length; i++) {
+
+            let dataToDisplay;
+
+            // get the fips code, convert to integer
+            let geo_id = markers[i].feature.properties.GEO_ID;
+            geo_id = geo_id.substring(geo_id.length - 5);
+            // console.log(geo_id);
+            geo_id = parseInt(geo_id);
+
+            // iterate through the countyData stored in state, match to geo_id fips code
+            for(let j = 0; j < this.state.countyData.length; j++) {
+                if(parseInt(this.state.countyData[j].fips) == geo_id) {
+                    if(this.state.displayed === "cases") {
+                        // console.log(this.state.countyData[j].cases);
+                        dataToDisplay = this.state.countyData[j].cases;
+                    } else if (this.state.displayed === "deaths") {
+                        dataToDisplay = this.state.countyData[j].deaths;
+                    }
+                }
+            }
+
+            let mark = markers[i].getPopup();
+            // console.log(markers[i].feature);
+
+            let popupContent;
+
+            // look into why this is sometimes undefined
+            if(dataToDisplay) {
+                popupContent = `<h4>COVID-19 ${this.state.displayed} data</h4>` +
+                '<b>' + markers[i].feature.properties.NAME + '</b><br />' + dataToDisplay.toLocaleString() + ` ${this.state.displayed}`;
+            } else {
+                popupContent = `<h4>COVID-19 ${this.state.displayed} data</h4>` +
+                '<b>' + markers[i].feature.properties.NAME + '</b><br />' + dataToDisplay + ` ${this.state.displayed}`;
+            }
+
+            // set the marker with the popupContent;
+            mark.setContent(popupContent);
+        }
+    }
 
     geoJSONStyle(feature) {
         let covidCases = 0;
         let covidDeaths = 0;
         let displayData;
-    
-        // console.log("feature.properties looks like:");
-        // console.log(feature.properties);
 
         // figure out how to deal with irregularities in NYC data
         // if(feature.properties.STATE == 36 && (
 
-        // ))
         let geo_id = feature.properties.GEO_ID;
         geo_id = geo_id.substring(geo_id.length - 5);
         //console.log(geo_id);
@@ -84,10 +136,10 @@ class DashboardMap extends Component {
 
 
 
-        for(let i = 0; i < countyArray.length; i++) {
-            if(parseInt(countyArray[i].fips) === geo_id) {
-                covidCases = countyArray[i].cases;
-                covidDeaths = countyArray[i].deaths;
+        for(let i = 0; i < this.state.countyData.length; i++) {
+            if(parseInt(this.state.countyData[i].fips) === geo_id) {
+                covidCases = this.state.countyData[i].cases;
+                covidDeaths = this.state.countyData[i].deaths;
             }
         }
 
@@ -150,14 +202,14 @@ class DashboardMap extends Component {
         geo_id = geo_id.substring(geo_id.length - 5);
         geo_id = parseInt(geo_id);
 
-        for(let j = 0; j < countyArray.length; j++) {
+        for(let j = 0; j < this.state.countyData.length; j++) {
             // console.log(countyArray[j].state);
             // console.log(markers[i].feature.properties.NAME);
-            if(parseInt(countyArray[j].fips) == geo_id) {
+            if(parseInt(this.state.countyData[j].fips) == geo_id) {
                 if(this.state.displayed === "cases") {
-                    dataToDisplay = countyArray[j].cases;
+                    dataToDisplay = this.state.countyData[j].cases;
                 } else if (this.state.displayed === "deaths") {
-                    dataToDisplay = countyArray[j].deaths;
+                    dataToDisplay = this.state.countyData[j].deaths;
                 }
             }
         }
@@ -204,18 +256,9 @@ class DashboardMap extends Component {
             dashArray: '',
             fillOpacity: 0.7
         });
-
-        // if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
-        //     layer.bringToFront();
-        // }
-
-        // console.log("layer.feature is");
-        // console.log(layer.feature);
-        // info.update(layer.feature.properties);
     }
 
     resetHighlight(e) {
-        // console.log("mouseout");
         let layer = e.target;
 
         this.refs.geojson.leafletElement.resetStyle(e.target);
@@ -228,14 +271,8 @@ class DashboardMap extends Component {
         // map.fitBounds(e.target.getBounds());
     }
 
-    test(e){
-      console.log(e.target.value);
-    }
-
+    // toggle between cases and deaths views
     changeView(e) {
-        // console.log("test function");
-        // console.log(e.target.value);
-        // console.log(this);
 
         let tempColor, tempLimit;
 
@@ -266,8 +303,6 @@ class DashboardMap extends Component {
 
             // convert values of the allMarkersMap object to an array
             let markers = Object.values(allMarkersMap);
-            // console.log("********* in testFunction");
-            // console.log(markers);
     
             for(let i = 0; i < markers.length; i++) {
     
@@ -278,22 +313,18 @@ class DashboardMap extends Component {
                 // console.log(geo_id);
                 geo_id = parseInt(geo_id);
 
-                for(let j = 0; j < countyArray.length; j++) {
+                for(let j = 0; j < this.state.countyData.length; j++) {
                     // console.log(countyArray[j].state);
                     // console.log(markers[i].feature.properties.NAME);
-                    if(parseInt(countyArray[j].fips) == geo_id) {
+                    if(parseInt(this.state.countyData[j].fips) == geo_id) {
                         if(this.state.displayed === "cases") {
-                            console.log(countyArray[j].cases);
-                            dataToDisplay = countyArray[j].cases;
+                            console.log(this.state.countyData[j].cases);
+                            dataToDisplay = this.state.countyData[j].cases;
                         } else if (this.state.displayed === "deaths") {
-                            dataToDisplay = countyArray[j].deaths;
+                            dataToDisplay = this.state.countyData[j].deaths;
                         }
                     }
                 }
-    
-                // console.log(`this.state.displayed = ${this.state.displayed}`);
-                //console.log("dataToDisplay is " + dataToDisplay);
-    
     
                 let mark = markers[i].getPopup();
                 // console.log(markers[i].feature);
@@ -318,7 +349,6 @@ class DashboardMap extends Component {
     render() {
         return (
             <div>
-              <div>
                 <div id="map-btn-container">
                   <button onClick={this.changeView} value="cases" className="map-btn" id="map-cases-btn">Cases</button>
                   <button onClick={this.changeView} value="deaths" className="map-btn-outline" id="map-deaths-btn">Deaths</button>
@@ -342,17 +372,6 @@ class DashboardMap extends Component {
                     />
                     <MapLegend colors={this.state.colors} limits={this.state.limits}/>
                 </Map>
-            </div>
-                
-                {/* <div className="custom-control custom-radio">
-                    <input type="radio" id="customRadio1" name="customRadio" className="custom-control-input" value="cases" defaultChecked onClick={this.changeView}/>
-                    <label className="custom-control-label" htmlFor="customRadio1">Cases</label>
-                </div>
-                <div className="custom-control custom-radio">
-                    <input type="radio" id="customRadio2" name="customRadio" className="custom-control-input" value="deaths" onClick={this.changeView}/>
-                    <label className="custom-control-label" htmlFor="customRadio2">Deaths</label>
-                </div> */}
-                {/* <DataTable data={countyArray}/> */}
             </div>
           );
         }

@@ -13,8 +13,11 @@ if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));
 }
 
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
+
+// increasing this limit allows adding the county data to work
+app.use(express.json({ limit: '50mb'}));
+
 app.use(express.static("public"));
 // We need to use sessions to keep track of our user's login status
 app.use(session({ secret: "keyboard cat", resave: true, saveUninitialized: true }));
@@ -33,7 +36,6 @@ app.get("*", function(req, res) {
 
 // Syncing our database and logging a message to the user upon success
 db.sequelize.sync().then(function() {
-
   app.listen(PORT, function() {
     console.log(`🌎 ==> API server now on port ${PORT}!`);
   });

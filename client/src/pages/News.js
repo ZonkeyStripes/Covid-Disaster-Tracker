@@ -4,6 +4,7 @@ import Extras from "../components/NewsExtra";
 import "../App.css";
 import Questions from "../components/Questions";
 import Symptoms from "../components/Symptoms";
+import Axios from "axios";
 
 function News() {
 
@@ -20,7 +21,8 @@ function News() {
 
     function loadNews() {
 
-        API.getNews()
+        //API.getNews()
+        Axios.get("/api/covidnews/")
             .then(res => {
                 console.log(res.data.articles)
                 setArticles(res.data.articles)
@@ -51,8 +53,7 @@ function News() {
                     })}
                 </ul>
                     <p>Sourced from:</p>
-                    <br></br>
-                    <p>https://newsapi.org/</p>
+                    <a href="https://gnews.io/">https://gnews.io/</a>
             </div>
             <div className="col-lg-6 col-md-6 col-sm-6 faqs">
                 <h2 className="faqhead">Frequently Asked Questions</h2>
