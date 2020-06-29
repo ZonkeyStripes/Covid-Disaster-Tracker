@@ -98,7 +98,7 @@ const StateChartContainer = (props) => {
                 <option value={props.ddOptionVal}>{props.ddOptionText}</option>
               </select>
             </div>
-            <i onClick={toggleBarChartDisplay} id="state-bar-collapse-icon" class="fas fa-chevron-down chart-toggle-icon"/>
+            <i onClick={toggleBarChartDisplay} id="state-bar-collapse-icon" className="fas fa-chevron-down chart-toggle-icon"/>
           </div>
           <div id="state-bar-chart-container">
             <StateBarCharts

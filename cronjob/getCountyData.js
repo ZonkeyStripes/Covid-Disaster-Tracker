@@ -3,7 +3,9 @@ const cheerio = require('cheerio');
 const fs = require("fs");
 const axios = require("axios");
 const convert = require("./csvtojson.js");
-const writeStream = fs.createWriteStream('us-counties.json');
+// const writeStream = fs.createWriteStream('us-counties.json');
+
+const PORT = process.env.PORT || 3001;
 
 const url = 'https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-counties.csv';
 
@@ -18,9 +20,17 @@ function countyScrape() {
             
             let countyInfo = convert(html);
 
-            console.log(countyInfo);
+            // console.log(countyInfo);
 
-            axios.get("http://localhost:3001/api/county_latest_date/")
+            let server_URL = "http://localhost:" + PORT + "/api/county_latest_date/";
+            let post_URL = "http://localhost:3001/api/county_data/";
+
+            if(process.env.NODE_ENV === "production") {
+                server_URL = "https://covidtestdb.herokuapp.com/api/county_latest_date/";
+                post_URL = "https://covidtestdb.herokuapp.com/api/county_data/";
+            }
+
+            axios.get(server_URL)
             .then(dateRes => {
                 console.log(dateRes.data[0].date);
                 lastDateInDB = dateRes.data[0].date;
@@ -45,7 +55,7 @@ function countyScrape() {
                     console.log(newData.length);
         
                     // send new day's data to the api route, to be added to the database
-                    axios.post("http://localhost:3001/api/county_data/", newData)
+                    axios.post(post_URL, newData)
                     .then(res => {
                         console.log("success");
                         // console.log(res);

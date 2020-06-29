@@ -139,7 +139,7 @@ class MapContainer extends Component {
     componentDidUpdate() {
       if(this.state.displayed === "cases" && 
       this.state.total !== this.state.totalCases) {
-        console.log("total isn't matching correctly");
+        // console.log("total isn't matching correctly");
         this.setState({ 
           total: this.state.totalCases,
           displayList: this.state.casesArray
@@ -395,8 +395,8 @@ class MapContainer extends Component {
                         }
                     }
         
-                    console.log(`this.state.displayed = ${this.state.displayed}`);
-                    console.log("dataToDisplay is " + dataToDisplay);
+                    // console.log(`this.state.displayed = ${this.state.displayed}`);
+                    // console.log("dataToDisplay is " + dataToDisplay);
         
     
                     let mark = markers[i].getPopup();

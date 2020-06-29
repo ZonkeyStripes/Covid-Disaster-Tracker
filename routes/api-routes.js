@@ -2,6 +2,8 @@
 
 let db = require("../models");
 let passport = require("../config/passport");
+const Axios = require("axios");
+const Sequelize = require('sequelize');
 
 module.exports = function (app) {
 
@@ -139,6 +141,7 @@ app.get("/api/disasterkit/:id", function(req, res){
 });
 
 
+// gets the last entry in the state database, by id
 app.get("/api/state_latest_date/", function(req, res) {
   console.log("GET /api/state_latest_date/");
   db.StateData.findAll({
@@ -152,11 +155,24 @@ app.get("/api/state_latest_date/", function(req, res) {
   })
 })
 
+// gets the last entry in the county database, by id
 app.get("/api/county_latest_date/", function(req, res) {
-  console.log("GET /api/county_latest_date/");
   db.CountyData.findAll({
     order: [
       ['id', 'DESC']
+    ],
+    limit: 1
+  })
+  .then(function(result) {
+    res.json(result);
+  })
+})
+
+// gets the last entry in the national database, by id
+app.get("/api/national_latest_date/", function(req, res) {
+  db.NationalData.findAll({
+    order: [
+      ['cases', 'DESC']
     ],
     limit: 1
   })
@@ -184,13 +200,21 @@ app.get("/api/state_data/:todaydate", function(req, res) {
 
 // route that gets all county data for one date, matching the data passed as a parameter
 app.get("/api/county_data/:todaydate", function(req, res) {
-  console.log("GET /api/county_data/");
-  console.log(req.params.todaydate);
+  // console.log("GET /api/county_data/");
+  // console.log(req.params.todaydate);
   db.CountyData.findAll({
     where: {
       date: req.params.todaydate
     }
   })
+  .then(function(result) {
+    res.json(result);
+  })
+})
+
+// get all national data for all dates
+app.get("/api/national_data/", function(req, res) {
+  db.NationalData.findAll({})
   .then(function(result) {
     res.json(result);
   })
@@ -204,13 +228,130 @@ app.get("/api/state_data/", function(req, res) {
   })
 })
 
-// get all county data for all dates
+// get all county data for all dates -- performance issues, try to avoid using
 app.get("/api/county_data/", function(req, res) {
   db.CountyData.findAll({})
   .then(function(result) {
     res.json(result);
   })
 })
+
+// get all county data for last month
+app.get("/api/county_data/last_month/:latestDate", function(req, res) {
+
+  console.log("in last month route");
+  console.log(req.params.latestDate);
+
+  let latestDate = req.params.latestDate;
+
+  let dateArray = [];
+  dateArray.unshift(latestDate);
+  let newDate = latestDate;
+
+  for(let i = 0; i < 30; i++) {
+    newDate = getPreviousDate(newDate);
+    // console.log(newDate);
+    dateArray.unshift(newDate);
+  }
+
+  console.log(dateArray);
+
+  db.CountyData.findAll({
+    where: {
+      date: dateArray // Same as using `id: { [Op.in]: [1,2,3] }`
+    }
+  })
+  .then(function(result) {
+    res.json(result);
+  })
+})
+
+
+// calculate previous date, given a string formatted "YYYY-MM-DD"
+// return in same string format
+function getPreviousDate(date) {
+
+  let year = parseInt(date.substring(0, 4));
+  let month = parseInt(date.substring(5, 7));
+  let day = parseInt(date.substring(8, 10));
+
+  // create Date object
+  let dateObj = new Date(year, month - 1, day);
+
+  // Getting required values
+  const newyear = dateObj.getFullYear();
+  const newmonth = dateObj.getMonth();
+  const newday = dateObj.getDate();
+
+  // Creating a new Date (with the delta)
+  const previousDate = new Date(newyear, newmonth, newday - 1);
+
+  // final result
+
+  const finalyear = previousDate.getFullYear();
+  let finalmonth = previousDate.getMonth() + 1;
+  if(finalmonth < 10) {
+      finalmonth = "0" + finalmonth;
+  }
+
+  let finalday = previousDate.getDate();
+  if(finalday < 10) {
+      finalday = "0" + finalday;
+  }
+
+
+  const final = finalyear + "-" + finalmonth + "-" + finalday;
+
+  console.log("previous date is: " + final);
+
+  return final;
+}
+
+
+// get news on coronavirus from gnews.io
+app.get("/api/covidnews/", function (req, res) {
+
+  Axios.get("https://gnews.io/api/v3/search?q=coronavirus&token=260ad6598318e70842a0c954b398cb58")
+  .then(result => {
+
+    console.log(result.data);
+    res.json(result.data);
+  });
+})
+
+
+// get all disasters - not including COVID 19
+app.get("/api/all_disasters_non_coivd", function (req, res) {
+
+  db.FemaDisaster.findAll({
+    where: {
+      incidentType: {
+        [Sequelize.Op.not]: 'Biological'
+      }
+    }
+  })
+  .then(function(result) {
+    res.json(result);
+  })
+})
+
+
+// get all disasters for a specified state - not including COVID 19
+app.get("/api/all_disasters_non_coivd/:state", function (req, res) {
+
+  db.FemaDisaster.findAll({
+    where: {
+      incidentType: {
+        [Sequelize.Op.not]: 'Biological'
+      },
+      state: req.params.state
+    }
+  })
+  .then(function(result) {
+    res.json(result);
+  })
+})
+
 
 // POST ROUTES
 
@@ -318,18 +459,44 @@ app.post("/api/add_dkitem", function (req, res) {
       item: dbKit.item,
       UserId: req.body.uid
     }
-    console.log("Below is the log of the newly created dkObject");
-    console.log(dkObject);
+    // console.log("Below is the log of the newly created dkObject");
+    // console.log(dkObject);
     res.json(dkObject);
   });
 });
 
 
+app.post("/api/add_multiple_dkitems", function(req, res) {
+  console.log(req.body.list);
+
+  let disasterItems = req.body.list;
+
+  let itemList = [];
+
+
+  disasterItems.forEach(item => {
+    db.DisasterKit.create({
+      item: item,
+      UserId: req.body.uid
+    })
+    .then(function (kit) {
+  
+      // console.log("Inserted item" + kit.item);
+      itemList.push(kit);
+      if (itemList.length === disasterItems.length) {
+          res.status(200).json(itemList);
+      }
+    }).catch(function (error) {
+      res.status(500).json(error);            
+    });
+  })
+})
+
+
+
+
 // add new state_data
 app.post("/api/state_data/", function(req, res) {
-  console.log("hit /api/state_data");
-
-  console.log(req.body);
 
   let newStateData = req.body;
   // console.log("***************");
@@ -392,6 +559,35 @@ app.post("/api/county_data/", function(req, res) {
   })
 })
 
+
+// add new data to NationalData table
+app.post("/api/national_data/", function(req, res) {
+  console.log("hit /api/national_data");
+
+  console.log(req.body);
+
+  let newNationalData = req.body;
+
+  let dataList = [];
+
+  newNationalData.forEach(item => {
+    console.log(item);
+    db.NationalData.create({
+      date: item.date,
+      cases: item.cases,
+      deaths: item.deaths
+    })
+    .then(function (response) {
+  
+      dataList.push(response);
+      if (dataList.length === newNationalData.length) {
+        res.status(200).json(dataList);
+      }
+    }).catch(function (error) {
+      res.status(500).json(error);            
+    });
+  })
+})
 
 
 

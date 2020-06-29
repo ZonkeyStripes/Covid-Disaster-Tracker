@@ -2,7 +2,9 @@ const request = require('request');
 const cheerio = require('cheerio');
 const fs = require("fs");
 const axios = require("axios");
-const convert = require("./csvtojson")
+const convert = require("./csvtojson");
+
+const PORT = process.env.PORT || 3001;
 
 function stateScrape() {
 
@@ -18,7 +20,15 @@ function stateScrape() {
 
             console.log(stateInfo);
 
-            axios.get("http://localhost:3001/api/state_latest_date/")
+            let server_URL = "http://localhost:" + PORT + "/api/state_latest_date/";
+            let post_URL = "http://localhost:3001/api/state_data/";
+
+            if(process.env.NODE_ENV === "production") {
+                server_URL = "https://covidtestdb.herokuapp.com/api/state_latest_date/";
+                post_URL = "https://covidtestdb.herokuapp.com/api/state_data/";
+            }
+
+            axios.get(server_URL)
             .then(dateRes => {
                 console.log(dateRes.data[0].date);
             
@@ -26,6 +36,8 @@ function stateScrape() {
                 // generate an array with the latest days data
                 let i = stateInfo.length - 1;
                 let date = stateInfo[i].date;
+
+                console.log("lastDateInDB is " + lastDateInDB);
 
                 // if the latests day's data doesn't match the database data, add to DB
                 if(lastDateInDB != date) {
@@ -40,7 +52,7 @@ function stateScrape() {
                     console.log(newData.length);
         
                     // send new day's data to the api route, to be added to the database
-                    axios.post("http://localhost:3001/api/state_data/", newData)
+                    axios.post(post_URL, newData)
                     .then(res => {
                         console.log("success");
                         // console.log(res);

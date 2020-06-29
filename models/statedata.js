@@ -10,7 +10,7 @@ module.exports = function(sequelize, DataTypes) {
         },
         fips: {
             type: DataTypes.STRING,
-            allowNull: false,
+            allowNull: true,
         },
         cases: {
             type: DataTypes.INTEGER,

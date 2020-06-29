@@ -105,7 +105,7 @@ class Dashboard extends Component {
          promises.push(Axios.get("/api/get_most_recent_data/" + all_locations.data[i].county + "/" + all_locations.data[i].state));
     }
     return Promise.all(promises);
-}
+  }
 
   render() {
     // let mapRenderDecision;

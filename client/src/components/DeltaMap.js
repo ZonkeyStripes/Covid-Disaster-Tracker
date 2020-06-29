@@ -7,7 +7,6 @@ import MapLegend from "./MapLegend";
 import DeltaTable from "./DeltaTable";
 import $ from "jquery";
 import previousDate from "../utils/previousDate";
-import * as Constants from "../constants";
 import Axios from "axios";
 
 
@@ -25,7 +24,7 @@ const mapColors = [
 
 const thresholdData = [
     [2500, 500, 250, 100, 50, 5],
-    [500, 200, 100, 50, 25, 10]
+    [100, 50, 35, 25, 10, 5]
 ];
 
 let allMarkersMap = {};
@@ -38,54 +37,15 @@ class DeltaMap extends Component {
     constructor(props) {
         super(props);
 
-        let todayDate = Constants.LASTUPDATED;
-        let yesterdayDate = Constants.PREVFORDELTAS;
+        let todayDate = "";
+        let yesterdayDate = "";
 
-        let totalCases = 0;
-        let totalDeaths = 0;
+        let totalNewCases = 0;
+        let totalNewDeaths = 0;
         
         let todayArray = [];
         let yesterdayArray = [];
-
-
-        // for(let i = 0; i < stateData.length; i++) {
-        //   if(stateData[i].date === todayDate) {
-        //     todayArray.push(stateData[i]);
-        //     totalCases += stateData[i].cases;
-        //     totalDeaths += stateData[i].deaths;
-        //   } else if(stateData[i].date === yesterdayDate) {
-        //     yesterdayArray.push(stateData[i]);
-        //   }
-        // }
-        
-        console.log(todayArray);
-        console.log(yesterdayArray);
-
         let deltaObjectsArray = [];
-
-        // for(let i = 0; i < todayArray.length; i++) {
-        //     for(let j = 0; j < yesterdayArray.length; j++) {
-        //         if(parseInt(todayArray[i].fips) === parseInt(yesterdayArray[j].fips)) {
-        //             let newObj = {};
-        //             newObj.state = todayArray[i].state;
-        //             newObj.fips = todayArray[i].fips;
-        //             newObj.date1 = yesterdayArray[j].date;
-        //             newObj.date2 = todayArray[i].date;
-        //             newObj.cases1 = yesterdayArray[j].cases;
-        //             newObj.deaths1 = yesterdayArray[j].deaths;
-        //             newObj.cases2 = todayArray[i].cases;
-        //             newObj.deaths2 = todayArray[i].deaths;
-        //             newObj.deltaCases = todayArray[i].cases - yesterdayArray[j].cases;
-        //             newObj.deltaDeaths = todayArray[i].deaths - yesterdayArray[j].deaths;
-        //             deltaObjectsArray.push(newObj);
-        //         }
-        //     }
-        // }
-
-        console.log(deltaObjectsArray);
-
-
-
         let casesArray = [];
         let deathsArray = [];
 
@@ -101,14 +61,14 @@ class DeltaMap extends Component {
             tableOpen: true,
             colors: mapColors[0],
             limits: thresholdData[0],
-            total: totalCases,
+            total: totalNewCases,
             displayList: casesArray,
             todayDate: todayDate,
             prevDate: yesterdayDate,
             todayArray: todayArray,
             prevArray: yesterdayArray,
-            totalCases: totalCases,
-            totalDeaths: totalDeaths,
+            totalCases: totalNewCases,
+            totalDeaths: totalNewDeaths,
             casesArray: casesArray,
             deathsArray: deathsArray,
             deltaArray: deltaObjectsArray
@@ -146,16 +106,6 @@ class DeltaMap extends Component {
           .then(prevData => {
             let previousData = prevData.data;
 
-            // process data totals to setState with
-            let totalCases = 0;
-            let totalDeaths = 0;
-                
-            for(let i = 0; i < currentData.length; i++) {
-                totalCases += currentData[i].cases;
-                totalDeaths += currentData[i].deaths;
-            }
-
-
             // create array for the change in cases and deaths from day to day
             let deltaObjectsArray = [];
 
@@ -184,10 +134,19 @@ class DeltaMap extends Component {
 
           let casesArray = [];
           let deathsArray = [];
-  
+          
+          // process data totals to setState with
+          let totalCases = 0;
+          let totalDeaths = 0;
+          
+          for(let i = 0; i < deltaObjectsArray.length; i++) {
+            totalCases += deltaObjectsArray[i].deltaCases;
+            totalDeaths += deltaObjectsArray[i].deltaDeaths;
+          }
+
           for(let i = 0; i < currentData.length; i++) {
-            casesArray.push({state: currentData[i].state, data: currentData[i].cases})
-            deathsArray.push({state: currentData[i].state, data: currentData[i].deaths})
+            casesArray.push({state: currentData[i].state, data: currentData[i].cases});
+            deathsArray.push({state: currentData[i].state, data: currentData[i].deaths});
           };
 
           console.log(casesArray);
@@ -247,47 +206,6 @@ class DeltaMap extends Component {
           }
       }
     }
-//     componentDidUpdate() {
-//       if(this.state.displayed === "cases" && 
-//       this.state.total !== this.state.totalCases) {
-//         console.log("total isn't matching correctly");
-//         this.setState({ 
-//           total: this.state.totalCases,
-//           displayList: this.state.casesArray
-//          }, () => {
-//           let markers = Object.values(allMarkersMap);
-        
-//           for(let i = 0; i < markers.length; i++) {
-//             let dataToDisplay;
-
-//             for(let j = 0; j < this.state.todayArray.length; j++) {
-//                 // console.log(todayArray[j].state);
-//                 // console.log(markers[i].feature.properties.NAME);
-//                 if(this.state.todayArray[j].state == markers[i].feature.properties.NAME) {
-//                     if(this.state.displayed === "cases") {
-//                         dataToDisplay = this.state.todayArray[j].cases;
-//                     } else if (this.state.displayed === "deaths") {
-//                         dataToDisplay = this.state.todayArray[j].deaths;
-//                     }
-//                 }
-//             }
-
-//             console.log(`this.state.displayed = ${this.state.displayed}`);
-//             console.log("dataToDisplay is " + dataToDisplay);
-
-
-//             let mark = markers[i].getPopup();
-//             // console.log(markers[i].feature);
-//             if(dataToDisplay) {
-//               const popupContent = `<h4>COVID-19 ${this.state.displayed} data</h4>` +
-//               '<b>' + markers[i].feature.properties.NAME + '</b><br />' + dataToDisplay.toLocaleString() + ` ${this.state.displayed}`;
-//               mark.setContent(popupContent);
-//             }
-//         }
-//       })
-//       console.log(this.state.todayArray);
-//     }
-//   }
 
     geoJSONStyle(feature) {
         let caseChange = 0;

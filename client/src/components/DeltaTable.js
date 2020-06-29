@@ -72,7 +72,7 @@ class DeltaTable extends Component {
 
         return (
             <div>
-                <p className="text-center table-top-text mt-2">Total {this.props.displayed}</p>
+                <p className="text-center table-top-text mt-2">Total new {this.props.displayed} from {this.props.fromDate} to {this.props.toDate}</p>
                 <h2 className="text-center">{this.props.total.toLocaleString()}</h2>
                 <table class="table">
                     <tbody>

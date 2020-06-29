@@ -31,7 +31,7 @@ class Login extends Component {
   handleChange(evt) {
     $("#li-error").hide();
     const value = evt.target.value;
-    console.log(evt.target.name);
+    // console.log(evt.target.name);
     
     this.setState({
       ...this.state,
@@ -41,17 +41,14 @@ class Login extends Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
-    console.log(this.state.username);
-    console.log(this.state.password);
     
     Axios.post("/api/login", {
       email: this.state.username,
       password: this.state.password
     })
     .then((data) => {
-      console.log("data: ");
       let firstTime = data.data.ftu;
-      console.log(firstTime);
+
       // if user is a first time user, push to FTU page, otherwise to dashboard
       if(firstTime) {
         this.props.history.push("/ftu");
@@ -71,7 +68,7 @@ class Login extends Component {
   }
 
   render() {
-    console.log(this.props);
+    // console.log(this.props);
     return (
       <div className="container" id="login-body">
         <div className="row mt-4">
