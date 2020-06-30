@@ -486,12 +486,6 @@ app.get("/api/getallgroups/:uid", function(req, res) {
   })
 });
 
-
-
-
-
-
-
   // POST ROUTES
 
   // POST request to create a new league and add to database //
@@ -648,6 +642,54 @@ app.get("/api/getallgroups/:uid", function(req, res) {
     });
   });
 
+  
+  app.post("/states", function(req, res) {
+    // console.log(req.body);
+    req.body.forEach(item => {
+      // console.log(item);
+      db.States.create(
+        item
+      )
+      .then(function () {
+        // console.log(req.body)
+        // console.log(res.json)
+      })
+    })
+    res.json({text: "States updated!"})
+  })
 
+  app.post("/counties", function(req, res) {
+    // console.log(req.body);
+    req.body.forEach(item => {
+      // console.log(item);
+      db.Counties.create(
+        item
+      )
+      .then(function () {
+        // console.log(req.body)
+        // console.log(res.json)
+      })
+  })
+      res.json({text: "Counties updated!"})
+  })
 
+  app.get("/counties", function(req, res) {
+
+    db.Counties.findAll({})
+    .then(function(Counties) {
+      res.json([{
+        name: "in the county"
+      }])
+    })
+  });
+
+  app.get("/states", function(req, res) {
+
+    db.States.findAll({})
+    .then(function(States) {
+      res.json([{
+        name: "test"
+      }])
+    })
+  });
 }
