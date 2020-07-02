@@ -10,15 +10,86 @@ import KitResults from '../components/KitResults';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Card, CardGroup } from "react-bootstrap";
-//import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 import Axios from "axios";
 import "../App.css";
 import countiesData from "../assets/county_latlong.json";
 import stateNames from "../utils/json/state-names.json";
 import stateAbbr from "../utils/stateAbbr";
+import ReactDOM from 'react-dom';
+import { PDFViewer, PDFDownloadLink, Source } from '@react-pdf/renderer';
+import { Page, Text, View, Document, StyleSheet, Image  } from '@react-pdf/renderer';
+import logo from "../assets/dt_logo.PNG";
+import box from "../assets/box.png";
 
 
 library.add(faTrash);
+
+// Create styles
+const styles = StyleSheet.create({
+    page: {
+      flexDirection: 'row',
+      flexFlow: "row"
+      // backgroundColor: '#E4E4E4'
+    },
+    div: {
+      flexDirection: 'row',
+      flexFlow: "row"
+    },
+    section: {
+      margin: 10,
+      padding: 10,
+      flexGrow: 1
+    },
+    image: {
+      height: 56,
+      width: 151
+      },
+      boximage: {
+          height: 30,
+          width: 30
+      },
+      rowContainer: {
+          flexDirection: 'row'
+      },
+      headerText: {
+          fontSize: "32px",
+          textAlign: "center",
+          margin: 15
+      },
+      listText: {
+          margin: 5
+      }
+  
+  });
+  
+  // Create Document Component
+  const MyDocument = (props) => (
+    <Document>
+      <Page size="A4" style={styles.page}>
+        <View style={styles.section}>
+          <Image
+              source={logo}
+              style={styles.image}
+          />
+          <Text style={styles.headerText}>
+              Disaster Kit Checklist    
+          </Text>  
+            {props.list.map((el) => (
+                <View style={styles.rowContainer}>
+                  <Image
+                      source={box}
+                      style={styles.boximage}
+                  />  
+                  <Text
+                      style={styles.listText}
+                  >{el}</Text>
+                </View>
+            ))}
+        </View>
+      </Page>
+    </Document>
+  );
 
 class Kit extends Component {
     constructor(props) {
@@ -37,13 +108,15 @@ class Kit extends Component {
                 text: '',
                 key: ''
             },
-            userID: 0
+            userID: 0,
+            pdfLink: false
         }
         //Bind items to list
         this.handleInput = this.handleInput.bind(this);
         this.addItem = this.addItem.bind(this);
         this.deleteItem = this.deleteItem.bind(this);
         this.callbackFunction = this.callbackFunction.bind(this);
+        this.makePDF = this.makePDF.bind(this);
     }
 
     //Returns array with all county names in a given state
@@ -321,12 +394,27 @@ class Kit extends Component {
                         }
                     ]
                 })
-
             })
     }
 
+    makePDF() {
+        console.log("hello");
+        // this.setState({pdfLink: true});
+    }
+
     render() {
-        console.log(this.state)
+        let itemList = this.state.items.map(el => (
+            el.text
+        ));
+
+        console.log(itemList);
+
+        let renderLink = this.state.pdfLink ? <div>
+            <PDFDownloadLink fileName="disasterKit.pdf" document={<MyDocument list={this.state.items}/>}>
+                Download PDF
+            </PDFDownloadLink >
+            </div> : "";
+
         return (
             <div className = "container lift">
             < Card style={{ backgroundColor: 'white', marginRight: '7px' }}>
@@ -374,16 +462,22 @@ class Kit extends Component {
                                     <div className="test">
 
                                 <div className="whatever">
-
                                     <input type="text" placeholder="Enter Item" value={this.state.currentItem.text}
-                                        onChange={this.handleInput} />
-                                        
-                                        </div>
-                                        <div className="whatever">
+                                        onChange={this.handleInput} />        
+                                </div>
+                                <div className="whatever">
                                     <button type="submit" style={{ backgroundcolor: '#333', border: '1px solid #f6f6f6', borderradius: '40px', outline: 'none' }}>Add</button>
-                                    </div>
-                                        </div>
+                                    <br />
+
+                                </div>
+                                </div>
                                 </form>
+                                <div className="whatever">
+                                    <PDFDownloadLink fileName="disasterKit.pdf" document={<MyDocument list={itemList}/>}>
+                                        Download PDF
+                                    </PDFDownloadLink >
+                                </div>
+
                             </header>
                             <KitList items={this.state.items}
                                 deleteItem={this.deleteItem}></KitList>
