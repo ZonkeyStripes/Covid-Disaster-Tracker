@@ -90,7 +90,7 @@ class MapContainer extends Component {
     
     componentDidMount() {
 
-      Axios.get("https://covidtracking.com/api/v1/states/current.json")
+      Axios.get("https://api.covidtracking.com/v1/states/current.json")
       .then(res => {
         console.log(res);
         let newTodayArray = [];
