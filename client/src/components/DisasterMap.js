@@ -249,12 +249,19 @@ class DisasterMap extends Component {
 
             let markers = [];
 
+            console.log(this.props.disasters);
+
             this.props.disasters.forEach(el => {
                 let str = el.declaredCountyArea;
-                let i = str.indexOf('(');
+
+                if(str !== null) {
+                    let i = str.indexOf('(');
+                    str = str.substring(0, i - 1);
+                } else {
+                    str = "";
+                }
+
                 let tempArr = [];
-                str = str.substring(0, i - 1);
-                // console.log(str);
 
                 let stateStr = el.state;
                 countyLatLong.forEach(county => {
