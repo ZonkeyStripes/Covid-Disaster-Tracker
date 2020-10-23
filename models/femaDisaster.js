@@ -42,7 +42,7 @@ module.exports = function(sequelize, DataTypes) {
         },
         femaID: {
             type: DataTypes.STRING,
-            allowNull: false,            
+            allowNull: true,            
         }
     });
 
