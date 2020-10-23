@@ -31,7 +31,6 @@ class Disasters extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    // 
     componentDidMount() {    
         // check if user is logged in
         Axios.get("/api/user_data")
@@ -78,27 +77,19 @@ class Disasters extends Component {
             })
         })
         .catch((err) => {
-            console.log("User is not logged in, display default states");
-            // console.log(err);
+            // console.log("User is not logged in, display default states");
 
+            // default locations
             let arrayOfLocations = [["Los Angeles", "California", 36.116203, -119.681564],
                 ["Pima", "Arizona", 33.729759, -111.431221],
                 ["Orange", "Florida", 27.766279, -81.686783]
             ];
 
-            // Axios.get("https://www.fema.gov/api/open/v1/DisasterDeclarationsSummaries?$filter=declarationDate%20gt%20%272019-06-01T04:00:00.000z%27%20&$top=1000")
-            // .then(result => {
-            //     console.log(result);
-            //     Axios.get("https://www.fema.gov/api/open/v1/DisasterDeclarationsSummaries?$filter=declarationDate%20gt%20%272019-06-01T04:00:00.000z%27%20&$skip=1000")
-            //     .then(secondRes => {
-                    // console.log(secondRes);
             this.loadAllDisasters();
 
             this.setState({locations: arrayOfLocations}, () => {
                 console.log(this.state);
             });
-            //     })
-            // })
         })
     }
     
@@ -208,11 +199,9 @@ class Disasters extends Component {
         
         let resultToRender;
         if(this.state.allStates.length > 0) {
-            // console.log("****")
-            // console.log(this.state.allStates.length);
             let temp = this.state.allStates.map((st) => {
                 let res = {};
-                //res.question = <div>{st[0]} {"\u2014"} {st[1].length} disasters declared</div>;
+
                 res.question = <div className="dd">{st[0]}: {st[1].length} disasters declared</div>;
                 res.answer = st[1].map((dis) => {
                     return <div>{dis.declaredCountyArea}: {dis.incidentType}<br />
@@ -247,7 +236,8 @@ class Disasters extends Component {
                 {resultToRender}
                 {this.state.locations.map((el, index) => (
                     <div className="mb-4 px-3">
-                    <DisasterMap key={index} USstate={el[1]} lat={el[2]} long={el[3]} disasters={el[4]}/>
+                        <h2>{el[1]}</h2>
+                        <DisasterMap key={index} USstate={el[1]} lat={el[2]} long={el[3]} disasters={el[4]}/>
                     </div>
                 ))}
             </div>
