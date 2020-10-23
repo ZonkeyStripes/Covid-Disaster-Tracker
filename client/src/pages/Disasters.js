@@ -31,6 +31,7 @@ class Disasters extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
+    // 
     componentDidMount() {    
         // check if user is logged in
         Axios.get("/api/user_data")
@@ -85,19 +86,19 @@ class Disasters extends Component {
                 ["Orange", "Florida", 27.766279, -81.686783]
             ];
 
-            Axios.get("https://www.fema.gov/api/open/v1/DisasterDeclarationsSummaries?$filter=declarationDate%20gt%20%272019-06-01T04:00:00.000z%27%20&$top=1000")
-            .then(result => {
-                console.log(result);
-                Axios.get("https://www.fema.gov/api/open/v1/DisasterDeclarationsSummaries?$filter=declarationDate%20gt%20%272019-06-01T04:00:00.000z%27%20&$skip=1000")
-                .then(secondRes => {
-                    console.log(secondRes);
-                    this.loadAllDisasters();
+            // Axios.get("https://www.fema.gov/api/open/v1/DisasterDeclarationsSummaries?$filter=declarationDate%20gt%20%272019-06-01T04:00:00.000z%27%20&$top=1000")
+            // .then(result => {
+            //     console.log(result);
+            //     Axios.get("https://www.fema.gov/api/open/v1/DisasterDeclarationsSummaries?$filter=declarationDate%20gt%20%272019-06-01T04:00:00.000z%27%20&$skip=1000")
+            //     .then(secondRes => {
+                    // console.log(secondRes);
+            this.loadAllDisasters();
 
-                    this.setState({locations: arrayOfLocations}, () => {
-                        console.log(this.state);
-                    });
-                })
-            })
+            this.setState({locations: arrayOfLocations}, () => {
+                console.log(this.state);
+            });
+            //     })
+            // })
         })
     }
     
@@ -119,12 +120,6 @@ class Disasters extends Component {
     };
 
     loadAllDisasters() {
-
-        // load all disasters in the last year
-        // Axios.get("https://www.fema.gov/api/open/v1/DisasterDeclarationsSummaries?$filter=declarationDate%20gt%20%272019-06-25T04:00:00.000z%27and incidentType ne 'Biological'&$top=1000")
-        // .then(res => {
-        //     let all_disasters = res.data.DisasterDeclarationsSummaries;
-        //     console.log(res.data.DisasterDeclarationsSummaries); 
 
         Axios.get("/api/all_disasters_non_coivd")
         .then(res => {
@@ -256,8 +251,8 @@ class Disasters extends Component {
                     </div>
                 ))}
             </div>
-    );
-}
+        );
+    }
 
 
 }
