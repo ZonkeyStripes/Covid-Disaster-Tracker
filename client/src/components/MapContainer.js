@@ -32,8 +32,6 @@ const thresholdData = [
 let allMarkersMap = {};
 let currentID = 0;
 
-//console.log(todayArray);
-
 class MapContainer extends Component {
 
     constructor(props) {
@@ -44,6 +42,8 @@ class MapContainer extends Component {
         let totalCases = 0;
         let totalDeaths = 0;
         
+
+        // fallback data if API doesn't work
         let todayArray = [];
         for(let i = 0; i < stateData.length; i++) {
           if(stateData[i].date === todayDate) {
@@ -178,63 +178,57 @@ class MapContainer extends Component {
     }
   }
 
-    geoJSONStyle(feature) {
-        let covidCases = 0;
-        let covidDeaths = 0;
-        let displayData;
-    
-        for(let i = 0; i < this.state.todayArray.length; i++) {
-            if(parseInt(this.state.todayArray[i].fips) === parseInt(feature.properties.STATE)) {
-                covidCases = this.state.todayArray[i].cases;
-                covidDeaths = this.state.todayArray[i].deaths;
-            }
-        }
+  geoJSONStyle(feature) {
+      let covidCases = 0;
+      let covidDeaths = 0;
+      let displayData;
+  
+      for(let i = 0; i < this.state.todayArray.length; i++) {
+          if(parseInt(this.state.todayArray[i].fips) === parseInt(feature.properties.STATE)) {
+              covidCases = this.state.todayArray[i].cases;
+              covidDeaths = this.state.todayArray[i].deaths;
+          }
+      }
 
-        // console.log("cases" + covidCases);
-        // console.log("deaths" +covidDeaths);
- 
-        if(this.state.displayed === "cases") {
-            // console.log("made it to cases");
-            //thresholds = thresholdData[0];
-            // mapClr = mapColors[0];
-            displayData = covidCases;
-        } else {
-            // console.log("made it to deaths");
-            // thresholds = thresholdData[1];
-            // mapClr = mapColors[1];
-            displayData = covidDeaths;
-        }
-        // console.log("***")
-        // console.log(thresholds);
- 
-        // console.log(feature.properties);
+      // console.log("cases" + covidCases);
+      // console.log("deaths" +covidDeaths);
 
-        let colorResult;
+      if(this.state.displayed === "cases") {
+          // console.log("made it to cases");
+          //thresholds = thresholdData[0];
+          // mapClr = mapColors[0];
+          displayData = covidCases;
+      } else {
+          // console.log("made it to deaths");
+          // thresholds = thresholdData[1];
+          // mapClr = mapColors[1];
+          displayData = covidDeaths;
+      }
 
-        if (displayData > this.state.limits[0]) {
-            colorResult = this.state.colors[0];
-        } else if (displayData > this.state.limits[1]) {
-            colorResult = this.state.colors[1];
-        } else if (displayData > this.state.limits[2]) {
-            colorResult = this.state.colors[2];
-        } else if (displayData > this.state.limits[3]) {
-            colorResult = this.state.colors[3];
-        } else if (displayData > this.state.limits[4]) {
-            colorResult = this.state.colors[4];
-        } else if (displayData > this.state.limits[5]) {
-            colorResult = this.state.colors[5];
-        } else {
-            colorResult = this.state.colors[6];
-        }
+      let colorResult;
 
-        // console.log(colorResult);
+      if (displayData > this.state.limits[0]) {
+          colorResult = this.state.colors[0];
+      } else if (displayData > this.state.limits[1]) {
+          colorResult = this.state.colors[1];
+      } else if (displayData > this.state.limits[2]) {
+          colorResult = this.state.colors[2];
+      } else if (displayData > this.state.limits[3]) {
+          colorResult = this.state.colors[3];
+      } else if (displayData > this.state.limits[4]) {
+          colorResult = this.state.colors[4];
+      } else if (displayData > this.state.limits[5]) {
+          colorResult = this.state.colors[5];
+      } else {
+          colorResult = this.state.colors[6];
+      }
 
-        return {
-          color: '#1f2021',
-          weight: 1,
-          fillOpacity: 0.8,
-          fillColor: colorResult,
-        }
+      return {
+        color: '#1f2021',
+        weight: 1,
+        fillOpacity: 0.8,
+        fillColor: colorResult,
+      }
     }
     
 
@@ -261,24 +255,19 @@ class MapContainer extends Component {
         '<b>' + feature.properties.NAME + '</b><br />' + dataToDisplay.toLocaleString() + ` ${this.state.displayed}`;
           let marker = layer.bindPopup(popupContent);
 
-                  // console.log(marker);
         allMarkersMap[currentID] = marker;
         currentID += 1;
       }
 
         
-
-
         layer.on({
             mouseover: this.highlightFeature.bind(this),
             mouseout: this.resetHighlight.bind(this),
         });
       }
 
-    // mouseover a specific state
+    // mouseover a specific state - highlight border
     highlightFeature(e) {
-        // console.log("mouseover");
-        // console.log(e);
 
         let layer = e.target;
 
@@ -346,16 +335,6 @@ class MapContainer extends Component {
 
                     
                 }
-
-                // if (display === "Deaths"){
-                //     // $("#cases-btn").toggleClass("table-btn");
-                //     // $("#cases-btn").toggleClass("table-btn-outline");
-                //     // $("#deaths-btn").toggleClass("table-btn");
-                //     // $("#deaths-btn").toggleClass("table-btn-outline");
-                //     // setDisplay("Cases");
-                //     // setTotal(props.cases);
-                //     // setDisplayData(props.casesArr);
-                // }
             });
         }
     }

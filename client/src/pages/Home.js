@@ -20,37 +20,6 @@ class Home extends Component {
   }
 
 
-  // componentDidMount() {
-  //   Axios.get("/api/state_latest_date/")
-  //   .then(dateRes => {
-  //     console.log(dateRes);
-  //     let latestDate = dateRes.data[0].date;
-
-  //     // get state data from latest day stored in DB
-  //     Axios.get("/api/state_data/" + latestDate)
-  //     .then(stateDataRes => {
-  //       console.log(stateDataRes);
-  //       let stateData = stateDataRes.data;
-
-  //       Axios.get("/api/county_latest_date/")
-  //       .then(countyDate => {
-  //         let latestCountyDate = countyDate.data[0].date;
-
-  //         Axios.get("/api/county_data/" + latestCountyDate)
-  //         .then(countyDataRes => {
-  //           let countyData = countyDataRes.data;
-
-  //           this.setState({
-  //             countyData: countyData,
-  //             stateData: stateData
-  //           });
-  //         })
-  //       })
-  //     })
-  //   })
-  // }
-
-
   componentDidMount() {
     Axios.get("/api/state_data/")
     .then(stateDataRes => {
@@ -79,42 +48,23 @@ class Home extends Component {
             });
           })
         })
-
-        // this.getCountyData(latestCountyDate)
-        // .then(results => {
-        //   // array of results in order here
-        //   console.log(results);
-
-        //   let countyData = [];
-
-        //   for(let i = results.length - 1; i >= 0; i--) {
-        //     countyData = countyData.concat(results[i].data);
-        //   }
-
-        //   console.log(countyData);
-
-        //   this.setState({
-        //     countyData: countyData,
-        //     stateData: stateData
-        //   });
-        // })
       })
     })
   }
 
   // get 30 days of county level data
-  getCountyData(latestDate) {
+  // getCountyData(latestDate) {
 
-    let prevDate = latestDate;
-    console.log(prevDate);
-    let promises = [];
-    for (let i = 0; i < 30; i++) {
-         promises.push(Axios.get("/api/county_data/" + prevDate));
-         prevDate = previousDate.previousDate(prevDate);
-         console.log(prevDate);
-    }
-    return Promise.all(promises);
-  }
+  //   let prevDate = latestDate;
+  //   console.log(prevDate);
+  //   let promises = [];
+  //   for (let i = 0; i < 30; i++) {
+  //        promises.push(Axios.get("/api/county_data/" + prevDate));
+  //        prevDate = previousDate.previousDate(prevDate);
+  //        console.log(prevDate);
+  //   }
+  //   return Promise.all(promises);
+  // }
 
 
 
