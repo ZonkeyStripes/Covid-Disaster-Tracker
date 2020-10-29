@@ -45,18 +45,18 @@ class DeltaTable extends Component {
             tableBody = this.props.deltaArray.map((el, index) => (
                 <tr key={index}>
                 <th scope="row">{el.state}</th>
-                <td>{el.cases1}</td>
-                <td>{el.cases2}</td>
-                <td>+{el.deltaCases}</td>
+                <td>{el.cases1.toLocaleString()}</td>
+                <td>{el.cases2.toLocaleString()}</td>
+                <td>+{el.deltaCases.toLocaleString()}</td>
                 </tr>
                 ))
         } else {
             tableBody = this.props.deltaArray.map((el, index) => (
                 <tr key={index}>
                 <th scope="row">{el.state}</th>
-                <td>{el.deaths1}</td>
-                <td>{el.deaths2}</td>
-                <td>+{el.deltaDeaths}</td>
+                <td>{el.deaths1.toLocaleString()}</td>
+                <td>{el.deaths2.toLocaleString()}</td>
+                <td>+{el.deltaDeaths.toLocaleString()}</td>
                 </tr>
                 ))
         }
